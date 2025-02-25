@@ -2,11 +2,12 @@ import React from "react"
 import { Engine } from "@/engine/engine"
 import LandscapeView from "@/components/LandscapeView"
 import Sprite from "@/components/ViewSprite"
+import ViewEnergyBar from "@/components/ViewEnergyBar"
 
-import SpaceshipURL from "@/gfx/spaceship.png"
+import SpaceshipURL from "@/gfx/spaceship.webp"
+import CowURL from "@/gfx/cow.webp"
 
 import styles from "./page.module.css"
-import ViewEnergyBar from "@/components/ViewEnergyBar"
 
 export default function Page() {
     const refContainer = React.useRef<HTMLDivElement | null>(null)
@@ -32,10 +33,12 @@ export default function Page() {
                     <Sprite
                         id="sprite-spaceship-main"
                         url={SpaceshipURL}
-                        zIndex={75}
+                        zIndex={81}
                     />
                 </div>
+                <Sprite id="sprite-cow" url={CowURL} zIndex={80} />
                 <ViewEnergyBar />
+                <div id="score" />
             </div>
         </LandscapeView>
     )

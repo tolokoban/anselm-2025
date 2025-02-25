@@ -5,13 +5,29 @@ import { Coords } from "@/coords"
 import { Sprite } from "@/engine/sprite"
 import { clamp } from "@/utils/calc"
 import { EnergyBar } from "./energy-bar"
+import { goto } from "@/app"
+import { Cow } from "./cow"
+import { pick } from "@/utils/array"
 
 const MAX_ENERGY = 10000
-export class Engine {
-    private energy = new EnergyBar()
-    private time = 0
-    private laser = 0
 
+const VACHE = ["vache", "vache", "vache", "vache", "bestiole"]
+const MANGE = [
+    "absorbée",
+    "attrapée",
+    "avalée",
+    "capturée",
+    "dépecée",
+    "désintégrée",
+    "digérée",
+    "emprisonnée",
+    "engloutie",
+    "liquidée",
+    "mangée",
+    "pulvérisée",
+]
+
+export class Engine {
     public static use(): Engine {
         const refEngine = React.useRef<Engine | null>(null)
         if (!refEngine.current) refEngine.current = new Engine()
@@ -32,10 +48,25 @@ export class Engine {
     private readonly intention = new Intention()
     private readonly coords: Coords
     private readonly spaceship: Sprite
+    private readonly cow: Cow
+    private mode: "run" | "die" | "eat" = "run"
+    private pauseAccumulator = 0
+    private energy = new EnergyBar()
+    private time = 0
+    private laser = 0
+    private dieTime = 0
+    private dieY = 0
+    private eatX0 = 0
+    private eatY0 = 0
+    private eatX1 = 0
+    private eatY1 = 0
+    private eatTime = 0
     private animationFrame = 0
+    private _score = 0
 
     constructor() {
         const coords = new Coords()
+        this.cow = new Cow(coords)
         this.coords = coords
         this.spaceship = new Sprite(coords, "sprite-spaceship")
         this.spaceship.update({
@@ -46,12 +77,24 @@ export class Engine {
         })
     }
 
+    get score() {
+        return this._score
+    }
+    set score(value: number) {
+        this._score = value
+        const div = document.getElementById("score")
+        const s = value > 1 ? "s" : ""
+        if (div)
+            div.textContent = `${pick(VACHE)}${s} ${pick(MANGE)}${s} : ${value}`
+    }
+
     readonly attach = (container: HTMLElement) => {
         console.log("ATTACH")
         this.intention.attach()
         this.coords.attach(container)
         this.scheduleNextFrame()
         this.energy.reset()
+        this.score = 0
     }
 
     detach() {
@@ -78,27 +121,91 @@ export class Engine {
     }
 
     private readonly nextFrame = (time: number) => {
+        this.scheduleNextFrame()
         let delay = 0
         if (this.time > 0) {
             delay = time - this.time
         }
         this.time = time
+        time -= this.pauseAccumulator
+
+        switch (this.mode) {
+            case "run":
+                this.doRun(time, delay)
+                break
+            case "die":
+                this.doDie(time, delay)
+                break
+            case "eat":
+                this.doEat(time, delay)
+                break
+        }
+    }
+
+    private doRun(time: number, delay: number) {
         const angle = 40 * Math.sin(time * 2e-3)
-        this.scheduleNextFrame()
-        let x = this.spaceship.x
-        const { intention } = this
+        const { intention, spaceship, cow } = this
+        let x = spaceship.x
         const speed = 3
         if (intention.wantsToGoRight()) x += delay * speed
         if (intention.wantsToGoLeft()) x -= delay * speed
+        x =
+            1920 / 2 +
+            (Math.cos(time * 1.633e-3) + Math.sin(time * 2.104e-3)) * 250
         this.setLaserOpacity(intention.wantsToSubdue() ? 1 : 0)
-        this.spaceship.update({
+        spaceship.update({
             x: clamp(x, 300, 1620),
             rotation: angle,
         })
         let energyLoss = delay * 0.4
         if (intention.wantsToGoLeft() || intention.wantsToGoRight())
             energyLoss *= 2
-        if (intention.wantsToSubdue()) energyLoss *= 10
+        if (intention.wantsToSubdue()) {
+            energyLoss *= 10
+            if (cow.hit(spaceship.x, spaceship.y, spaceship.rotation)) {
+                this.mode = "eat"
+                this.eatX0 = cow.x
+                this.eatY0 = cow.y
+                this.eatX1 = spaceship.x
+                this.eatY1 = spaceship.y
+                this.eatTime = time
+                this.score++
+                return
+            }
+        }
         this.energy.sub(energyLoss)
+        if (this.energy.value <= 0) {
+            this.mode = "die"
+            this.dieTime = time
+            this.dieY = spaceship.y
+            this.setLaserOpacity(0)
+        }
+        cow.update(time, delay)
+    }
+
+    private doDie(time: number, delay: number) {
+        const { spaceship } = this
+        const rotation = spaceship.rotation + delay * 0.5
+        const t = time - this.dieTime - 200
+        const y = this.dieY + ((t * t - 40000) * 200) / 40000
+        spaceship.update({ rotation, y })
+        if (time - this.dieTime > 1000) {
+            goto("/dead")
+            this.detach()
+        }
+        this.cow.update(time, delay)
+    }
+
+    private doEat(time: number, delay: number) {
+        const t = Math.min(1, (time - this.eatTime) / 1000)
+        const x = (this.eatX1 - this.eatX0) * t + this.eatX0
+        const y = (this.eatY1 - this.eatY0) * t + this.eatY0
+        this.cow.subdue(x, y, t, delay)
+        if (t === 1) {
+            this.mode = "run"
+            this.pauseAccumulator += time - this.eatTime
+            this.cow.reset(time)
+            this.energy.add(2e3)
+        }
     }
 }

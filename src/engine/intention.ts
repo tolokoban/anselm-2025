@@ -6,23 +6,44 @@ export class Intention {
     attach() {
         document.addEventListener("keydown", this.handleKeyDown)
         document.addEventListener("keyup", this.handleKeyUp)
+        document.body.addEventListener("pointerdown", this.handlePointerDown)
+        document.body.addEventListener("pointerup", this.handlePointerUp)
+        document.body.addEventListener("contextmenu", this.handleContextMenu)
     }
 
     detach() {
         document.removeEventListener("keydown", this.handleKeyDown)
         document.removeEventListener("keyup", this.handleKeyUp)
+        document.body.removeEventListener("pointerdown", this.handlePointerDown)
+        document.body.removeEventListener("pointerup", this.handlePointerUp)
+        document.body.removeEventListener("contextmenu", this.handleContextMenu)
     }
 
     wantsToGoRight(): boolean {
-        return this.intentRight > 0
+        return false // this.intentRight > 0
     }
 
     wantsToGoLeft(): boolean {
-        return this.intentLeft > 0
+        return false // this.intentLeft > 0
     }
 
     wantsToSubdue(): boolean {
         return this.intentSubduction > 0
+    }
+
+    private readonly handlePointerDown = (evt: PointerEvent) => {
+        evt.preventDefault()
+        evt.stopPropagation()
+        this.intentSubduction = 1
+    }
+
+    private readonly handlePointerUp = () => {
+        this.intentSubduction = 0
+    }
+
+    private readonly handleContextMenu = (evt: Event) => {
+        evt.preventDefault()
+        evt.stopPropagation()
     }
 
     private readonly handleKeyDown = (evt: KeyboardEvent) => {

@@ -28,6 +28,6 @@
 
 .level {
     width: 30%;
-    background: linear-gradient(to top, #fe9, #fff, #fe9);
+    background: linear-gradient(to top, #f90, #fff, #f90);
     box-shadow: 0 0 var(--margin) #f90;
 }

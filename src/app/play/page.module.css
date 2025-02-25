@@ -31,10 +31,9 @@
     }
 }
 
-
 :global(div#sprite-spaceship) {
     position: absolute;
-    z-index: 85
+    z-index: 85;
 }
 
 :global(div#sprite-spaceship-main) {
@@ -53,7 +52,16 @@
     width: 30%;
     height: 500%;
     background-color: #fe93;
-    background-image: linear-gradient(to left,#fe90,#fe93,#fe93,#fe90);
-    transition: opaity .2s;
+    background-image: linear-gradient(to left, #fe90, #fe93, #fe93, #fe90);
+    transition: opaity 0.2s;
     opacity: 0;
+}
+
+:global(div#score) {
+    font-size: 10vh;
+    z-index: 101;
+    position: absolute;
+    right: 0.5em;
+    bottom: 0.25em;
+    color: #fe9b;
 }

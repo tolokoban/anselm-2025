@@ -32,6 +32,15 @@ export class Sprite {
     get y() {
         return this.status.y
     }
+    get width() {
+        return this.status.width
+    }
+    get height() {
+        return this.status.height
+    }
+    get rotation() {
+        return this.status.rotation
+    }
 
     update(data: Partial<SpriteStatus>): boolean {
         this.status = {

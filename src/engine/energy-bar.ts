@@ -1,6 +1,6 @@
 import { clamp } from "@/utils/calc"
 
-const MAX_ENERGY = 10000
+const MAX_ENERGY = 1e4
 
 export class EnergyBar {
     private _value = MAX_ENERGY
