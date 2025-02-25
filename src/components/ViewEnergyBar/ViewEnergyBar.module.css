@@ -1,0 +1,33 @@
+.viewEnergyBar {
+    --margin: 5vh;
+    position: absolute;
+    left: var(--margin);
+    right: var(--margin);
+    top: var(--margin);
+    height: var(--margin);
+    border-radius: 99vmax;
+    background: #0005;
+}
+
+.border,
+.level {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    height: 100%;
+    border-radius: 99vmax;
+    box-sizing: border-box;
+}
+
+.border {
+    width: 100%;
+    border: 1vh solid #0137;
+}
+
+.level {
+    width: 30%;
+    background: linear-gradient(to top, #fe9, #fff, #fe9);
+    box-shadow: 0 0 var(--margin) #f90;
+}

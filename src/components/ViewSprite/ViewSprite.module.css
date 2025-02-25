@@ -1,0 +1,8 @@
+.sprite {
+    content: "";
+    position: absolute;
+    background-image: var(--custom-url);
+    background-size: 100% 100%;
+    pointer-events: none;
+    z-index: var(--custom-z-index);
+}

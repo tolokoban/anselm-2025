@@ -5,13 +5,55 @@
     width: 100%;
     height: 100%;
     overflow: hidden;
+    background-color: #246;
 }
 
-.page > canvas {
+.hill {
+    position: absolute;
+    left: -1920px;
+    right: -1920px;
+    bottom: 0;
+    width: auto;
+    height: 30vmin;
+    background-image: url(../../gfx/hills.webp);
+    background-repeat: repeat-x;
+    background-position: 0;
+    background-size: 1920px 30vmin;
+    animation: 3s infinite linear anim;
+}
+
+@keyframes anim {
+    from {
+        background-position: 0;
+    }
+    to {
+        background-position: -1920px;
+    }
+}
+
+
+:global(div#sprite-spaceship) {
+    position: absolute;
+    z-index: 85
+}
+
+:global(div#sprite-spaceship-main) {
     position: absolute;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: orange;
+}
+
+:global(div#sprite-spaceship-laser) {
+    content: "";
+    position: absolute;
+    left: 35%;
+    top: 50%;
+    width: 30%;
+    height: 500%;
+    background-color: #fe93;
+    background-image: linear-gradient(to left,#fe90,#fe93,#fe93,#fe90);
+    transition: opaity .2s;
+    opacity: 0;
 }

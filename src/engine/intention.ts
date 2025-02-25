@@ -13,16 +13,22 @@ export class Intention {
         document.removeEventListener("keyup", this.handleKeyUp)
     }
 
-    wantsToGoRight(): boolean {}
+    wantsToGoRight(): boolean {
+        return this.intentRight > 0
+    }
 
-    wantsToGoLeft(): boolean {}
+    wantsToGoLeft(): boolean {
+        return this.intentLeft > 0
+    }
 
-    wantsToSubdue(): boolean {}
+    wantsToSubdue(): boolean {
+        return this.intentSubduction > 0
+    }
 
     private readonly handleKeyDown = (evt: KeyboardEvent) => {
         const time = Date.now()
         switch (evt.key) {
-            case "Space":
+            case " ":
                 this.intentSubduction = time
                 break
             case "ArrowRight":
@@ -36,7 +42,7 @@ export class Intention {
 
     private readonly handleKeyUp = (evt: KeyboardEvent) => {
         switch (evt.key) {
-            case "Space":
+            case " ":
                 this.intentSubduction = 0
                 break
             case "ArrowRight":
