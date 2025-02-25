@@ -9,8 +9,6 @@ import { goto } from "@/app"
 import { Cow } from "./cow"
 import { pick } from "@/utils/array"
 
-const MAX_ENERGY = 10000
-
 const VACHE = ["vache", "vache", "vache", "vache", "bestiole"]
 const MANGE = [
     "absorbée",
@@ -151,7 +149,9 @@ export class Engine {
         if (intention.wantsToGoLeft()) x -= delay * speed
         x =
             1920 / 2 +
-            (Math.cos(time * 1.633e-3) + Math.sin(time * 2.104e-3)) * 250
+            (Math.cos(time * (1.633e-3 + time * 2e-9)) +
+                Math.sin(time * 2.904e-3)) *
+                250
         this.setLaserOpacity(intention.wantsToSubdue() ? 1 : 0)
         spaceship.update({
             x: clamp(x, 300, 1620),
