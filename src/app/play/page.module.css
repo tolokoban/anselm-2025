@@ -58,7 +58,7 @@
 }
 
 :global(div#score) {
-    font-size: 10vh;
+    font-size: 10vmin;
     z-index: 101;
     position: absolute;
     right: 0.5em;
