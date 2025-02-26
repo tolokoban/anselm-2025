@@ -11,7 +11,7 @@ export default function LayoutBackground({
 }) {
     return (
         <div className={Styles.Layoutbackground}>
-            {/* <Background type="background" /> */}
+            <Background type="background" />
             {children}
         </div>
     )

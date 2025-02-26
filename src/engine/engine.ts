@@ -8,22 +8,7 @@ import { EnergyBar } from "./energy-bar"
 import { goto } from "@/app"
 import { Cow } from "./cow"
 import { pick } from "@/utils/array"
-
-const VACHE = ["vache", "vache", "vache", "vache", "bestiole"]
-const MANGE = [
-    "absorbée",
-    "attrapée",
-    "avalée",
-    "capturée",
-    "dépecée",
-    "désintégrée",
-    "digérée",
-    "emprisonnée",
-    "engloutie",
-    "liquidée",
-    "mangée",
-    "pulvérisée",
-]
+import { MANGE, VACHE } from "@/constants"
 
 export class Engine {
     public static use(): Engine {
@@ -190,6 +175,7 @@ export class Engine {
         const y = this.dieY + ((t * t - 40000) * 200) / 40000
         spaceship.update({ rotation, y })
         if (time - this.dieTime > 1000) {
+            window.sessionStorage.setItem("score", `${this.score}`)
             goto("/dead")
             this.detach()
         }

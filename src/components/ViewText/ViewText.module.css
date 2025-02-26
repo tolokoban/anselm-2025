@@ -1,0 +1,18 @@
+.viewText {
+    display: grid;
+    place-items: center;
+}
+
+.viewText > div {
+    text-align: left;
+    white-space: pre-wrap;
+}
+
+.viewText > div > span {
+    transition: opacity 1.5s;
+    opacity: 0;
+}
+
+.viewText > div > span.show {
+    opacity: 1;
+}

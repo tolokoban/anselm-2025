@@ -35,7 +35,8 @@ body,
     font-family: "Audiowide", sans-serif;
     font-weight: 400;
     font-style: normal;
-    font-size: 4vh;
+    font-size: 7vmin;
+    color: #fe9;
 }
 
 code {
@@ -46,4 +47,21 @@ code {
 #tgd-logo.vanish {
     opacity: 0;
     transition: opacity 0.9s;
+}
+
+button {
+    all: unset;
+    cursor: pointer;
+    border-radius: 50%;
+    background-color: #fe9;
+    color: #000a;
+    width: 2em;
+    height: 2em;
+    display: grid;
+    place-items: center;
+}
+
+button > * {
+    width: 1.5em;
+    height: 1.5em;
 }

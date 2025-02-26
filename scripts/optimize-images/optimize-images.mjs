@@ -61,9 +61,12 @@ function cap(text) {
 
 async function start() {
   const images = await listDir(
-    "src/gfx",
-    (name) => name.endsWith(".png") || name.endsWith(".jpg"),
-  );
+      "src/gfx",
+      (name) =>
+          name.endsWith(".png") ||
+          name.endsWith(".jpg") ||
+          name.endsWith(".webp")
+  )
   const maxLength = images.reduce(
     (prv, cur) => Math.max(prv, getShortName(cur).length),
     0,
