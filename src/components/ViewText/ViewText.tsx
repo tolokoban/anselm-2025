@@ -23,7 +23,7 @@ export default function ViewText({
         setLetters([])
         window.setTimeout(() => {
             setLetters(children.split(""))
-        }, 300)
+        })
         window.clearTimeout(refInterval.current)
         refInterval.current = window.setInterval(() => {
             refLength.current++
