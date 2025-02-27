@@ -10,7 +10,7 @@ export class Cow {
         const sprite = new Sprite(coords, "sprite-cow")
         this.sprite = sprite
         sprite.update({
-            x: 1920 / 2,
+            x: -1920 / 2,
             y: (2 * 1080) / 3,
             width: 256,
             height: 128,
@@ -29,13 +29,13 @@ export class Cow {
         this.sprite.update({ scaleX: 1, scaleY: 1 })
     }
 
-    update(time: number, delay: number) {
+    process(time: number, delay: number) {
         time -= this.time0
         const { sprite } = this
         const W = 1920
         const lapse = 4000
         const t = (time % lapse) / lapse
-        const x = 2 * W * t - W / 2
+        const x = 2 * W * t - W
         const ang = time * 0.005
         const y =
             (2 * 1080) / 3 -

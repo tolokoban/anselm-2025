@@ -182,7 +182,7 @@ const config = (env) => {
                       },
                 ,
                 {
-                    test: /\.(png|jpe?g|gif|webp|avif|svg|mp4)$/i,
+                    test: /\.(png|jpe?g|gif|webp|avif|svg|mp4|mp3)$/i,
                     // More information here https://webpack.js.org/guides/asset-modules/
                     type: "asset",
                     generator: {

@@ -9,6 +9,8 @@ import { goto } from "@/app"
 import { Cow } from "./cow"
 import { pick } from "@/utils/array"
 import { MANGE, VACHE } from "@/constants"
+import { SoundManager } from "./sound"
+import { RayManager } from "./ray"
 
 export class Engine {
     public static use(): Engine {
@@ -28,6 +30,8 @@ export class Engine {
         return refEngine.current
     }
 
+    private readonly ray: RayManager
+    private readonly sound = new SoundManager()
     private readonly intention = new Intention()
     private readonly coords: Coords
     private readonly spaceship: Sprite
@@ -58,6 +62,7 @@ export class Engine {
             width: 512,
             height: 256,
         })
+        this.ray = new RayManager(this.intention, this.sound)
     }
 
     get score() {
@@ -126,8 +131,12 @@ export class Engine {
     }
 
     private doRun(time: number, delay: number) {
-        const angle = 40 * Math.sin(time * 2e-3)
         const { intention, spaceship, cow } = this
+
+        cow.process(time, delay)
+        this.ray.process()
+
+        const angle = 40 * Math.sin(time * 2e-3)
         let x = spaceship.x
         const speed = 3
         if (intention.wantsToGoRight()) x += delay * speed
@@ -148,6 +157,7 @@ export class Engine {
         if (intention.wantsToSubdue()) {
             energyLoss *= 10
             if (cow.hit(spaceship.x, spaceship.y, spaceship.rotation)) {
+                this.sound.cow.play()
                 this.mode = "eat"
                 this.eatX0 = cow.x
                 this.eatY0 = cow.y
@@ -160,12 +170,13 @@ export class Engine {
         }
         this.energy.sub(energyLoss)
         if (this.energy.value <= 0) {
+            this.sound.spaceshipFall.play()
             this.mode = "die"
             this.dieTime = time
             this.dieY = spaceship.y
             this.setLaserOpacity(0)
+            this.ray.stop()
         }
-        cow.update(time, delay)
     }
 
     private doDie(time: number, delay: number) {
@@ -179,7 +190,7 @@ export class Engine {
             goto("/dead")
             this.detach()
         }
-        this.cow.update(time, delay)
+        this.cow.process(time, delay)
     }
 
     private doEat(time: number, delay: number) {

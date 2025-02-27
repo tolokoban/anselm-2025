@@ -4,7 +4,7 @@ import styles from "./LandscapeView.module.css"
 
 export interface LandscapeViewProps {
     className?: string
-    onMount(element: HTMLElement): void
+    onMount?(element: HTMLElement): void
     children: React.ReactNode
 }
 
@@ -18,7 +18,7 @@ export default function LandscapeView({
     useResizeObserver(refParent, refChild)
     React.useEffect(() => {
         const parent = refParent.current
-        if (parent) onMount(parent)
+        if (parent) onMount?.(parent)
     }, [refParent.current])
 
     return (
@@ -50,23 +50,15 @@ function useResizeObserver(
                 const { width, height } = container.getBoundingClientRect()
                 if (height > width) {
                     // Portrait
-                    console.log("PORTRAIT")
                     parent.style.width = `${height}px`
                     parent.style.height = `${width}px`
                     parent.style.transform = `translateX(${width}px) rotate(90deg)`
                 } else {
                     // Landscape
-                    console.log("LANDSCAPE")
                     parent.style.width = `${width}px`
                     parent.style.height = `${height}px`
                     parent.style.transform = `none`
                 }
-                console.log(
-                    "🚀 [LandscapeView] width, height = ",
-                    width,
-                    height,
-                    [...parent.classList]
-                ) // @FIXME: Remove this line written on 2025-02-25 at 11:24
             }
         })
     }

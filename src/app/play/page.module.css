@@ -27,7 +27,7 @@
         background-position: 0;
     }
     to {
-        background-position: -1920px;
+        background-position: 1920px;
     }
 }
 
