@@ -15,7 +15,6 @@ export class RayManager {
         if (subdue && !this.rayActive) {
             this.rayActive = true
             ray.currentTime = 0
-            ray.loop = true
             ray.play()
         } else if (!subdue && this.rayActive) {
             this.rayActive = false

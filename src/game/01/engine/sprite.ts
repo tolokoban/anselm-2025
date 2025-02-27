@@ -1,4 +1,4 @@
-import { Coords } from "../coords"
+import { Coords } from "../../../coords"
 
 export interface SpriteStatus {
     x: number

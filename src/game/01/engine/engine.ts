@@ -2,7 +2,7 @@ import React from "react"
 
 import { Intention } from "./intention"
 import { Coords } from "@/coords"
-import { Sprite } from "@/engine/sprite"
+import { Sprite } from "@/game/01/engine/sprite"
 import { clamp } from "@/utils/calc"
 import { EnergyBar } from "./energy-bar"
 import { goto } from "@/app"
@@ -187,7 +187,7 @@ export class Engine {
         spaceship.update({ rotation, y })
         if (time - this.dieTime > 1000) {
             window.sessionStorage.setItem("score", `${this.score}`)
-            goto("/dead")
+            goto("/01/dead")
             this.detach()
         }
         this.cow.process(time, delay)

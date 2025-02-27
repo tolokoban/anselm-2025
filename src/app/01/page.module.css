@@ -1,6 +1,6 @@
-.main {
+.page {
     display: grid;
-    place-items: center;
+    grid-template-rows: 1fr auto;
     padding: 1em;
     gap: 1em;
     margin: 0;
@@ -12,9 +12,6 @@
     box-sizing: border-box;
 }
 
-.main > button {
+.page > button {
     place-self: end;
-    width: 10em;
-    border-radius: 99vmax;
-    box-shadow: 0 .25em .5em #000;
 }

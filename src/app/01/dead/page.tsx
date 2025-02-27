@@ -1,7 +1,7 @@
 import React from "react"
 
 import ViewBook from "@/components/ViewBook"
-import { goto } from "../routes"
+import { goto } from "../../routes"
 import { pick } from "@/utils/array"
 import { MANGE, VACHE } from "@/constants"
 import { getHighscore, setHighscore } from "@/highscore"
@@ -11,7 +11,7 @@ export default function PageDead() {
     const highscore = getHighscore()
     const handleClick = () => {
         setHighscore(score)
-        goto("/play")
+        goto("/01/play")
     }
 
     return (

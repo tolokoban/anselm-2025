@@ -1,0 +1,33 @@
+import { getHighscore } from "@/highscore"
+import { goto } from "@/app/routes"
+
+import ViewBook from "@/components/ViewBook"
+
+export default function Page() {
+    const handleClick = () => {
+        goto("/01/play")
+        document.body.requestFullscreen()
+    }
+    const highscore = getHighscore()
+
+    return (
+        <ViewBook
+            pages={[
+                `Cher Anselm,
+Tu viens d'avoir 9 ans et tu es à mi-chemin de la majorité.
+          
+Du moins... d'après les critères Terrestres.`,
+                `Mais tu dois t'en douter maintenant :
+tu ne viens pas vraiment de la Terre...
+
+Et il est grand temps que tu rentres chez toi.`,
+                `On t'a laissé une soucoupe, mais elle n'a pas encore assez d'énergie pour faire le voyage à travers la galaxie.`,
+                `Pour faire le plein, clique sur l'écran ou appuie sur la barre d'espace.
+Une centaine de bovins devrait faire l'affaire.
+
+${highscore > 0 ? `Record à battre : ${highscore}` : "À très bientôt ANSELM !!!"}`,
+            ]}
+            onDone={handleClick}
+        />
+    )
+}

@@ -1,5 +1,5 @@
 import React from "react"
-import { Engine } from "@/engine/engine"
+import { Engine } from "@/game/01/engine/engine"
 import LandscapeView from "@/components/LandscapeView"
 import Sprite from "@/components/ViewSprite"
 import ViewEnergyBar from "@/components/ViewEnergyBar"
