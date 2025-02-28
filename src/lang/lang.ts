@@ -2,7 +2,13 @@ import AtomicState from "@tolokoban/react-state";
 import { isString } from "@tolokoban/type-guards";
 import React from "react";
 
-const initialLang = localStorage.getItem("Language") ?? navigator.language;
+const initialLang = (
+    localStorage.getItem("Language") ??
+    navigator.language ??
+    "fr"
+)
+    .split("-")[0]
+    .toLocaleLowerCase()
 
 const atomicLanguage = new AtomicState(initialLang, {
   storage: {
@@ -20,7 +26,7 @@ export function useLangValue() {
   return lang;
 }
 
-export type Translation = Record<string, React.ReactNode>;
+export type Translation = Record<string, string | string[]>
 
 export function useTanslationGeneric<T extends Translation>(
   defaultTranslation: T,

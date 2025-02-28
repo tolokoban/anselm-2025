@@ -49,19 +49,3 @@ code {
     transition: opacity 0.9s;
 }
 
-button {
-    all: unset;
-    cursor: pointer;
-    border-radius: 50%;
-    background-color: #fe9;
-    color: #000a;
-    width: 2em;
-    height: 2em;
-    display: grid;
-    place-items: center;
-}
-
-button > * {
-    width: 1.5em;
-    height: 1.5em;
-}

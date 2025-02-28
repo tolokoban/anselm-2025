@@ -7,6 +7,7 @@
 }
 
 .languageselector > button {
+    position: relative;
   border: inherit;
   font: inherit;
   background: none;
@@ -15,18 +16,27 @@
   margin: 0;
   width: 2em;
   height: 2em;
-  transform: scale(0.8);
-  filter: brightness(80%);
   cursor: pointer;
-  transition: all 0.2s;
 }
 
-.languageselector > button.current {
-  transform: scale(1);
-  filter: brightness(110%);
-  cursor: default;
-}
+.languageselector > button::after {
+    content: "";
+    transition: all 0.2s;
+    opacity: 0;
+    position: absolute;
+    left: 0;
+    bottom: -.5em;
+    width: 100%;
+    height: .2em;
+    border-radius: 99vmax;
+    background-color: #fff;
+    box-shadow: 0 0 .2em #000;
+ }
 
+  .languageselector > button.current::after {
+    opacity: 1;
+  }
+    
 .languageselector > button > img {
   width: 2em;
   height: 2em;

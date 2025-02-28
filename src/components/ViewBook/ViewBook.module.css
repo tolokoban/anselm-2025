@@ -13,6 +13,15 @@
 }
 
 .viewBook > button {
+    all: unset;
+    cursor: pointer;
+    border-radius: 50%;
+    background-color: #fe9;
+    color: #000a;
+    width: 2em;
+    height: 2em;
+    display: grid;
+    place-items: center;
     place-self: end;
     transition: all 0.5s;
     transform: scale(1);
@@ -20,4 +29,9 @@
 
 .viewBook > button[disabled] {
     transform: scale(0);
+}
+
+.viewBook > button > * {
+    width: 1.5em;
+    height: 1.5em;
 }

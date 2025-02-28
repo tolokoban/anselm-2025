@@ -5,7 +5,7 @@ import styles from "./ViewText.module.css"
 export interface ViewTextProps {
     className?: string
     children: string
-    onDone(): void
+    onDone?(): void
 }
 
 export default function ViewText({
@@ -30,7 +30,7 @@ export default function ViewText({
             if (refLength.current > children.length) {
                 window.clearTimeout(refInterval.current)
                 refInterval.current = 0
-                onDone()
+                onDone?.()
                 return
             }
             setLength(refLength.current)
@@ -40,7 +40,7 @@ export default function ViewText({
     const handleRevealAll = () => {
         refLength.current = children.length
         setLength(refLength.current)
-        onDone()
+        onDone?.()
     }
 
     return (
