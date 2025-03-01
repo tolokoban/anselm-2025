@@ -10,18 +10,10 @@ export default function Page() {
         goto("/01/play")
         document.body.requestFullscreen()
     }
-    const highscore = getHighscore()
 
     return (
         <ViewBook
-            pages={[
-                tr.intro1(),
-                tr.intro2(),
-                tr.intro3(),
-                tr.intro4(
-                    highscore > 0 ? tr.highscore(`${highscore}`) : tr.seeYou()
-                ),
-            ]}
+            pages={[tr.intro1(), tr.intro2(), tr.intro3()]}
             onDone={handleClick}
         />
     )

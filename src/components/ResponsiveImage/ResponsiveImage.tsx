@@ -32,39 +32,45 @@ export default function ResponsiceImage(props: ResponsiveImageProps) {
   const type = props.type ?? "normal";
   console.log("🚀 [ResponsiveImage] type = ", type); // @FIXME: Remove this line written on 2024-10-24 at 14:23
   return (
-    <div
-      ref={ref}
-      className={join(props.className, Styles.responsiveimage, typeClassName)}
-      style={{
-        background: props.color ?? "transparent",
-        aspectRatio: props.size ? `${props.size[0]} / ${props.size[1]}` : "1",
-      }}
-      onDoubleClick={handleDoubleClick}
-      title={tr.tooltip}
-    >
-      <picture>
-        {(bestResolution || type === "background") && (
-          <>
-            <source srcSet={props.avif} />
-            <source srcSet={props.png} />
-          </>
-        )}
-        {type === "vignette" && (
-          <>
-            <source srcSet={props.avifSmall} />
-            <source srcSet={props.pngSmall} />
-          </>
-        )}
-        {type === "normal" && (
-          <>
-            <source srcSet={props.avifMedium} />
-            <source srcSet={props.pngMedium} />
-          </>
-        )}
-        <img src={props.pngSmall} />
-      </picture>
-    </div>
-  );
+      <div
+          ref={ref}
+          className={join(
+              props.className,
+              Styles.responsiveimage,
+              typeClassName
+          )}
+          style={{
+              background: props.color ?? "transparent",
+              aspectRatio: props.size
+                  ? `${props.size[0]} / ${props.size[1]}`
+                  : "1",
+          }}
+          onDoubleClick={handleDoubleClick}
+          title={tr.tooltip()}
+      >
+          <picture>
+              {(bestResolution || type === "background") && (
+                  <>
+                      <source srcSet={props.avif} />
+                      <source srcSet={props.png} />
+                  </>
+              )}
+              {type === "vignette" && (
+                  <>
+                      <source srcSet={props.avifSmall} />
+                      <source srcSet={props.pngSmall} />
+                  </>
+              )}
+              {type === "normal" && (
+                  <>
+                      <source srcSet={props.avifMedium} />
+                      <source srcSet={props.pngMedium} />
+                  </>
+              )}
+              <img src={props.pngSmall} />
+          </picture>
+      </div>
+  )
 }
 
 function join(...classes: unknown[]): string {

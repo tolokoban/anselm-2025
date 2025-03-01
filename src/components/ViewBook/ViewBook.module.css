@@ -12,7 +12,16 @@
     box-sizing: border-box;
 }
 
-.viewBook > button {
+.viewBook > footer {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1em;
+}
+
+.viewBook > footer > button {
     all: unset;
     cursor: pointer;
     border-radius: 50%;
@@ -27,11 +36,11 @@
     transform: scale(1);
 }
 
-.viewBook > button[disabled] {
+.viewBook > footer > button[disabled] {
     transform: scale(0);
 }
 
-.viewBook > button > * {
+.viewBook > footer > button > * {
     width: 1.5em;
     height: 1.5em;
 }

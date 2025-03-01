@@ -7,15 +7,14 @@ import { clamp } from "@/utils/calc"
 import { EnergyBar } from "./energy-bar"
 import { goto } from "@/app"
 import { Cow } from "./cow"
-import { pick } from "@/utils/array"
-import { MANGE, VACHE } from "@/constants"
 import { SoundManager } from "./sound"
 import { RayManager } from "./ray"
+import { Translator01 } from "@/app/01/_translation/type"
 
 export class Engine {
-    public static use(): Engine {
+    public static use(tr: Translator01): Engine {
         const refEngine = React.useRef<Engine | null>(null)
-        if (!refEngine.current) refEngine.current = new Engine()
+        if (!refEngine.current) refEngine.current = new Engine(tr)
         React.useEffect(() => {
             const engine = refEngine.current
             if (!engine) return
@@ -30,6 +29,7 @@ export class Engine {
         return refEngine.current
     }
 
+    private tr: Translator01
     private readonly ray: RayManager
     private readonly sound = new SoundManager()
     private readonly intention = new Intention()
@@ -51,7 +51,8 @@ export class Engine {
     private animationFrame = 0
     private _score = 0
 
-    constructor() {
+    constructor(tr: Translator01) {
+        this.tr = tr
         const coords = new Coords()
         this.cow = new Cow(coords)
         this.coords = coords
@@ -65,6 +66,10 @@ export class Engine {
         this.ray = new RayManager(this.intention, this.sound)
     }
 
+    updateTranslator(tr: Translator01) {
+        this.tr = tr
+    }
+
     get score() {
         return this._score
     }
@@ -72,12 +77,16 @@ export class Engine {
         this._score = value
         const div = document.getElementById("score")
         const s = value > 1 ? "s" : ""
-        if (div)
-            div.textContent = `${pick(VACHE)}${s} ${pick(MANGE)}${s} : ${value}`
+        if (div) {
+            const { tr } = this
+            div.textContent = `${tr.score(
+                `${tr.scoreCow()}${s}`,
+                `${tr.scoreEat()}${s}`
+            )} ${value}`
+        }
     }
 
     readonly attach = (container: HTMLElement) => {
-        console.log("ATTACH")
         this.intention.attach()
         this.coords.attach(container)
         this.scheduleNextFrame()
@@ -86,7 +95,6 @@ export class Engine {
     }
 
     detach() {
-        console.log("DETACH")
         this.intention.detach()
         this.coords.detach()
         window.cancelAnimationFrame(this.animationFrame)

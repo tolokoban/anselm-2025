@@ -18,27 +18,33 @@ import { RouteMatch, RoutePath } from "./types"
 
 import Layout0 from "./layout"
 import Layout1 from "./01/layout"
+import Layout4 from "./02/layout"
+import Loading0 from "./loading"
 const Page0 = React.lazy(() => import("./page"))
 const Page1 = React.lazy(() => import("./01/page"))
 const Page2 = React.lazy(() => import("./01/dead/page"))
 const Page3 = React.lazy(() => import("./01/play/page"))
+const Page4 = React.lazy(() => import("./02/page"))
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function App({ lang }: { lang?: string }) {
     const context = useRouteContext()
-    const fb = <div>Loading...</div>
+    const fb0 = <Loading0/>
     const ly0 = Layout0
     const pg0 = Page0
     const ly1 = Layout1
     const pg1 = Page1
     const pg2 = Page2
     const pg3 = Page3
+    const ly4 = Layout4
+    const pg4 = Page4
     return (
-        <Route path="/" Page={pg0} Layout={ly0} fallback={fb} context={context}>
-            <Route path="/01" Page={pg1} Layout={ly1} fallback={fb} context={context}>
-                <Route path="/01/dead" Page={pg2} fallback={fb} context={context}/>
-                <Route path="/01/play" Page={pg3} fallback={fb} context={context}/>
+        <Route path="/" Page={pg0} Layout={ly0} fallback={fb0} context={context}>
+            <Route path="/01" Page={pg1} Layout={ly1} fallback={fb0} context={context}>
+                <Route path="/01/dead" Page={pg2} fallback={fb0} context={context}/>
+                <Route path="/01/play" Page={pg3} fallback={fb0} context={context}/>
             </Route>
+            <Route path="/02" Page={pg4} Layout={ly4} fallback={fb0} context={context}/>
         </Route>
     )
 }

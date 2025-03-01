@@ -14,7 +14,9 @@ export function translateInAlienLanguage<T extends Translation>(input: T): T {
 }
 
 function translate(text: string): string {
-    const words = text.split(/[^a-z]/gi).map((word) => word.toLocaleLowerCase())
+    const words = text
+        .split(/[^a-z]+/gi)
+        .map((word) => word.toLocaleLowerCase())
     return words
         .map((word) =>
             word
@@ -22,6 +24,7 @@ function translate(text: string): string {
                 .map((letter) =>
                     String.fromCharCode(10240 + letter.charCodeAt(0))
                 )
+                .join("")
         )
         .join(" ")
 }

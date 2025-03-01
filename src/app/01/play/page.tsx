@@ -8,9 +8,11 @@ import SpaceshipURL from "@/gfx/spaceship.webp"
 import CowURL from "@/gfx/cow.webp"
 
 import styles from "./page.module.css"
+import { useTranslator } from "../_translation"
 
 export default function Page() {
-    const engine = Engine.use()
+    const tr = useTranslator()
+    const engine = Engine.use(tr)
 
     return (
         <LandscapeView onMount={engine.attach}>

@@ -35,10 +35,10 @@ main > p {
 }
 
 .main > footer > button > svg {
-    width: 12em;
-    height: 12em;
-    padding: 16px;
-    border-radius: 2em;
+    width: 6em;
+    height: 6em;
+    padding: .5em;
+    border-radius: 1em;
     border: .25em solid currentColor;
     color: currentColor;
     transition: all .3s;

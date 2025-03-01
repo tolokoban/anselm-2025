@@ -1,6 +1,6 @@
-import { useTanslationGeneric } from "@/lang";
-import EN from "./en";
+import { useTanslatorGeneric } from "@/lang"
+import EN from "./en"
 
 export function useTranslation() {
-  return useTanslationGeneric(EN, { fr: () => import("./fr") });
+    return useTanslatorGeneric(EN, { fr: () => import("./fr") })
 }

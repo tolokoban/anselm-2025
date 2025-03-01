@@ -18,6 +18,7 @@ export const ROUTES: Record<RoutePath, string[]> = {
     "/01": ["/01"],
     "/01/dead": ["/01/dead"],
     "/01/play": ["/01/play"],
+    "/02": ["/02"],
 }
 
 /**
