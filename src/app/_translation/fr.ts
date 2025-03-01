@@ -1,7 +1,7 @@
 import { Translation } from "@/lang"
 
 const FR = {
-    intro: "Une aventure intergallactique, interactive, interminable et en plusieurs épisodes.",
+    intro: "Une aventure intergalactique, interactive, interminable et en plusieurs épisodes.",
     episode: "Épisode",
 } satisfies Translation
 

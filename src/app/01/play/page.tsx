@@ -2,7 +2,7 @@ import React from "react"
 import { Engine } from "@/game/01/engine/engine"
 import LandscapeView from "@/components/LandscapeView"
 import Sprite from "@/components/ViewSprite"
-import ViewEnergyBar from "@/components/ViewEnergyBar"
+import ViewEnergyBar from "@/components/01/ViewEnergyBar"
 
 import SpaceshipURL from "@/gfx/spaceship.webp"
 import CowURL from "@/gfx/cow.webp"

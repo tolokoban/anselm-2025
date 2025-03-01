@@ -76,12 +76,12 @@ export class Engine {
     set score(value: number) {
         this._score = value
         const div = document.getElementById("score")
-        const s = value > 1 ? "s" : ""
+        const plural = (s1: string, s2: string) => (value > 1 ? s2 : s1)
         if (div) {
             const { tr } = this
             div.textContent = `${tr.score(
-                `${tr.scoreCow()}${s}`,
-                `${tr.scoreEat()}${s}`
+                plural(tr.scoreCow(), tr.scoreCows()),
+                plural(tr.scoreEat(), tr.scoreEats())
             )} ${value}`
         }
     }

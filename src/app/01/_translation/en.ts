@@ -1,6 +1,36 @@
 import { Translation } from "@/lang"
 import FR from "./fr"
 
+const scoreCow = [
+    "cow",
+    "cow",
+    "cow",
+    "cow",
+    "bug",
+    "milkmaid",
+    "moo-moo",
+    "Daisy",
+    "beast",
+]
+
+const scoreEat = [
+    "absorbed",
+    "sucked up",
+    "caught",
+    "swallowed",
+    "captured",
+    "torn apart",
+    "cut up",
+    "disintegrated",
+    "digested",
+    "skinned",
+    "imprisoned",
+    "engulfed",
+    "liquidated",
+    "eaten",
+    "pulverized",
+]
+
 const EN: typeof FR = {
     congrats: [
         "It's a new record!!!",
@@ -49,34 +79,10 @@ $1`,
         "Highest score: $1.",
     ],
     score: "$2 $1",
-    scoreCow: [
-        "cow",
-        "cow",
-        "cow",
-        "cow",
-        "bug",
-        "milkmaid",
-        "moo-moo",
-        "Daisy",
-        "beast",
-    ],
-    scoreEat: [
-        "absorbed",
-        "sucked up",
-        "caught",
-        "swallowed",
-        "captured",
-        "torn apart",
-        "cut up",
-        "disintegrated",
-        "digested",
-        "skinned",
-        "imprisoned",
-        "engulfed",
-        "liquidated",
-        "eaten",
-        "pulverized",
-    ],
+    scoreCow,
+    scoreCows: scoreCow.map((w) => `${w}s`),
+    scoreEat,
+    scoreEats: scoreEat,
     seeYou: "See you very soon ANSELM !!!",
 }
 

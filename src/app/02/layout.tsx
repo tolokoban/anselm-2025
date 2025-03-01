@@ -1,6 +1,6 @@
 import React from "react"
 
-import Background from "@/generated/background"
+import Background from "@/generated/background-02"
 
 import Styles from "./layout.module.css"
 

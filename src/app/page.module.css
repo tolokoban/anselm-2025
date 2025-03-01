@@ -52,6 +52,7 @@ main > p {
 
 .main > footer > button {
     all: unset;
+    position: relative;
     cursor: pointer;    
     display: flex;
     flex-wrap: nowrap;
@@ -74,4 +75,23 @@ main > p {
 
 .languageSelector {
     font-size: 50%
+}
+
+.main > footer > button[disabled] {
+    pointer-events: none;
+    transform: scale(.9);
+    filter: brightness(50%);
+}
+
+.main > footer > button[disabled]::after {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -4% -75%;
+    width: 150%;
+    height: 8%;
+    content: "";
+    background-color: #f30;
+    transform-origin: center;
+    transform: rotate(-45deg);
 }

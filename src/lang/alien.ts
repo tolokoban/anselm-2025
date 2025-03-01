@@ -22,7 +22,9 @@ function translate(text: string): string {
             word
                 .split("")
                 .map((letter) =>
-                    String.fromCharCode(10240 + letter.charCodeAt(0))
+                    letter.charCodeAt(0) > 10240
+                        ? letter
+                        : String.fromCharCode(10240 + letter.charCodeAt(0))
                 )
                 .join("")
         )

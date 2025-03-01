@@ -7,6 +7,7 @@ import LanguageSelector from "@/components/LanguageSelector"
 
 import styles from "./page.module.css"
 import { RoutePath } from "./types"
+import { Unlocked } from "@/unlocked"
 
 export default function Page() {
     const tr = useTranslator()
@@ -27,7 +28,11 @@ export default function Page() {
                     <IconEpisode01 />
                     <div>{tr.episode()} 01</div>
                 </button>
-                <button type="button" onClick={() => go("/02")}>
+                <button
+                    type="button"
+                    onClick={() => go("/02")}
+                    disabled={!Unlocked.ep02}
+                >
                     <IconEpisode02 />
                     <div>{tr.episode()} 02</div>
                 </button>

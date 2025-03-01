@@ -1,8 +1,8 @@
-import { getHighscore } from "@/highscore"
 import { goto } from "@/app/routes"
 
 import ViewBook from "@/components/ViewBook"
 import { useTranslator } from "./_translation"
+import { GameStorage } from "@/storage"
 
 export default function Page() {
     const tr = useTranslator()
@@ -10,7 +10,7 @@ export default function Page() {
         goto("/01/play")
         document.body.requestFullscreen()
     }
-    const highscore = getHighscore()
+    const highscore = GameStorage.ep01.highscore
 
     return (
         <ViewBook

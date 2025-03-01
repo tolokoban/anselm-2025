@@ -2,17 +2,18 @@ import React from "react"
 
 import ViewBook from "@/components/ViewBook"
 import { goto } from "../../routes"
-import { pick } from "@/utils/array"
-import { getHighscore, setHighscore } from "@/highscore"
 import { useTranslator } from "../_translation"
+import { GameStorage } from "@/storage"
+import { Unlocked } from "@/unlocked"
 
 export default function PageDead() {
     const tr = useTranslator()
     const score = Number(window.sessionStorage.getItem("score") ?? "0")
-    const highscore = getHighscore()
+    const highscore = GameStorage.ep01.highscore
     const handleClick = () => {
-        setHighscore(score)
-        goto("/01/play")
+        GameStorage.ep01.highscore = score
+        GameStorage.ep01.total += score
+        goto(!Unlocked.ep02 ? "/01/play" : "/02")
     }
 
     return (
@@ -21,7 +22,7 @@ export default function PageDead() {
             pages={[
                 `${tr.gameOver()}
 
-${tr.score(`${tr.scoreCow()}s`, `${tr.scoreEat()}s`)} : ${score}
+${tr.score(tr.scoreCows(), tr.scoreEats())} : ${score}
 
 ${score > highscore ? tr.congrats() : tr.highscore(`${highscore}`)}`,
             ]}

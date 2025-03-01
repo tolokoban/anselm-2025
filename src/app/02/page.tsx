@@ -1,4 +1,3 @@
-import { getHighscore } from "@/highscore"
 import { goto } from "@/app/routes"
 
 import ViewBook from "@/components/ViewBook"

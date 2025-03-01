@@ -10,8 +10,8 @@ Une organisation secrète qui gère les relations inter-galactiques.
 
 Nous aimerions vous recruter et vous confier une mission...`,
     intro3: `Nous pensons que vous êtes un HSHPI et aimerions vous faire passer quelques tests.
-    
-    (HSHPI = Hyper Super Haut Potentiel Intellectuel)`,
+
+(HSHPI = Hyper Super Haut Potentiel Intellectuel)`,
 } satisfies Translation
 
 export default FR

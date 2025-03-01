@@ -36,7 +36,8 @@ body,
     font-weight: 400;
     font-style: normal;
     font-size: 7vmin;
-    color: #fe9;
+    --color-primary: #fe9;
+    color: var(--color-primary);
 }
 
 code {
