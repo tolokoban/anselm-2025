@@ -1,0 +1,44 @@
+.container {
+    position: relative;
+    perspective: 500px;
+    width: 3em;
+    height: 3em;
+}
+
+.coin {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    transition: transform 1s;
+    transform-style: preserve-3d;
+}
+
+.coin.reversed {
+    transform: rotateY(180deg);
+}
+
+.front,
+.back {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    border: 0.125em solid;
+    border-radius: 1em;
+    border-color: currentColor;
+    background-color: color-mix(in srgb, currentColor, #000);
+    backface-visibility: hidden;
+    box-shadow: 0 0.25em 0.5em #000;
+}
+
+.front {
+    color: var(--color-alien);
+}
+
+.back {
+    transform: rotateY(180deg);
+    color: var(--color-mib);
+}

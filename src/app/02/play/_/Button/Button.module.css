@@ -1,0 +1,40 @@
+button.button {
+    font-size: inherit;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 2em;
+    height: 2em;
+    max-width: 2em;
+    max-height: 2em;
+    background-color: var(--color-mib);
+    color: #000;
+    font-weight: bolder;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1px solid #000;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+button.button:active {
+    transform: brightness(125%);
+}
+
+button.button[disabled] {
+    pointer-events: none;
+    filter: grayscale(100%);
+}
+
+button.button::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 50%;
+    background-color: #fff6;
+    border-radius: 0 0 50% 50%;
+}

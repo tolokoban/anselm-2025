@@ -3,6 +3,9 @@ export const GameStorage = {
         highscore: 0,
         total: 0,
     }),
+    ep02: make(2, {
+        losses: 0,
+    }),
 }
 
 function make<T extends Record<string, string | number>>(
