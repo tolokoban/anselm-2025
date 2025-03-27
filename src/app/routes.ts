@@ -24,6 +24,8 @@ export const ROUTES: Record<RoutePath, string[]> = {
     "/02/play": ["/02/play"],
     "/02/win": ["/02/win"],
     "/03": ["/03"],
+    "/03/play": ["/03/play"],
+    "/04": ["/04"],
 }
 
 /**

@@ -19,6 +19,7 @@ import { RouteMatch, RoutePath } from "./types"
 import Layout0 from "./layout"
 import Layout1 from "./01/layout"
 import Layout4 from "./02/layout"
+import Layout9 from "./03/layout"
 import Loading0 from "./loading"
 const Page0 = React.lazy(() => import("./page"))
 const Page1 = React.lazy(() => import("./01/page"))
@@ -30,6 +31,8 @@ const Page6 = React.lazy(() => import("./02/help/page"))
 const Page7 = React.lazy(() => import("./02/play/page"))
 const Page8 = React.lazy(() => import("./02/win/page"))
 const Page9 = React.lazy(() => import("./03/page"))
+const Page10 = React.lazy(() => import("./03/play/page"))
+const Page11 = React.lazy(() => import("./04/page"))
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function App({ lang }: { lang?: string }) {
@@ -47,7 +50,10 @@ export default function App({ lang }: { lang?: string }) {
     const pg6 = Page6
     const pg7 = Page7
     const pg8 = Page8
+    const ly9 = Layout9
     const pg9 = Page9
+    const pg10 = Page10
+    const pg11 = Page11
     return (
         <Route path="/" Page={pg0} Layout={ly0} fallback={fb0} context={context}>
             <Route path="/01" Page={pg1} Layout={ly1} fallback={fb0} context={context}>
@@ -60,7 +66,10 @@ export default function App({ lang }: { lang?: string }) {
                 <Route path="/02/play" Page={pg7} fallback={fb0} context={context}/>
                 <Route path="/02/win" Page={pg8} fallback={fb0} context={context}/>
             </Route>
-            <Route path="/03" Page={pg9} fallback={fb0} context={context}/>
+            <Route path="/03" Page={pg9} Layout={ly9} fallback={fb0} context={context}>
+                <Route path="/03/play" Page={pg10} fallback={fb0} context={context}/>
+            </Route>
+            <Route path="/04" Page={pg11} fallback={fb0} context={context}/>
         </Route>
     )
 }

@@ -18,9 +18,11 @@ export type RoutePath =
     | "/02/play"
     | "/02/win"
     | "/03"
+    | "/03/play"
+    | "/04"
 
 export function isRoutePath(path: string): path is RoutePath {
-    return ["/","/01","/01/dead","/01/play","/02","/02/dead","/02/help","/02/play","/02/win","/03"].includes(path)
+    return ["/","/01","/01/dead","/01/play","/02","/02/dead","/02/help","/02/play","/02/win","/03","/03/play","/04"].includes(path)
 }
 
 export interface RouteMatch {

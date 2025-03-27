@@ -1,9 +1,16 @@
-import React from "react"
+import { goto } from "@/app/routes"
 
-import WorkInProgress from "@/components/WorkInProgress"
+import ViewBook from "@/components/ViewBook"
+import { useTranslator } from "./_translation"
+import { GameStorage } from "@/storage"
 
-import Styles from "./page.module.css"
+export default function Page() {
+    const tr = useTranslator()
+    const handleClick = () => {
+        goto("/01/play")
+        document.body.requestFullscreen()
+    }
+    const highscore = GameStorage.ep01.highscore
 
-export default function Page03() {
-    return <WorkInProgress />
+    return <ViewBook pages={[tr.intro1(), tr.intro2()]} onDone={handleClick} />
 }
