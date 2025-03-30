@@ -8,6 +8,7 @@ import LanguageSelector from "@/components/LanguageSelector"
 import styles from "./page.module.css"
 import { RoutePath } from "./types"
 import { Unlocked } from "@/unlocked"
+import Background from "@/generated/background"
 
 export default function Page() {
     const tr = useTranslator()
@@ -18,6 +19,7 @@ export default function Page() {
 
     return (
         <div className={styles.main}>
+            <Background type="background" />
             <h1>
                 <div>Ansy-2025</div>
                 <LanguageSelector className={styles.languageSelector} />

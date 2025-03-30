@@ -1,2 +1,2 @@
-export { default } from "./Tgd"
-export * from "./Tgd"
+export { default } from "./tgd"
+export * from "./tgd"

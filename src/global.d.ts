@@ -19,6 +19,11 @@ declare module "*.svg" {
     export = value
 }
 
+declare module "*.glb" {
+    const value: string
+    export = value
+}
+
 declare module "*.png" {
     const value: string
     export = value

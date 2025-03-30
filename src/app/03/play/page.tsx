@@ -1,35 +1,51 @@
 import React from "react"
 
-import Tgd from "@/components/Tgd"
+import Tgd, { Assets } from "@/components/Tgd"
+import { TgdContext } from "@tolokoban/tgd"
+import { useTranslator } from "@/app/03/_translation"
+import Button from "@/components/Button"
 import { useGame } from "./_/game"
 
-import imagePosX from "./_/posX.webp" // +X
-import imagePosY from "./_/posY.webp" // +Y
-import imagePosZ from "./_/posZ.webp" // +Z
-import imageNegX from "./_/negX.webp" // -X
-import imageNegY from "./_/negY.webp" // -Y
 import imageNegZ from "./_/negZ.webp" // -Z
+import moonURL from "./_/moon.glb"
 
-import Styles from "./page.module.css"
+import styles from "./page.module.css"
 
 export default function PagePlay() {
+    const tr = useTranslator()
+    const [initialized, setInitialized] = React.useState(false)
     const game = useGame()
+    const handleInit = (context: TgdContext, assets: Assets) => {
+        game.init(context, assets)
+    }
+    const handleStart = () => {
+        game.start()
+        setInitialized(true)
+    }
 
     return (
-        <div className={Styles.play}>
+        <div className={styles.play}>
             <Tgd
-                onReady={game.init}
+                gizmo={false}
+                onReady={handleInit}
                 assets={{
-                    image: {
-                        imagePosX,
-                        imagePosY,
-                        imagePosZ,
-                        imageNegX,
-                        imageNegY,
-                        imageNegZ,
+                    image: { imageNegZ },
+                    glb: {
+                        moon: moonURL,
                     },
                 }}
             />
+            {!initialized && (
+                <div className={styles.startScreen}>
+                    <Button
+                        className={styles.startButton}
+                        onClick={handleStart}
+                        autoFocus
+                    >
+                        {tr.start()}
+                    </Button>
+                </div>
+            )}
         </div>
     )
 }

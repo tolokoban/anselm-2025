@@ -7,6 +7,7 @@ La soucoupe est maintenant pleine de carburant et on va pouvoir aller sur la Lun
     intro2: `Pour rester discrēts, on l'a cachée dans un canyon.
     
     Il va falloir faire preuve d'un peu d'adresse pour naviguer là-dedans.`,
+    start: `C'est parti !`,
 } satisfies Translation
 
 export default FR

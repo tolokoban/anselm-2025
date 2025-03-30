@@ -19,7 +19,6 @@ import { RouteMatch, RoutePath } from "./types"
 import Layout0 from "./layout"
 import Layout1 from "./01/layout"
 import Layout4 from "./02/layout"
-import Layout9 from "./03/layout"
 import Loading0 from "./loading"
 const Page0 = React.lazy(() => import("./page"))
 const Page1 = React.lazy(() => import("./01/page"))
@@ -50,7 +49,6 @@ export default function App({ lang }: { lang?: string }) {
     const pg6 = Page6
     const pg7 = Page7
     const pg8 = Page8
-    const ly9 = Layout9
     const pg9 = Page9
     const pg10 = Page10
     const pg11 = Page11
@@ -66,7 +64,7 @@ export default function App({ lang }: { lang?: string }) {
                 <Route path="/02/play" Page={pg7} fallback={fb0} context={context}/>
                 <Route path="/02/win" Page={pg8} fallback={fb0} context={context}/>
             </Route>
-            <Route path="/03" Page={pg9} Layout={ly9} fallback={fb0} context={context}>
+            <Route path="/03" Page={pg9} fallback={fb0} context={context}>
                 <Route path="/03/play" Page={pg10} fallback={fb0} context={context}/>
             </Route>
             <Route path="/04" Page={pg11} fallback={fb0} context={context}/>
