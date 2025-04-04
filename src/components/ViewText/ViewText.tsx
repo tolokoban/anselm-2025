@@ -34,7 +34,7 @@ export default function ViewText({
                 return
             }
             setLength(refLength.current)
-        }, 40)
+        }, 20)
         return () => window.clearTimeout(refInterval.current)
     }, [children])
     const handleRevealAll = () => {
@@ -46,14 +46,18 @@ export default function ViewText({
     return (
         <div className={join(className, styles.viewText)}>
             <div onClick={handleRevealAll}>
-                {letters.map((letter, index) => (
-                    <span
-                        key={`${letter}$#${index}/${children.length}`}
-                        className={join(index < length && styles.show)}
-                    >
-                        {letter}
-                    </span>
-                ))}
+                {letters.map((letter, index) =>
+                    letter === "\n" ? (
+                        <br />
+                    ) : (
+                        <span
+                            key={`${letter}$#${index}/${children.length}`}
+                            className={join(index < length && styles.show)}
+                        >
+                            {letter}
+                        </span>
+                    )
+                )}
             </div>
         </div>
     )

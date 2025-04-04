@@ -19,10 +19,10 @@ export class Moon extends TgdPainterNode {
         })
         const transfo: Partial<TgdTransfoOptions> = {}
         if (node.translation) transfo.position = new TgdVec3(node.translation)
-        if (node.rotation) transfo.orientation = new TgdQuat(...node.rotation)
+        if (node.rotation) transfo.orientation = new TgdQuat(node.rotation)
         if (node.scale) transfo.scale = new TgdVec3(node.scale)
         super({
-            target,
+            children: [target],
             transfo,
         })
     }

@@ -9,10 +9,13 @@
 }
 
 .viewText > div > span {
-    transition: opacity 1.5s;
+    display: inline-block;
+    transition: all 1s;
     opacity: 0;
+    transform: translateY(100%) scale(0);
 }
 
 .viewText > div > span.show {
     opacity: 1;
+    transform: translateY(0) scale(1);
 }

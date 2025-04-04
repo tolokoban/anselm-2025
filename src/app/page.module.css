@@ -65,12 +65,11 @@ main > p {
 .main > footer {
     flex: 0 0 auto;
     display: flex;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
     gap: 1em;
-    overflow-x: auto;
 }
 
 .languageSelector {

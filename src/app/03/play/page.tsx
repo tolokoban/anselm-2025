@@ -8,6 +8,7 @@ import { useGame } from "./_/game"
 
 import imageNegZ from "./_/negZ.webp" // -Z
 import moonURL from "./_/moon.glb"
+import saucerURL from "./_/saucer.glb"
 
 import styles from "./page.module.css"
 
@@ -32,6 +33,7 @@ export default function PagePlay() {
                     image: { imageNegZ },
                     glb: {
                         moon: moonURL,
+                        saucer: saucerURL,
                     },
                 }}
             />

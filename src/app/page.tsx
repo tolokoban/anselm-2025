@@ -2,6 +2,7 @@ import { goto } from "./routes"
 
 import { IconEpisode01 } from "./_icons/episode01"
 import { IconEpisode02 } from "./_icons/episode02"
+import { IconEpisode03 } from "./_icons/episode03"
 import { useTranslator } from "./_translation"
 import LanguageSelector from "@/components/LanguageSelector"
 
@@ -37,6 +38,10 @@ export default function Page() {
                 >
                     <IconEpisode02 />
                     <div>{tr.episode()} 02</div>
+                </button>
+                <button type="button" onClick={() => go("/03")}>
+                    <IconEpisode03 />
+                    <div>{tr.episode()} 03</div>
                 </button>
             </footer>
         </div>
