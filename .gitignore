@@ -6,3 +6,4 @@ build/
 **/dist/
 **/dist_ts/
 src/generated
+**/*.blend1
