@@ -2,14 +2,14 @@ import {
     TgdContext,
     TgdPainterMeshGltf,
     TgdPainterNode,
-    TgdParserGLTransfertFormatBinary,
+    TgdDataGlb,
     TgdQuat,
     TgdTransfoOptions,
     TgdVec3,
 } from "@tolokoban/tgd"
 
 export class Moon extends TgdPainterNode {
-    constructor(context: TgdContext, asset: TgdParserGLTransfertFormatBinary) {
+    constructor(context: TgdContext, asset: TgdDataGlb) {
         const nodeName = "Moon"
         const node = asset.getNodeByNameOrThrow(nodeName)
         const meshIndex = node.mesh ?? 0

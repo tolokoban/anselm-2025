@@ -1,6 +1,6 @@
 import { Assets } from "@/components/Tgd"
 import {
-    tgdActionCreateCameraInterpolation,
+    tgdActionCreateTransfoInterpolation,
     tgdAnimChainTransfoInterpolations,
     tgdCalcDegToRad,
     tgdCalcMix,
@@ -23,6 +23,7 @@ import React from "react"
 
 import { Moon } from "./moon"
 import { Saucer } from "./saucer"
+import { Tunnel } from "./tunnel"
 
 export function useGame() {
     const ref = React.useRef<Game | null>(null)
@@ -33,10 +34,13 @@ export function useGame() {
 class Game {
     private context: TgdContext | null = null
     private onIntroEnd: null | (() => void) = null
+    private saucer: Saucer | null = null
 
     readonly init = (context: TgdContext, assets: Assets) => {
         this.context = context
         const saucer = new Saucer(context, assets.glb.saucer)
+        saucer.node.transfo.setPosition(0, 180, 0)
+        this.saucer = saucer
         context.camera.from(
             new TgdCameraPerspective({
                 fovy: tgdCalcDegToRad(40),
@@ -59,7 +63,6 @@ class Game {
         )
         const { width, height } = assets.image.imageNegZ
         const black = tgdCanvasCreateFill(width, height)
-        new TgdControllerCameraOrbit(context)
         const skybox = new TgdPainterSkybox(context, {
             camera: context.camera,
             imagePosX: black,
@@ -76,24 +79,62 @@ class Game {
         })
         const state = new TgdPainterState(context, {
             depth: webglPresetDepth.lessOrEqual,
-            cull: webglPresetCull.off,
+            cull: webglPresetCull.back,
             children: [moon, saucer.node, skybox],
         })
         context.add(clear, state)
         context.play()
         this.onIntroEnd = () => {
             state.remove(moon, skybox)
+            const tunnel = new Tunnel(context, assets.glb.tunnel)
+            // const tunnel = new Tunnel(context, assets.glb.saucer)
+            state.add(tunnel)
+            context.animSchedule({
+                duration: 0.2,
+                action: tgdActionCreateTransfoInterpolation(
+                    saucer.node.transfo,
+                    { scale: saucer.node.transfo.scale.clone() },
+                    { scale: [0.5, 0.5, 0.5] }
+                ),
+            })
+            context.animSchedule({
+                delay: 0.2,
+                duration: 2,
+                easingFunction: tgdEasingFunctionInOutCubic,
+                action: (alpha) => {
+                    tunnel.light = alpha
+                },
+            })
         }
     }
 
     readonly start = () => {
-        const { context } = this
+        const { context, saucer } = this
         if (!context) return
 
+        const animationDuration = 1
+        if (saucer) {
+            context.animSchedule(
+                tgdAnimChainTransfoInterpolations(saucer.node.transfo, [
+                    {
+                        duration: 3 * animationDuration,
+                        transfo: {
+                            position: [0, 100, 0],
+                        },
+                    },
+                    {
+                        duration: 1 * animationDuration,
+                        transfo: {
+                            position: [0, 0, 0],
+                        },
+                    },
+                ])
+            )
+        }
         context.animSchedule(
             tgdAnimChainTransfoInterpolations(context.camera.transfo, [
                 {
-                    duration: 3,
+                    duration: 3 * animationDuration,
                     easingFunction: tgdEasingFunctionOutCubic,
                     transfo: {
                         distance: 150,
@@ -102,7 +143,7 @@ class Game {
                     },
                 },
                 {
-                    duration: 1,
+                    duration: 1 * animationDuration,
                     easingFunction: tgdEasingFunctionInOutCubic,
                     transfo: {
                         distance: 0,
@@ -116,7 +157,7 @@ class Game {
                     },
                 },
                 {
-                    duration: 0.6,
+                    duration: 1 * animationDuration,
                     easingFunction: tgdEasingFunctionInOutCubic,
                     transfo: {
                         distance: 20,
@@ -133,16 +174,18 @@ class Game {
                     },
                 },
                 {
-                    duration: 0.3,
+                    duration: 0.6 * animationDuration,
                     transfo: {
+                        distance: 20,
                         orientation: new TgdQuat(),
-                        position: [0, 0, 0],
+                        position: [0, 4, 0],
+                        scale: [1, 1, 1],
                     },
                 },
             ])
         )
         context.animSchedule({
-            duration: 2,
+            duration: 2 * animationDuration,
             easingFunction: tgdEasingFunctionOutQuad,
             action(t) {
                 context.camera.zoom = tgdCalcMix(3, 1, t)

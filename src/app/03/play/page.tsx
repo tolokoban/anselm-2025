@@ -9,6 +9,7 @@ import { useGame } from "./_/game"
 import imageNegZ from "./_/negZ.webp" // -Z
 import moonURL from "./_/moon.glb"
 import saucerURL from "./_/saucer.glb"
+import tunnelURL from "./_/tunnel.glb"
 
 import styles from "./page.module.css"
 
@@ -34,6 +35,7 @@ export default function PagePlay() {
                     glb: {
                         moon: moonURL,
                         saucer: saucerURL,
+                        tunnel: tunnelURL,
                     },
                 }}
             />

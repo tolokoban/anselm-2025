@@ -8,7 +8,7 @@ import {
     tgdLoadArrayBuffer,
     tgdLoadGlb,
     tgdLoadImage,
-    TgdParserGLTransfertFormatBinary,
+    TgdDataGlb,
 } from "@tolokoban/tgd"
 
 import { isString } from "@tolokoban/type-guards"
@@ -19,7 +19,7 @@ import { classNames } from "@/utils/class-names"
 
 export interface Assets {
     image: Record<string, HTMLImageElement>
-    glb: Record<string, TgdParserGLTransfertFormatBinary>
+    glb: Record<string, TgdDataGlb>
     data: Record<string, ArrayBuffer>
 }
 
