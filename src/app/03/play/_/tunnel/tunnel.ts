@@ -72,6 +72,7 @@ export class Tunnel extends TgdPainter {
         )
         prg.uniform1f("uniMove", time * 100)
         prg.uniform1f("uniLight", this.light)
+        prg.uniform1f("uniHue", time)
         vao.bind()
         gl.drawElementsInstanced(gl.TRIANGLES, count, type, 0, 4)
         vao.unbind()

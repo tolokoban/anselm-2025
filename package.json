@@ -18,11 +18,11 @@
         "clean": "rm -rf src/generated",
         "generate": "npm run optimize && npm run routes",
         "optimize": "node scripts/optimize-images/optimize-images.mjs",
-        "routes": "build-react-routes src/app",
+        "routes": "npx build-react-routes src/app",
         "start": "webpack serve --mode=development",
         "build": "webpack --mode=production",
         "predeploy": "npm run build",
-        "deploy": "gh-pages -d build/",
+        "deploy": "npx gh-pages -d build/",
         "lint": "eslint -c .eslintrc.yml 'src/**/*.ts' 'src/**/*.tsx'",
         "format": "prettier --write ./src/",
         "test": "jest"
