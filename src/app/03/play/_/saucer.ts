@@ -9,7 +9,9 @@ import {
 export class Saucer {
     public readonly node: TgdPainterNode
     public readonly painterOpaque: TgdPainterNode
-    public _x = 0
+
+    private _x = 0
+    private angle = 0
 
     constructor(
         private readonly context: TgdContext,
@@ -33,20 +35,28 @@ export class Saucer {
                 }),
             ],
             logic: (time, delay) => {
-                const speed = 4
+                const speed = 3
                 const kb = this.context.inputs.keyboard
                 const pt = this.context.inputs.pointer
+                let angleDelta = 0
+                const angleSpeed = 90
                 if (
                     kb.isDown("ArrowRight") ||
                     pt.isTouching(({ x }) => x > 0)
                 ) {
                     this.x += delay * speed
+                    angleDelta = -delay * angleSpeed
                 } else if (
                     kb.isDown("ArrowLeft") ||
                     pt.isTouching(({ x }) => x < 0)
                 ) {
                     this.x -= delay * speed
+                    angleDelta = +delay * angleSpeed
+                } else {
+                    this.angle *= 0.9
                 }
+                this.angle = tgdCalcClamp(this.angle + angleDelta, -60, +60)
+                this.node.transfo.setEulerRotation(0, 0, this.angle)
             },
         })
         this.node.transfo.setPosition(0, 0, 0)

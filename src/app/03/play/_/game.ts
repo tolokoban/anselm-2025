@@ -7,7 +7,6 @@ import {
     TgdCameraPerspective,
     tgdCanvasCreateFill,
     TgdContext,
-    TgdControllerCameraOrbit,
     tgdEasingFunctionInOutCubic,
     tgdEasingFunctionOutCubic,
     tgdEasingFunctionOutQuad,
@@ -24,6 +23,7 @@ import React from "react"
 import { Moon } from "./moon"
 import { Saucer } from "./saucer"
 import { Tunnel } from "./tunnel"
+import { Obstacle } from "./obstacle"
 
 export function useGame() {
     const ref = React.useRef<Game | null>(null)
@@ -87,8 +87,8 @@ class Game {
         this.onIntroEnd = () => {
             state.remove(moon, skybox)
             const tunnel = new Tunnel(context, assets.glb.tunnel)
-            // const tunnel = new Tunnel(context, assets.glb.saucer)
-            state.add(tunnel)
+            const obstacle = new Obstacle(context, assets.glb.obstacle)
+            state.add(tunnel, obstacle)
             context.animSchedule({
                 duration: 0.2,
                 action: tgdActionCreateTransfoInterpolation(
