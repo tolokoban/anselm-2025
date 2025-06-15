@@ -5,25 +5,16 @@ import {
     tgdCalcDegToRad,
     tgdCalcMix,
     TgdCameraPerspective,
-    tgdCanvasCreateFill,
     TgdContext,
     tgdEasingFunctionInOutCubic,
     tgdEasingFunctionOutCubic,
     tgdEasingFunctionOutQuad,
-    TgdPainterClear,
-    TgdPainterSkybox,
-    TgdPainterState,
     TgdQuat,
     TgdVec3,
-    webglPresetCull,
-    webglPresetDepth,
 } from "@tolokoban/tgd"
 import React from "react"
 
-import { Moon } from "./moon"
-import { Saucer } from "./saucer"
-import { Tunnel } from "./tunnel"
-import { Obstacle } from "./obstacle"
+import { Actors } from "./actors"
 
 export function useGame() {
     const ref = React.useRef<Game | null>(null)
@@ -32,15 +23,57 @@ export function useGame() {
 }
 
 class Game {
+    private actors: Actors | null = null
     private context: TgdContext | null = null
-    private onIntroEnd: null | (() => void) = null
-    private saucer: Saucer | null = null
+    private time0 = 0
 
     readonly init = (context: TgdContext, assets: Assets) => {
+        const actors = new Actors(context, assets)
+        this.actors = actors
         this.context = context
-        const saucer = new Saucer(context, assets.glb.saucer)
+        this.reset()
+        context.play()
+    }
+
+    readonly stepTransitionFromExteriorToInterior = () => {
+        const { context, actors } = this
+        if (!context || !actors) return
+
+        const { saucer, tunnel } = actors
+        saucer.mode = "interactive"
+        actors.step = "interior"
+        context.animSchedule({
+            duration: 0.2,
+            action: tgdActionCreateTransfoInterpolation(
+                saucer.node.transfo,
+                { scale: saucer.node.transfo.scale.clone() },
+                { scale: [0.5, 0.5, 0.5] }
+            ),
+        })
+        context.animSchedule({
+            delay: 0.2,
+            duration: 2,
+            easingFunction: tgdEasingFunctionInOutCubic,
+            action: (alpha) => {
+                tunnel.light = alpha
+            },
+        })
+        this.time0 = -1
+        actors.obstacles.time0 = this.time0
+        context.logicClear()
+        context.logicAdd(this.logicTunnelRun)
+
+        console.log("🚀 [game] context.time =", context.time) // @FIXME: Remove this line written on 2025-06-15 at 19:29
+    }
+
+    readonly reset = () => {
+        const { context, actors } = this
+        if (!context || !actors) return
+
+        const { saucer } = actors
+        actors.step = "exterior"
+        saucer.active = true
         saucer.node.transfo.setPosition(0, 180, 0)
-        this.saucer = saucer
         context.camera.from(
             new TgdCameraPerspective({
                 fovy: tgdCalcDegToRad(40),
@@ -61,81 +94,32 @@ class Game {
                 },
             })
         )
-        const { width, height } = assets.image.imageNegZ
-        const black = tgdCanvasCreateFill(width, height)
-        const skybox = new TgdPainterSkybox(context, {
-            camera: context.camera,
-            imagePosX: black,
-            imagePosY: black,
-            imagePosZ: black,
-            imageNegX: black,
-            imageNegY: black,
-            imageNegZ: assets.image.imageNegZ,
-        })
-        const moon = new Moon(context, assets.glb.moon)
-        const clear = new TgdPainterClear(context, {
-            depth: 1,
-            color: [0, 0, 0, 1],
-        })
-        const state = new TgdPainterState(context, {
-            depth: webglPresetDepth.lessOrEqual,
-            cull: webglPresetCull.back,
-            children: [moon, saucer.node, skybox],
-        })
-        context.add(clear, state)
-        context.play()
-        this.onIntroEnd = () => {
-            state.remove(moon, skybox)
-            const tunnel = new Tunnel(context, assets.glb.tunnel)
-            const obstacles = [
-                new Obstacle(context, assets.glb.obstacle),
-                new Obstacle(context, assets.glb.obstacle, 0.25),
-                new Obstacle(context, assets.glb.obstacle, 0.5),
-                new Obstacle(context, assets.glb.obstacle, 0.75),
-            ]
-            state.add(tunnel, ...obstacles)
-            context.animSchedule({
-                duration: 0.2,
-                action: tgdActionCreateTransfoInterpolation(
-                    saucer.node.transfo,
-                    { scale: saucer.node.transfo.scale.clone() },
-                    { scale: [0.5, 0.5, 0.5] }
-                ),
-            })
-            context.animSchedule({
-                delay: 0.2,
-                duration: 2,
-                easingFunction: tgdEasingFunctionInOutCubic,
-                action: (alpha) => {
-                    tunnel.light = alpha
-                },
-            })
-        }
     }
 
     readonly start = () => {
-        const { context, saucer } = this
-        if (!context) return
+        const { context, actors } = this
+        if (!context || !actors) return
 
+        console.log("Started!")
+        context.debugHierarchy()
         const animationDuration = 1
-        if (saucer) {
-            context.animSchedule(
-                tgdAnimChainTransfoInterpolations(saucer.node.transfo, [
-                    {
-                        duration: 3 * animationDuration,
-                        transfo: {
-                            position: [0, 100, 0],
-                        },
+        const { saucer } = actors
+        context.animSchedule(
+            tgdAnimChainTransfoInterpolations(saucer.node.transfo, [
+                {
+                    duration: 3 * animationDuration,
+                    transfo: {
+                        position: [0, 100, 0],
                     },
-                    {
-                        duration: 1 * animationDuration,
-                        transfo: {
-                            position: [0, 0, 0],
-                        },
+                },
+                {
+                    duration: 1 * animationDuration,
+                    transfo: {
+                        position: [0, 0, 0],
                     },
-                ])
-            )
-        }
+                },
+            ])
+        )
         context.animSchedule(
             tgdAnimChainTransfoInterpolations(context.camera.transfo, [
                 {
@@ -174,9 +158,7 @@ class Game {
                             0.6737657189369202
                         ),
                     },
-                    onEnd: () => {
-                        this.onIntroEnd?.()
-                    },
+                    onEnd: this.stepTransitionFromExteriorToInterior,
                 },
                 {
                     duration: 0.6 * animationDuration,
@@ -196,5 +178,16 @@ class Game {
                 context.camera.zoom = tgdCalcMix(3, 1, t)
             },
         })
+    }
+
+    readonly logicTunnelRun = (time: number, delay: number) => {
+        const { actors } = this
+        if (!actors) return
+
+        if (this.time0 < 0) this.time0 = time
+        time -= this.time0
+        const speed = 100 + time * 1
+        actors.tunnel.move = time * speed
+        actors.obstacles.speed = speed
     }
 }

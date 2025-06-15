@@ -145,16 +145,20 @@ async function loadAssets({
     data,
     image,
 }: Partial<AssetsToLoad> = {}): Promise<Assets> {
-    console.log("🚀 [Tgd] glb, data, image = ", glb, data, image) // @FIXME: Remove this line written on 2024-11-08 at 14:33
     const assets: Assets = { glb: {}, data: {}, image: {} }
     const loaders: Array<() => Promise<void>> = []
     if (image) {
         Object.keys(image).forEach((key) => {
             loaders.push(async () => {
                 const url = image[key]
-                console.log("Loading image:", url)
-                const asset = await tgdLoadImage(url)
-                if (asset) assets.image[key] = asset
+                try {
+                    const asset = await tgdLoadImage(url)
+                    if (asset) assets.image[key] = asset
+                } catch (ex) {
+                    console.error(`Unable to load Image "${key}"!`)
+                    console.error(ex)
+                    throw ex
+                }
             })
         })
     }
@@ -162,9 +166,14 @@ async function loadAssets({
         Object.keys(glb).forEach((key) => {
             loaders.push(async () => {
                 const url = glb[key]
-                console.log("Loading GLB:", url)
-                const asset = await tgdLoadGlb(url)
-                if (asset) assets.glb[key] = asset
+                try {
+                    const asset = await tgdLoadGlb(url)
+                    if (asset) assets.glb[key] = asset
+                } catch (ex) {
+                    console.error(`Unable to load GLB "${key}"!`)
+                    console.error(ex)
+                    throw ex
+                }
             })
         })
     }

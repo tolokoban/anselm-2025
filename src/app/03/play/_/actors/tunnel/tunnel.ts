@@ -18,6 +18,7 @@ export class Tunnel extends TgdPainter {
     private readonly count: number
     private readonly type: number
     public light = 0
+    public move = 0
 
     constructor(
         private readonly context: TgdContext,
@@ -59,7 +60,7 @@ export class Tunnel extends TgdPainter {
     }
 
     paint(time: number, delay: number): void {
-        const { context, prg, vao, count, type } = this
+        const { context, prg, vao, count, type, move } = this
         const { gl } = context
         prg.use()
         prg.uniformMatrix4fv(
@@ -70,7 +71,7 @@ export class Tunnel extends TgdPainter {
             "uniProjectionMatrix",
             context.camera.matrixProjection
         )
-        prg.uniform1f("uniMove", time * 100)
+        prg.uniform1f("uniMove", move) // time * 100
         prg.uniform1f("uniLight", this.light)
         prg.uniform1f("uniHue", time)
         vao.bind()

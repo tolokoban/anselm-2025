@@ -9,6 +9,9 @@ import {
 import { Material } from "./material"
 
 export class Obstacle extends TgdPainter {
+    public speed = 100
+    public time0 = 0
+
     private readonly painter: TgdPainterMeshGltf
     private x = 0
     private y = 0
@@ -48,7 +51,8 @@ export class Obstacle extends TgdPainter {
     delete(): void {}
 
     paint(time: number, delay: number): void {
-        const { painter, x, y, z, rotX, rotY, rotZ } = this
+        const { painter, x, y, z, rotX, rotY, rotZ, speed, time0 } = this
+        time -= time0
         const { transfo } = painter
         const light = tgdCalcSmoothStep(-200, 0, z)
         const material = painter.material as Material
@@ -56,7 +60,6 @@ export class Obstacle extends TgdPainter {
         transfo.setPosition(x * 10, y, z)
         transfo.setEulerRotation(rotX * time, rotY * time, rotZ * time)
         painter.paint(time, delay)
-        const speed = 100
         this.z += delay * speed
         if (this.z > 20) this.reset()
     }
