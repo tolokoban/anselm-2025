@@ -87,8 +87,13 @@ class Game {
         this.onIntroEnd = () => {
             state.remove(moon, skybox)
             const tunnel = new Tunnel(context, assets.glb.tunnel)
-            const obstacle = new Obstacle(context, assets.glb.obstacle)
-            state.add(tunnel, obstacle)
+            const obstacles = [
+                new Obstacle(context, assets.glb.obstacle),
+                new Obstacle(context, assets.glb.obstacle, 0.25),
+                new Obstacle(context, assets.glb.obstacle, 0.5),
+                new Obstacle(context, assets.glb.obstacle, 0.75),
+            ]
+            state.add(tunnel, ...obstacles)
             context.animSchedule({
                 duration: 0.2,
                 action: tgdActionCreateTransfoInterpolation(

@@ -29,8 +29,8 @@ export default function ResponsiceImage(props: ResponsiveImageProps) {
     fullscreenToggle(ref.current);
     setBestResolution(true);
   };
-  const type = props.type ?? "normal";
-  console.log("🚀 [ResponsiveImage] type = ", type); // @FIXME: Remove this line written on 2024-10-24 at 14:23
+  const type = props.type ?? "normal"
+
   return (
       <div
           ref={ref}

@@ -20,8 +20,8 @@ export default function ViewSprite({
             className={join(className, styles.sprite)}
             id={id}
             style={{
-                "--custom-url": `url(${url})`,
                 "--custom-z-index": zIndex,
+                "--custom-url": `url(${url})`,
             }}
         />
     )

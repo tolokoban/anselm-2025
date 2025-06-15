@@ -19,9 +19,8 @@ export class Engine {
             const engine = refEngine.current
             if (!engine) return
 
-            console.log("MOUNT")
+            window.setTimeout(() => engine.attach(document.body), 300)
             return () => {
-                console.log("UNMOUNT")
                 engine.detach()
                 refEngine.current = null
             }

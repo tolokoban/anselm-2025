@@ -1,4 +1,5 @@
 import {
+    tgdCalcRandom,
     tgdCalcSmoothStep,
     TgdContext,
     TgdDataGlb,
@@ -12,38 +13,50 @@ export class Obstacle extends TgdPainter {
     private x = 0
     private y = 0
     private z = 0
+    private rotX = 0
+    private rotY = 0
+    private rotZ = 0
 
-    constructor(context: TgdContext, asset: TgdDataGlb) {
+    constructor(context: TgdContext, asset: TgdDataGlb, shift = 0) {
         super()
         const painter = new TgdPainterMeshGltf(context, {
             asset,
-            materialFactory: ({ color }) => {
+            material: ({ color }) => {
                 const material = new Material({ color })
                 return material
             },
         })
         painter.transfo.setPosition(0, 0, 0)
         this.painter = painter
-        this.reset()
+        this.reset(shift)
     }
 
-    reset() {
-        this.x = 2 * (Math.random() - 0.5)
-        this.z = -200 - 20 * Math.random()
+    reset(shift = 0) {
+        this.x = tgdCalcRandom(-1, +1)
+        this.y = (1 - Math.abs(this.x)) * tgdCalcRandom(-3, +3)
+        this.z = -200 * (1 + shift)
+        this.rotX = tgdCalcRandom(-240, +240)
+        this.rotY = tgdCalcRandom(-240, +240)
+        this.rotZ = tgdCalcRandom(-240, +240)
+        this.painter.transfo.setScale(
+            tgdCalcRandom(0.7, 1.1),
+            tgdCalcRandom(0.7, 1.1),
+            tgdCalcRandom(0.7, 1.1)
+        )
     }
 
     delete(): void {}
 
     paint(time: number, delay: number): void {
-        const { painter, x, y, z } = this
+        const { painter, x, y, z, rotX, rotY, rotZ } = this
         const { transfo } = painter
         const light = tgdCalcSmoothStep(-200, 0, z)
         const material = painter.material as Material
         material.light = light
         transfo.setPosition(x * 10, y, z)
-        transfo.setEulerRotation(79 * time, 47 * time, 19 * time)
+        transfo.setEulerRotation(rotX * time, rotY * time, rotZ * time)
         painter.paint(time, delay)
-        const speed = 75
+        const speed = 100
         this.z += delay * speed
         if (this.z > 20) this.reset()
     }

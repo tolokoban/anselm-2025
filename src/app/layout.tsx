@@ -1,18 +1,11 @@
 import React from "react"
 
-import Background from "@/generated/background"
-
-import Styles from "./layout.module.css"
+import LandscapeView from "@/components/LandscapeView"
 
 export default function LayoutBackground({
     children,
 }: {
     children: React.ReactNode
 }) {
-    return (
-        <div className={Styles.Layoutbackground}>
-            {/* <Background type="background" /> */}
-            {children}
-        </div>
-    )
+    return <LandscapeView>{children}</LandscapeView>
 }
