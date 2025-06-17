@@ -1,3 +1,4 @@
+import { Saucer } from "./actors/saucer"
 import { Assets } from "@/components/Tgd"
 import {
     tgdActionCreateTransfoInterpolation,
@@ -11,10 +12,14 @@ import {
     tgdEasingFunctionOutQuad,
     TgdQuat,
     TgdVec3,
+    TgdSound,
+    TgdPainterMesh,
 } from "@tolokoban/tgd"
 import React from "react"
 
 import { Actors } from "./actors"
+
+import BoomURL from "./assets/boom.mp3"
 
 export function useGame() {
     const ref = React.useRef<Game | null>(null)
@@ -25,7 +30,14 @@ export function useGame() {
 class Game {
     private actors: Actors | null = null
     private context: TgdContext | null = null
-    private time0 = 0
+    private time0 = -1
+    private time1 = -1
+    private savedTunnelMove = -1
+    private readonly sounds = new TgdSound()
+
+    constructor() {
+        this.sounds.add("boom", BoomURL)
+    }
 
     readonly init = (context: TgdContext, assets: Assets) => {
         const actors = new Actors(context, assets)
@@ -62,8 +74,6 @@ class Game {
         actors.obstacles.time0 = this.time0
         context.logicClear()
         context.logicAdd(this.logicTunnelRun)
-
-        console.log("🚀 [game] context.time =", context.time) // @FIXME: Remove this line written on 2025-06-15 at 19:29
     }
 
     readonly reset = () => {
@@ -100,8 +110,6 @@ class Game {
         const { context, actors } = this
         if (!context || !actors) return
 
-        console.log("Started!")
-        context.debugHierarchy()
         const animationDuration = 1
         const { saucer } = actors
         context.animSchedule(
@@ -181,13 +189,41 @@ class Game {
     }
 
     readonly logicTunnelRun = (time: number, delay: number) => {
-        const { actors } = this
-        if (!actors) return
+        const { actors, context } = this
+        if (!actors || !context) return
 
         if (this.time0 < 0) this.time0 = time
         time -= this.time0
-        const speed = 100 + time * 1
+        const speed = 70 + time
         actors.tunnel.move = time * speed
         actors.obstacles.speed = speed
+        if (time === 0)
+            console.log("🚀 [game] actors.tunnel.move =", actors.tunnel.move) // @FIXME: Remove this line written on 2025-06-17 at 19:41
+
+        if (actors.obstacles.hitTest(actors.saucer)) {
+            this.sounds.play("boom")
+            context.logicClear()
+            context.logicAdd(this.logicBoom)
+            this.time1 = -1
+            this.savedTunnelMove = actors.tunnel.move
+        }
+    }
+
+    readonly logicBoom = (time: number, delay: number) => {
+        const { actors, context } = this
+        if (!actors || !context) return
+
+        if (this.time1 < 0) this.time1 = time
+        time -= this.time1
+        actors.saucer.woobling = 4 * Math.cos(time / 2)
+        const speed = -70 * Math.sin(time)
+        actors.tunnel.move =
+            this.savedTunnelMove + speed * (1 + actors.saucer.woobling * 0.5)
+        actors.obstacles.speed = speed > 0 ? 0 : speed * 2
+        if (time >= Math.PI) {
+            context.logicClear()
+            context.logicAdd(this.logicTunnelRun)
+            this.time0 = -1
+        }
     }
 }

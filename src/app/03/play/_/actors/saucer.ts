@@ -2,30 +2,35 @@ import {
     tgdCalcClamp,
     TgdContext,
     TgdDataGlb,
+    TgdGeometryBox,
     tgdMakeMeshGlbPainter,
     TgdPainter,
+    TgdPainterMesh,
     TgdPainterNode,
 } from "@tolokoban/tgd"
 
 export class Saucer extends TgdPainter {
     public readonly node: TgdPainterNode
     public readonly painterOpaque: TgdPainterNode
+    public woobling = 0
 
     private _x = 0
     private angle = 0
     private speed = 0
-    private logicTime = -1
+    private moveRadius = 8
 
     constructor(
         private readonly context: TgdContext,
         data: TgdDataGlb
     ) {
         super()
+        this.name = "Saucer"
         this.painterOpaque = tgdMakeMeshGlbPainter({
             data,
             context,
             node: "Saucer",
         }).painter
+        const that = this
         this.node = new TgdPainterNode({
             children: [
                 new TgdPainterNode({
@@ -33,7 +38,12 @@ export class Saucer extends TgdPainter {
                     logic(time) {
                         const { orientation } = this.transfo
                         orientation.reset()
-                        this.transfo.orbitAroundX(0.2 * Math.sin(time * 3.7))
+                        this.transfo.orbitAroundX(
+                            (0.2 + that.woobling) * Math.sin(time * 3.7)
+                        )
+                        this.transfo.orbitAroundZ(
+                            that.woobling * Math.sin(time * 1.37)
+                        )
                         this.transfo.orbitAroundY(time)
                     },
                 }),
@@ -68,21 +78,30 @@ export class Saucer extends TgdPainter {
         return this._x
     }
     private set x(v: number) {
-        const [s] = this.node.transfo.scale
-        this._x = tgdCalcClamp(v, -1, +1)
-        const x = 4 * this._x
-        this.node.transfo.setPosition(x / s, 0, 0)
+        const x = tgdCalcClamp(v, -this.moveRadius, +this.moveRadius)
+        this._x = x
+        this.node.transfo.setPosition(x, 0, 0)
         const [, y, z] = this.context.camera.transfo.position
-        this.context.camera.transfo.setPosition(x * 1.2, y, z)
+        this.context.camera.transfo.setPosition((x * 5) / this.moveRadius, y, z)
+    }
+
+    get y() {
+        return this.context.camera.transfo.position.y
+    }
+
+    get z() {
+        return this.context.camera.transfo.position.z
     }
 
     private readonly logicInteractive = (time: number, delay: number) => {
         const speedFactor = 2.5
         const kb = this.context.inputs.keyboard
         const pt = this.context.inputs.pointer
+        delay *= 1e3
         let angleDelta = 0
         const angleSpeed = 90
         if (kb.isDown("ArrowRight") || pt.isTouching(({ x }) => x > 0)) {
+            console.log("RIGHT")
             this.speed += delay
             angleDelta = -delay * angleSpeed
         } else if (kb.isDown("ArrowLeft") || pt.isTouching(({ x }) => x < 0)) {
@@ -93,10 +112,10 @@ export class Saucer extends TgdPainter {
             this.speed *= 0
         }
         this.angle = tgdCalcClamp(this.angle + angleDelta, -60, +60)
-        this.x += this.speed * speedFactor * delay
+        this.x += this.speed * speedFactor * delay * this.moveRadius
         if (
-            (this.x === -1 && this.speed < 0) ||
-            (this.x === +1 && this.speed > 0)
+            (this.x === -this.moveRadius && this.speed < 0) ||
+            (this.x === +this.moveRadius && this.speed > 0)
         ) {
             // Bouncing.
             this.speed = -this.speed

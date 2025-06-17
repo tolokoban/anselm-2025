@@ -1,17 +1,24 @@
-import { TgdContext, TgdDataGlb, TgdPainter } from "@tolokoban/tgd"
+import {
+    TgdContext,
+    TgdDataGlb,
+    TgdPainter,
+    TgdPainterGroup,
+} from "@tolokoban/tgd"
 import { Obstacle } from "./obstacle"
 
-export class Obstacles extends TgdPainter {
+export class Obstacles extends TgdPainterGroup {
     private readonly obtacles: Obstacle[]
 
     constructor(context: TgdContext, asset: TgdDataGlb) {
         super()
+        this.name = "Obstacles"
         this.obtacles = [
             new Obstacle(context, asset),
             new Obstacle(context, asset, 0.5),
             new Obstacle(context, asset, 0.25),
             new Obstacle(context, asset, 0.75),
         ]
+        this.add(...this.obtacles)
     }
 
     set speed(value: number) {
@@ -26,15 +33,10 @@ export class Obstacles extends TgdPainter {
         }
     }
 
-    delete(): void {
+    hitTest({ x, y, z }: { x: number; y: number; z: number }): boolean {
         for (const obstacle of this.obtacles) {
-            obstacle.delete()
+            if (obstacle.hitTest({ x, y, z })) return true
         }
-    }
-
-    paint(time: number, delay: number): void {
-        for (const obstacle of this.obtacles) {
-            obstacle.paint(time, delay)
-        }
+        return false
     }
 }

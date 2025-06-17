@@ -25,6 +25,7 @@ export class Tunnel extends TgdPainter {
         asset: TgdDataGlb
     ) {
         super()
+        this.name = "Tunnel"
         const prg = new TgdProgram(context.gl, { vert, frag })
         this.prg = prg
         const instance = new TgdDataset(
@@ -71,7 +72,7 @@ export class Tunnel extends TgdPainter {
             "uniProjectionMatrix",
             context.camera.matrixProjection
         )
-        prg.uniform1f("uniMove", move) // time * 100
+        prg.uniform1f("uniMove", move)
         prg.uniform1f("uniLight", this.light)
         prg.uniform1f("uniHue", time)
         vao.bind()

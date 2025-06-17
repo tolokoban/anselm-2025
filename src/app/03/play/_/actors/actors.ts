@@ -40,9 +40,14 @@ export class Actors {
             imageNegY: black,
             imageNegZ: assets.image.imageNegZ,
         })
-        this.groupInterior = new TgdPainterGroup([this.tunnel, this.obstacles])
+        this.groupInterior = new TgdPainterGroup(
+            [this.tunnel, this.obstacles],
+            { name: "Interior" }
+        )
         this.groupInterior.active = false
-        this.groupExterior = new TgdPainterGroup([this.moon, skybox])
+        this.groupExterior = new TgdPainterGroup([this.moon, skybox], {
+            name: "Exterior",
+        })
         this.groupExterior.active = false
 
         const clear = new TgdPainterClear(context, {

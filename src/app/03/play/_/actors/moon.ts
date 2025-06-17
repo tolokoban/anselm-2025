@@ -24,6 +24,7 @@ export class Moon extends TgdPainterNode {
         super({
             children: [target],
             transfo,
+            name: "Moon",
         })
     }
 }
