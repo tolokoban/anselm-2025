@@ -97,7 +97,6 @@ export class Saucer extends TgdPainter {
         const speedFactor = 2.5
         const kb = this.context.inputs.keyboard
         const pt = this.context.inputs.pointer
-        delay *= 1e3
         let angleDelta = 0
         const angleSpeed = 90
         if (kb.isDown("ArrowRight") || pt.isTouching(({ x }) => x > 0)) {

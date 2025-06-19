@@ -9,6 +9,9 @@ The saucer is now full of fuel, and we can go to the Moon to find a more powerfu
 
 It'll take some skill to navigate through there.`,
     start: `Let's start!`,
+    win: `Great! You found the under-moon-ground base.
+    
+Get some rest: tomorrow, we leave with the big ship!`,
 }
 
 export default EN

@@ -1,4 +1,3 @@
-import { Saucer } from "./actors/saucer"
 import { Assets } from "@/components/Tgd"
 import {
     tgdActionCreateTransfoInterpolation,
@@ -13,13 +12,14 @@ import {
     TgdQuat,
     TgdVec3,
     TgdSound,
-    TgdPainterMesh,
 } from "@tolokoban/tgd"
 import React from "react"
 
 import { Actors } from "./actors"
 
 import BoomURL from "./assets/boom.mp3"
+
+const GAME_DURATION_IN_SEC = 120
 
 export function useGame() {
     const ref = React.useRef<Game | null>(null)
@@ -34,12 +34,18 @@ class Game {
     private time1 = -1
     private savedTunnelMove = -1
     private readonly sounds = new TgdSound()
+    private setVictory = (value: boolean) => {}
 
     constructor() {
         this.sounds.add("boom", BoomURL)
     }
 
-    readonly init = (context: TgdContext, assets: Assets) => {
+    readonly init = (
+        context: TgdContext,
+        assets: Assets,
+        setVictory: (value: boolean) => void
+    ) => {
+        this.setVictory = setVictory
         const actors = new Actors(context, assets)
         this.actors = actors
         this.context = context
@@ -51,7 +57,7 @@ class Game {
         const { context, actors } = this
         if (!context || !actors) return
 
-        const { saucer, tunnel } = actors
+        const { saucer, tunnel, miniature } = actors
         saucer.mode = "interactive"
         actors.step = "interior"
         context.animSchedule({
@@ -74,13 +80,18 @@ class Game {
         actors.obstacles.time0 = this.time0
         context.logicClear()
         context.logicAdd(this.logicTunnelRun)
+        miniature.active = true
+        miniature.percent = 0
     }
 
     readonly reset = () => {
         const { context, actors } = this
         if (!context || !actors) return
 
-        const { saucer } = actors
+        this.setVictory(false)
+        const { saucer, miniature, obstacles } = actors
+        obstacles.loop = true
+        miniature.active = false
         actors.step = "exterior"
         saucer.active = true
         saucer.node.transfo.setPosition(0, 180, 0)
@@ -194,11 +205,14 @@ class Game {
 
         if (this.time0 < 0) this.time0 = time
         time -= this.time0
+        actors.miniature.percent += delay / GAME_DURATION_IN_SEC
+        if (actors.miniature.percent === 1) {
+            actors.obstacles.loop = false
+            window.setTimeout(() => this.setVictory(true), 2000)
+        }
         const speed = 70 + time
         actors.tunnel.move = time * speed
         actors.obstacles.speed = speed
-        if (time === 0)
-            console.log("🚀 [game] actors.tunnel.move =", actors.tunnel.move) // @FIXME: Remove this line written on 2025-06-17 at 19:41
 
         if (actors.obstacles.hitTest(actors.saucer)) {
             this.sounds.play("boom")
@@ -215,6 +229,7 @@ class Game {
 
         if (this.time1 < 0) this.time1 = time
         time -= this.time1
+        actors.miniature.percent -= (10 * delay) / GAME_DURATION_IN_SEC
         actors.saucer.woobling = 4 * Math.cos(time / 2)
         const speed = -70 * Math.sin(time)
         actors.tunnel.move =

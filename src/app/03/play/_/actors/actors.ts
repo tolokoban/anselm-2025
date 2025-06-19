@@ -13,12 +13,14 @@ import { Saucer } from "./saucer"
 import { Tunnel } from "./tunnel"
 import { Obstacles } from "./obstacles"
 import { Moon } from "./moon"
+import { Miniature } from "./miniature"
 
 export class Actors {
     public readonly moon: Moon
     public readonly saucer: Saucer
     public readonly tunnel: Tunnel
     public readonly obstacles: Obstacles
+    public readonly miniature: Miniature
 
     private readonly groupInterior: TgdPainterGroup
     private readonly groupExterior: TgdPainterGroup
@@ -28,6 +30,10 @@ export class Actors {
         this.saucer = new Saucer(context, assets.glb.saucer)
         this.tunnel = new Tunnel(context, assets.glb.tunnel)
         this.obstacles = new Obstacles(context, assets.glb.obstacle)
+        this.miniature = new Miniature(context, {
+            imageMiniatureBack: assets.image.imageMiniatureBack,
+            imageMiniatureFront: assets.image.imageMiniatureFront,
+        })
 
         const { width, height } = assets.image.imageNegZ
         const black = tgdCanvasCreateFill(width, height)
@@ -60,7 +66,7 @@ export class Actors {
             children: [this.groupInterior, this.groupExterior, this.saucer],
         })
 
-        context.add(clear, state)
+        context.add(clear, state, this.miniature)
         this.step = "exterior"
     }
 

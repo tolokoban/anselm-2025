@@ -8,6 +8,9 @@ La soucoupe est maintenant pleine de carburant et on va pouvoir aller sur la Lun
     
     Il va falloir faire preuve d'un peu d'adresse pour naviguer là-dedans.`,
     start: `C'est parti !`,
+    win: `Super ! Te voilà arrivé dans la base sous-lunaire.
+    
+Repose-toi bien : demain, on part avec le gros vaisseau !`,
 } satisfies Translation
 
 export default FR

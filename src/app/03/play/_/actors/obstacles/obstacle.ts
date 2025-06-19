@@ -11,6 +11,7 @@ import { Material } from "./material"
 export class Obstacle extends TgdPainter {
     public speed = 100
     public time0 = 0
+    public loop = true
 
     private readonly painter: TgdPainterMeshGltf
     private _x = 0
@@ -79,7 +80,7 @@ export class Obstacle extends TgdPainter {
         transfo.setPosition(x, y, z)
         transfo.setEulerRotation(rotX * time, rotY * time, rotZ * time)
         painter.paint(time, delay)
-        this._z += delay * speed * 1e3
-        if (this._z > 20) this.reset()
+        this._z += delay * speed
+        if (this._z > 20 && this.loop) this.reset()
     }
 }

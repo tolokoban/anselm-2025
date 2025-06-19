@@ -21,6 +21,10 @@ export class Obstacles extends TgdPainterGroup {
         this.add(...this.obtacles)
     }
 
+    set loop(value: boolean) {
+        for (const obstacle of this.obtacles) obstacle.loop = value
+    }
+
     set speed(value: number) {
         for (const obstacle of this.obtacles) {
             obstacle.speed = value

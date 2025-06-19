@@ -19,3 +19,20 @@ div.startScreen {
 button.startButton {
     font-size: 6vw;
 }
+
+div.victory {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 1s;
+}
+
+div.victory.show {
+    opacity: 1;
+    pointer-events: all;
+}
