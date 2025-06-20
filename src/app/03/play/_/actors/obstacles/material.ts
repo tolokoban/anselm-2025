@@ -46,7 +46,7 @@ export class Material extends TgdMaterial {
             `float uniSpecularIntensity = ${this.specularIntensity.toFixed(2)};`,
             `float uniSpecularExponent = ${this.specularExponent.toFixed(2)};`,
             "vec3 normal = normalize(varNormal);",
-            `float light = 1.0 - dot(normal, uniLightDir);`,
+            `float light = .5 * (1.0 - dot(normal, uniLightDir));`,
             hasTexture
                 ? `vec4 color = texture(texDiffuse, varUV);`
                 : `vec4 color = vec4(${color.join(", ")});`,

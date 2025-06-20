@@ -19,7 +19,8 @@ import { Actors } from "./actors"
 
 import BoomURL from "./assets/boom.mp3"
 
-const GAME_DURATION_IN_SEC = 120
+const GAME_DURATION_IN_SEC = 90
+const MALUS_TIME_MULTIPLIER = 5
 
 export function useGame() {
     const ref = React.useRef<Game | null>(null)
@@ -229,7 +230,8 @@ class Game {
 
         if (this.time1 < 0) this.time1 = time
         time -= this.time1
-        actors.miniature.percent -= (10 * delay) / GAME_DURATION_IN_SEC
+        actors.miniature.percent -=
+            (MALUS_TIME_MULTIPLIER * delay) / GAME_DURATION_IN_SEC
         actors.saucer.woobling = 4 * Math.cos(time / 2)
         const speed = -70 * Math.sin(time)
         actors.tunnel.move =

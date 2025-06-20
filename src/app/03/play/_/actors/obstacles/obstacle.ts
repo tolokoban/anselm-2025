@@ -3,8 +3,9 @@ import {
     tgdCalcSmoothStep,
     TgdContext,
     TgdDataGlb,
+    tgdMakeMeshGlbPainter,
     TgdPainter,
-    TgdPainterMeshGltf,
+    TgdPainterNode,
 } from "@tolokoban/tgd"
 import { Material } from "./material"
 
@@ -13,22 +14,28 @@ export class Obstacle extends TgdPainter {
     public time0 = 0
     public loop = true
 
-    private readonly painter: TgdPainterMeshGltf
+    private readonly painter: TgdPainterNode
     private _x = 0
     private y = 0
     private _z = 0
     private rotX = 0
     private rotY = 0
     private rotZ = 0
+    private material: Material | null = null
 
     constructor(context: TgdContext, asset: TgdDataGlb, shift = 0) {
         super()
-        const painter = new TgdPainterMeshGltf(context, {
-            asset,
-            material: ({ color }) => {
-                const material = new Material({ color })
-                return material
-            },
+        const { painter } = tgdMakeMeshGlbPainter({
+            context,
+            data: asset,
+            node: 0,
+            overrideMaterial:
+                () =>
+                ({ color }) => {
+                    const material = new Material({ color })
+                    this.material = material
+                    return material
+                },
         })
         painter.transfo.setPosition(0, 0, 0)
         this.painter = painter
@@ -75,8 +82,8 @@ export class Obstacle extends TgdPainter {
         const { painter, _x: x, y, _z: z, rotX, rotY, rotZ, speed } = this
         const { transfo } = painter
         const light = tgdCalcSmoothStep(-200, 0, z)
-        const material = painter.material as Material
-        material.light = light
+        const material = this.material
+        if (material) material.light = light
         transfo.setPosition(x, y, z)
         transfo.setEulerRotation(rotX * time, rotY * time, rotZ * time)
         painter.paint(time, delay)

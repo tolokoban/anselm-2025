@@ -1,9 +1,4 @@
-import {
-    TgdContext,
-    TgdDataGlb,
-    TgdPainter,
-    TgdPainterGroup,
-} from "@tolokoban/tgd"
+import { TgdContext, TgdDataGlb, TgdPainterGroup } from "@tolokoban/tgd"
 import { Obstacle } from "./obstacle"
 
 export class Obstacles extends TgdPainterGroup {
