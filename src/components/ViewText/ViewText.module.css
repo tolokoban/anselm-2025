@@ -1,21 +1,33 @@
 .viewText {
     display: grid;
     place-items: center;
+    padding: 0.5em;
 }
 
 .viewText > div {
     text-align: left;
-    white-space: pre-wrap;
 }
 
-.viewText > div > span {
+.viewText > div > p {
+    margin: 0;
+    text-align: justify;
+    line-height: 1;
+    -webkit-text-stroke: 0.05em #000;
+}
+
+.viewText > div > p > div {
+    display: inline-block;
+    margin-right: 0.5em;
+}
+
+.viewText > div > p > div > span {
     display: inline-block;
     transition: all 1s;
     opacity: 0;
     transform: translateY(100%) scale(0);
 }
 
-.viewText > div > span.show {
+.viewText > div > p > div > span.show {
     opacity: 1;
     transform: translateY(0) scale(1);
 }

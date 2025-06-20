@@ -1,4 +1,5 @@
 import {
+    tgdCalcMix,
     tgdCalcRandom,
     tgdCalcSmoothStep,
     TgdContext,
@@ -22,6 +23,7 @@ export class Obstacle extends TgdPainter {
     private rotY = 0
     private rotZ = 0
     private material: Material | null = null
+    private saucerX = 0
 
     constructor(context: TgdContext, asset: TgdDataGlb, shift = 0) {
         super()
@@ -43,6 +45,7 @@ export class Obstacle extends TgdPainter {
     }
 
     hitTest({ x, z }: { x: number; y: number; z: number }) {
+        this.saucerX = x
         const dist = 2
         if (Math.abs(z - this._z) > dist) return false
         return Math.abs(x - this._x) < dist
@@ -63,7 +66,7 @@ export class Obstacle extends TgdPainter {
     }
 
     reset(shift = 0) {
-        this._x = tgdCalcRandom(-8, +8)
+        this._x = tgdCalcMix(this.saucerX, tgdCalcRandom(-8, +8), Math.random())
         this.y = (1 - Math.abs(this._x) / 8) * tgdCalcRandom(-3, +3)
         this._z = -200 * (1 + shift)
         this.rotX = tgdCalcRandom(-240, +240)

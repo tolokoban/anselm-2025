@@ -15,7 +15,10 @@ export default function Page() {
     return (
         <div>
             <Background type="background" />
-            <ViewBook pages={[tr.intro1(), tr.intro2()]} onDone={handleClick} />
+            <ViewBook
+                pages={[tr.intro1(), tr.intro2(), tr.intro3()]}
+                onDone={handleClick}
+            />
         </div>
     )
 }

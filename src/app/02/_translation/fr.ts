@@ -34,7 +34,7 @@ Nous aimerions vous recruter et vous confier une mission...`,
     ],
     next: `Nous voudrions que vous soyiez un espion infiltré dans le monde des aliens.
 
-Continuez de leur faire tout ce qu'ils vous demandent.
+Continuez de faire tout ce qu'ils vous demandent.
 Nous vous contacterons bientōt.`,
 } satisfies Translation
 

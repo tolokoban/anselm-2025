@@ -8,6 +8,7 @@ The saucer is now full of fuel, and we can go to the Moon to find a more powerfu
     intro2: `To remain discreet, we hid it in a crater.
 
 It'll take some skill to navigate through there.`,
+    intro3: `Use the keyboad's arrow keys, or touch the screen on the left or on the right to try to avoid abstacles...`,
     start: `Let's start!`,
     win: `Great! You found the under-moon-ground base.
     
