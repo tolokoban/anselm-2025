@@ -1,9 +1,19 @@
-import React from "react"
+import { goto } from "@/app/routes"
 
-import WorkInProgress from "@/components/WorkInProgress"
+import ViewBook from "@/components/ViewBook"
+import { useTranslator } from "./_translation"
 
-import Styles from "./page.module.css"
+export default function Page() {
+    const tr = useTranslator()
+    const handleClick = () => {
+        goto("/04/play")
+        document.body.requestFullscreen()
+    }
 
-export default function Page03() {
-    return <WorkInProgress />
+    return (
+        <ViewBook
+            pages={[tr.intro1(), tr.intro2(), tr.intro3()]}
+            onDone={handleClick}
+        />
+    )
 }

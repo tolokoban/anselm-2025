@@ -16,7 +16,7 @@ Une fois trouvé une stratégie, faites en sorte de vous retrouver dans une posi
     help: `Chacun à notre tour, nous allons retourner 1, 2, ou 3 pieces.
     
 Celui qui retourne les dernières a gagné,`,
-    intro1: `Monsieur Brunet,
+    intro1: `Monsieur Anselm,
 Ne faites pas confiance aux aliens.
 
 Chaque année, ils enlèvent des enfants terriens en leur servant le même mensonge.`,

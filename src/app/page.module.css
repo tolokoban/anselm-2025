@@ -18,7 +18,7 @@
     gap: 1em;
 }
 
-.main > h1 {
+.main > div > h1 {
     margin: 0;
     display: flex;
     flex-wrap: wrap;
@@ -30,30 +30,30 @@
     flex: 0 0 auto;
 }
 
-main > p {
+main > div > p {
     flex: 1 1 auto;
 }
 
-.main > footer > button > svg {
+.main > div > footer > button > svg {
     width: 6em;
     height: 6em;
-    padding: .5em;
+    padding: 0.5em;
     border-radius: 1em;
-    border: .25em solid currentColor;
+    border: 0.25em solid currentColor;
     color: currentColor;
-    transition: all .3s;
+    transition: all 0.3s;
 }
 
-.main > footer > button:hover > svg,
-.main > footer > button:active > svg {
+.main > div > footer > button:hover > svg,
+.main > div > footer > button:active > svg {
     background-color: #0005;
-    transform: scale(.95);
+    transform: scale(0.95);
 }
 
-.main > footer > button {
+.main > div > footer > button {
     all: unset;
     position: relative;
-    cursor: pointer;    
+    cursor: pointer;
     display: flex;
     flex-wrap: nowrap;
     flex-direction: column;
@@ -62,7 +62,7 @@ main > p {
     gap: 1em;
 }
 
-.main > footer {
+.main > div > footer {
     flex: 0 0 auto;
     display: flex;
     flex-wrap: wrap;
@@ -73,16 +73,16 @@ main > p {
 }
 
 .languageSelector {
-    font-size: 50%
+    font-size: 50%;
 }
 
-.main > footer > button[disabled] {
+.main > div > footer > button[disabled] {
     pointer-events: none;
-    transform: scale(.9);
+    transform: scale(0.9);
     filter: brightness(50%);
 }
 
-.main > footer > button[disabled]::after {
+.main > div > footer > button[disabled]::after {
     position: absolute;
     left: 50%;
     top: 50%;
@@ -93,4 +93,15 @@ main > p {
     background-color: #f30;
     transform-origin: center;
     transform: rotate(-45deg);
+}
+
+.scroll {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    margin: 0;
+    padding: 0;
 }
