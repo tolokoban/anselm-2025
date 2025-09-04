@@ -42,9 +42,15 @@ export function gameImage(game: Game): Promise<HTMLImageElement> {
     const promise = new Promise<HTMLImageElement>((resolve) => {
         const img = new Image()
         const base = "assets/04/images"
-        img.srcset = `${base}/${name}.webp 1920w, ${base}/${name}.small.webp 960w`
+        const prefix = `${base}/${name}`
+        const big = `${prefix}.webp`
+        const small = `${prefix}.small.webp`
+        img.srcset = `${big} 1920w, ${small} 960w`
+        img.sizes = "(width > 960px) 1920px, (height > 960px) 1920px, 96px"
         img.alt = name
-        img.onload = () => resolve(img)
+        img.onload = () => {
+            resolve(img)
+        }
         img.onerror = () => {
             console.error("Unable to load image:", img.srcset)
             resolve(img)

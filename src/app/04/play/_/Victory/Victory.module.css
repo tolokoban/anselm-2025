@@ -1,0 +1,32 @@
+.victory {
+    all: inherit;
+
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    pointer-events: none;
+    background-image: linear-gradient(to bottom, #000f, #0000, #0000);
+    opacity: 0;
+    transition: all 0.3s;
+
+    &.show {
+        pointer-events: all;
+        opacity: 1;
+    }
+
+    > div {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 33%;
+        display: grid;
+        place-items: center;
+        font-size: 10vh;
+        color: #fb9d5e;
+        -webkit-text-stroke: 2px #000;
+    }
+}

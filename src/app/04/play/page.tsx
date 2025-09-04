@@ -1,12 +1,12 @@
 import React from "react"
 
-import {
-    gameHasMoreThanOneStartingStick,
-    useGame,
-    usePossibleMoves,
-} from "./_/logic"
+import { gameIsVictory, useGame, usePossibleMoves } from "./_/logic"
 
 import Styles from "./page.module.css"
+import SelectTo from "./_/SelectTo"
+import Victory from "./_/Victory"
+import Spinner from "@/components/Spinner"
+import Scene from "./_/Scene"
 
 enum Mode {
     SelectFrom = 0,
@@ -14,33 +14,31 @@ enum Mode {
 }
 
 export default function PagePlay() {
+    /** Current game. */
     const [game1, setGame1, img1] = useGame()
+    /** Previous game. Used for transitions. */
     const [game2, setGame2, img2] = useGame()
-    const [mode, setMode] = React.useState(Mode.SelectFrom)
     const moves = usePossibleMoves(game1)
-    React.useEffect(() => {
-        if (
-            mode === Mode.SelectFrom &&
-            !gameHasMoreThanOneStartingStick(moves)
-        ) {
-            setMode(Mode.SelectTo)
-        }
-    }, [mode, moves])
+    const [loaded, setLoaded] = React.useState(false)
+    React.useEffect(() => {}, [game1])
 
-    console.log("🚀 [page] mode, moves =", mode, moves) // @FIXME: Remove this line written on 2025-09-03 at 14:10
-    if (!img1 || !img2) return null
+    if (!img1 || !img2) return <Spinner />
 
     return (
         <div className={Styles.play}>
-            <div
-                className={Styles.background}
-                style={{ "--custom-url": `url(${img1.currentSrc})` }}
-            />
-            <div
-                className={Styles.background}
-                style={{ "--custom-url": `url(${img2.currentSrc})` }}
-            />
-            <header>{mode === Mode.SelectTo && <></>}</header>
+            <Scene img1={img1} img2={img2} />
+            {!gameIsVictory(game1) && (
+                <header>
+                    <SelectTo
+                        games={[...moves[0], ...moves[1], ...moves[2]]}
+                        onSelectGame={(g) => {
+                            setGame2(game1)
+                            setGame1(g)
+                        }}
+                    />
+                </header>
+            )}
+            <Victory game={game1} />
         </div>
     )
 }

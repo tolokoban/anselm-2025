@@ -15,4 +15,12 @@
         background-image: var(--custom-url);
         background-position: center;
     }
+
+    > header {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        padding: 5vmin;
+    }
 }

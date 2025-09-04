@@ -8,7 +8,7 @@ import { useTranslator } from "./_translation"
 import { RoutePath } from "./types"
 import LanguageSelector from "@/components/LanguageSelector"
 import { Unlocked } from "@/unlocked"
-import Background from "@/generated/background-02"
+import Background from "@/generated/background"
 
 import styles from "./page.module.css"
 

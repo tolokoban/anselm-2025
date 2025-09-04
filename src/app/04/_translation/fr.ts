@@ -12,10 +12,11 @@ const FR = {
     Vous ne pouvez bouger qu'un disque à la fois.
     
     Bonne chance.`,
-    start: `C'est parti !`,
-    win: `Super ! Te voilà arrivé dans la base sous-lunaire.
+    victory: "Victoire !",
+    win: `Vous avez réussi ? C'est assez surprenant...
     
-Repose-toi bien : demain, on part avec le gros vaisseau !`,
+    Vous êtes donc apte à continuer votre mission Monsieur Anselm.
+    Mais votre entrainement n'est pas terminé.`,
 } satisfies Translation
 
 export default FR

@@ -9,10 +9,11 @@ The saucer is now full of fuel, and we can go to the Moon to find a more powerfu
 
 It'll take some skill to navigate through there.`,
     intro3: `Use the keyboad's arrow keys, or touch the screen on the left or on the right to try to avoid abstacles...`,
-    start: `Let's start!`,
-    win: `Great! You found the under-moon-ground base.
-    
-Get some rest: tomorrow, we leave with the big ship!`,
+    victory: "Victory!",
+    win: `You succeeded? That's quite surprising...
+
+So you're ready to continue your mission, Mr. Anselm.
+But your training isn't over.`,
 }
 
 export default EN
