@@ -10,33 +10,105 @@
     width: 100%;
     height: 100%;
     font-size: 5vmin;
-    display: flex;
-    flex-wrap: nowrap;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: stretch;
-    gap: 1em;
-}
 
-.main > div > h1 {
-    margin: 0;
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1em;
-    font-size: 150%;
-    flex: 0 0 auto;
+    > button {
+        font: inherit;
+        border: none;
+        position: absolute;
+        bottom: 0;
+        width: 2em;
+        height: 2em;
+        box-shadow: none;
+        display: grid;
+        place-items: center;
+        color: #fe9;
+        border: 0.25em solid #fe9;
+        border-bottom: none;
+        background: #12203a;
+        transition: all 0.5s;
+        opacity: 0;
+        pointer-events: none;
+        cursor: pointer;
 
-    small {
-        opacity: 0.5;
-        font-style: italic;
+        &.left {
+            left: 0;
+            border-radius: 0 50% 0 0;
+            border-left: none;
+            transform: translateX(-100%);
+        }
+
+        &.right {
+            right: 0;
+            border-radius: 50% 0 0 0;
+            border-right: none;
+            transform: translateX(100%);
+        }
+
+        &.show {
+            opacity: 1;
+            pointer-events: all;
+            transform: translateX(0);
+        }
     }
-}
 
-main > div > p {
-    flex: 1 1 auto;
+    > div {
+        box-sizing: border-box;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        display: grid;
+        grid-template-rows: auto auto 1fr;
+        padding: 1em;
+
+        > h1 {
+            margin: 0;
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1em;
+            font-size: 150%;
+            flex: 0 0 auto;
+
+            small {
+                opacity: 0.5;
+                font-style: italic;
+            }
+        }
+
+        > p {
+            flex: 1 1 auto;
+        }
+
+        > footer {
+            flex: 0 0 auto;
+            display: flex;
+            flex-wrap: nowrap;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 3em;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+
+            > button {
+                all: unset;
+                position: relative;
+                cursor: pointer;
+                display: flex;
+                flex-wrap: nowrap;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: center;
+                gap: 1em;
+                scroll-snap-align: start;
+            }
+        }
+    }
 }
 
 .main > div > footer > button > svg {
@@ -53,28 +125,6 @@ main > div > p {
 .main > div > footer > button:active > svg {
     background-color: #0005;
     transform: scale(0.95);
-}
-
-.main > div > footer > button {
-    all: unset;
-    position: relative;
-    cursor: pointer;
-    display: flex;
-    flex-wrap: nowrap;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 1em;
-}
-
-.main > div > footer {
-    flex: 0 0 auto;
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-    gap: 1em;
 }
 
 .languageSelector {

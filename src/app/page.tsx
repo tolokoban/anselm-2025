@@ -12,18 +12,54 @@ import Background from "@/generated/background"
 import { version } from "@/package.json"
 
 import styles from "./page.module.css"
+import React from "react"
 
 export default function Page() {
+    const refScroll = React.useRef<HTMLElement | null>(null)
+    const [showLeft, setShowLeft] = React.useState(false)
+    const [showRight, setShowRight] = React.useState(true)
     const tr = useTranslator()
     const go = (path: RoutePath) => {
         goto(path)
         document.body.requestFullscreen()
     }
+    const handleScroll = (): void => {
+        const target = refScroll.current
+        if (!target) return
+
+        setShowLeft(target.scrollLeft > 0)
+        setShowRight(
+            target.scrollLeft + target.clientWidth < target.scrollWidth
+        )
+    }
+    const handleRight = () => {
+        const target = refScroll.current
+        if (!target) return
+
+        const w = Math.min(window.innerWidth, window.innerHeight)
+        const s = 0.45 * w
+        target.scrollTo({
+            left: (Math.floor(target.clientLeft / s) + 1) * s,
+            behavior: "smooth",
+        })
+    }
+    const handleLeft = () => {
+        const target = refScroll.current
+        if (!target) return
+
+        const w = Math.min(window.innerWidth, window.innerHeight)
+        const s = 0.45 * w
+        target.scrollTo({
+            left: (Math.floor(target.clientLeft / s) - 1) * s,
+            behavior: "smooth",
+        })
+    }
+    React.useEffect(handleScroll, [])
 
     return (
         <div className={styles.main}>
             <Background type="background" />
-            <div className={styles.scroll}>
+            <div>
                 <h1>
                     <div>
                         Ansy-2025 <small>(version {version})</small>
@@ -31,7 +67,7 @@ export default function Page() {
                     <LanguageSelector className={styles.languageSelector} />
                 </h1>
                 <p> {tr.intro()} </p>
-                <footer>
+                <footer ref={refScroll} onScroll={handleScroll}>
                     <button type="button" onClick={() => go("/01")}>
                         <IconEpisode01 />
                         <div>{tr.episode()} 01</div>
@@ -54,6 +90,24 @@ export default function Page() {
                     </button>
                 </footer>
             </div>
+            <button
+                type="button"
+                onClick={handleLeft}
+                className={join(styles.left, showLeft && styles.show)}
+            >
+                &lt;
+            </button>
+            <button
+                type="button"
+                onClick={handleRight}
+                className={join(styles.right, showRight && styles.show)}
+            >
+                &gt;
+            </button>
         </div>
     )
+}
+
+function join(...classes: unknown[]): string {
+    return classes.filter((cls) => typeof cls === "string").join(" ")
 }
