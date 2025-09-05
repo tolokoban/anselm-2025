@@ -11,11 +11,9 @@ export default function LayoutBackground({
     children: React.ReactNode
 }) {
     return (
-        <LandscapeView>
-            <div className={Styles.Layoutbackground}>
-                <Background type="background" />
-                {children}
-            </div>
-        </LandscapeView>
+        <div className={Styles.Layoutbackground}>
+            <Background type="background" />
+            {children}
+        </div>
     )
 }

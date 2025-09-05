@@ -83,7 +83,7 @@ const config = (env) => {
             new Webpack.ProgressPlugin(),
             new WebpackShellPluginNext({
                 onBeforeCompile: {
-                    scripts: ["npm run generate"],
+                    scripts: ["npm run copy-package","npm run generate"],
                     blocking: true,
                     parallel: false,
                 },

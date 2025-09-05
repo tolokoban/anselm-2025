@@ -28,6 +28,11 @@
     gap: 1em;
     font-size: 150%;
     flex: 0 0 auto;
+
+    small {
+        opacity: 0.5;
+        font-style: italic;
+    }
 }
 
 main > div > p {

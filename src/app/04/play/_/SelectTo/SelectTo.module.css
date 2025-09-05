@@ -13,10 +13,10 @@
         display: block;
         cursor: pointer;
 
-        width: 21vw;
-        height: 21vh;
-        border-radius: 7vh;
-        box-shadow: 0 5vh 10vh #000;
+        width: 21vmax;
+        height: 21vmin;
+        border-radius: 7vmin;
+        box-shadow: 0 5vmin 10vmin #000;
         background-size: cover;
         background-position: center;
         transition: opacity 0.3s;

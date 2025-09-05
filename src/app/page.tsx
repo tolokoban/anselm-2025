@@ -9,6 +9,7 @@ import { RoutePath } from "./types"
 import LanguageSelector from "@/components/LanguageSelector"
 import { Unlocked } from "@/unlocked"
 import Background from "@/generated/background"
+import { version } from "@/package.json"
 
 import styles from "./page.module.css"
 
@@ -24,7 +25,9 @@ export default function Page() {
             <Background type="background" />
             <div className={styles.scroll}>
                 <h1>
-                    <div>Ansy-2025</div>
+                    <div>
+                        Ansy-2025 <small>(version {version})</small>
+                    </div>
                     <LanguageSelector className={styles.languageSelector} />
                 </h1>
                 <p> {tr.intro()} </p>
