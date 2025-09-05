@@ -7,6 +7,7 @@ import SelectTo from "./_/SelectTo"
 import Victory from "./_/Victory"
 import Spinner from "@/components/Spinner"
 import Scene from "./_/Scene"
+import Help from "./_/Help"
 
 enum Mode {
     SelectFrom = 0,
@@ -38,6 +39,7 @@ export default function PagePlay() {
                     />
                 </header>
             )}
+            <Help />
             <Victory game={game1} />
         </div>
     )

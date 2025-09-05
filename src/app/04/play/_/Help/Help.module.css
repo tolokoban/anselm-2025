@@ -1,0 +1,103 @@
+.help {
+    font-size: 3vw;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: calc(100% - 3em);
+    overflow: visible;
+    backdrop-filter: blur(8px);
+    background-image: linear-gradient(
+        to top,
+        #a6bcbd66,
+        #a6bcbd77 80%,
+        #6d809588 90%,
+        #6d8095ff
+    );
+    transition: transform 0.5s;
+    transform: translateY(100%);
+
+    &.open {
+        transform: translateY(0);
+    }
+
+    button {
+        font: inherit;
+        border: none;
+        font-variant: small-caps;
+        text-decoration: underline dotted #0009;
+        height: 2em;
+        display: grid;
+        place-items: center;
+        padding: 0 2em;
+        background: #6d8095;
+        cursor: pointer;
+        text-shadow:
+            0.06125em 0.06125em 0.125em #fff0,
+            -0.06125em 0.06125em 0.125em #fff0,
+            0.06125em -0.06125em 0.125em #fff0,
+            -0.06125em -0.06125em 0.125em #fff0;
+        transition: text-shadow 0.2s;
+
+        &:hover {
+            text-shadow:
+                0.06125em 0.06125em 0.125em #fff5,
+                -0.06125em 0.06125em 0.125em #fff5,
+                0.06125em -0.06125em 0.125em #fff5,
+                -0.06125em -0.06125em 0.125em #fff5;
+        }
+    }
+
+    > header {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        transform: translateY(calc(-100% + 2px));
+        display: grid;
+        place-items: center;
+        height: 2em;
+        z-index: 2;
+
+        > button {
+            border-radius: 1em 1em 0 0;
+            border: 2px solid #000;
+            border-bottom: 2px solid #6d8095;
+        }
+    }
+
+    > main {
+        border-top: 2px solid #000;
+        z-index: 1;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        padding: 1em;
+        box-sizing: border-box;
+        color: #000e;
+
+        > p {
+            text-align: right;
+            padding-left: 50vw;
+        }
+
+        > img {
+            width: 100%;
+            max-width: 100%;
+        }
+
+        > footer {
+            display: grid;
+            place-items: center;
+
+            > button {
+                border-radius: 0.25em;
+                box-shadow: 0 0.25em 0.5em #000;
+            }
+        }
+    }
+}

@@ -1,6 +1,9 @@
 import { Translation } from "@/lang"
 
 const FR = {
+    gotIt: "J'ai compris !",
+    help: "Utilisez ces boutons pour déplacer les disques",
+    helpButton: "Aide",
     intro1: `Monsieur Anselm,
     
     Nous n'avons pas eu le temps de vous entrainer proprement avant cette mission.
