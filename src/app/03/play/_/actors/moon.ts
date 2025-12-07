@@ -12,10 +12,10 @@ export class Moon extends TgdPainterNode {
     constructor(context: TgdContext, asset: TgdDataGlb) {
         const nodeName = "Moon"
         const node = asset.getNodeByNameOrThrow(nodeName)
-        const meshIndex = node.mesh ?? 0
+        const meshIndexOrName = node.mesh ?? 0
         const target = new TgdPainterMeshGltf(context, {
             asset,
-            meshIndex,
+            meshIndexOrName,
         })
         const transfo: Partial<TgdTransfoOptions> = {}
         if (node.translation) transfo.position = new TgdVec3(node.translation)

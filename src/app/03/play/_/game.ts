@@ -79,8 +79,8 @@ class Game {
         })
         this.time0 = -1
         actors.obstacles.time0 = this.time0
-        context.logicClear()
-        context.logicAdd(this.logicTunnelRun)
+        context.logic.clear()
+        context.logic.add(this.logicTunnelRun)
         miniature.active = true
         miniature.percent = 0
     }
@@ -217,8 +217,7 @@ class Game {
 
         if (actors.obstacles.hitTest(actors.saucer)) {
             this.sounds.play("boom")
-            context.logicClear()
-            context.logicAdd(this.logicBoom)
+            context.logic.clear().add(this.logicBoom)
             this.time1 = -1
             this.savedTunnelMove = actors.tunnel.move
         }
@@ -238,8 +237,7 @@ class Game {
             this.savedTunnelMove + speed * (1 + actors.saucer.woobling * 0.5)
         actors.obstacles.speed = speed > 0 ? 0 : speed * 2
         if (time >= Math.PI) {
-            context.logicClear()
-            context.logicAdd(this.logicTunnelRun)
+            context.logic.clear().add(this.logicTunnelRun)
             this.time0 = -1
         }
     }

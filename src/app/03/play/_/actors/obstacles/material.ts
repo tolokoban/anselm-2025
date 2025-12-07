@@ -70,7 +70,7 @@ export class Material extends TgdMaterial {
             varyings,
             vertexShaderCode,
             fragmentShaderCode,
-            setUniforms: (program, time, delay) => {
+            setUniforms: ({ program }) => {
                 if (texture) texture.activate(0, program, "texDiffuse")
                 program.uniform1f("uniLight", this.light)
             },
