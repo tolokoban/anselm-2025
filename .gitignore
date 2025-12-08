@@ -10,3 +10,4 @@ src/generated
 **/*.blend2
 **/*.blend3
 **/*~
+**/.DS_Store
