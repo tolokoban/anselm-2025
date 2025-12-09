@@ -1,12 +1,23 @@
 import React from "react"
+import { TgdDataGlb } from "@tolokoban/tgd"
+
+import { useGame } from "./game/index"
 
 import styles from "./Game.module.css"
-import { TgdDataGlb } from "@tolokoban/tgd"
-import { useGame } from "./game"
 
 export interface GameProps {
     className?: string
-    assets: { glb: TgdDataGlb }
+    assets: {
+        glb: TgdDataGlb
+        skybox: {
+            imagePosX: HTMLImageElement
+            imagePosY: HTMLImageElement
+            imagePosZ: HTMLImageElement
+            imageNegX: HTMLImageElement
+            imageNegY: HTMLImageElement
+            imageNegZ: HTMLImageElement
+        }
+    }
 }
 
 export default function Game({ className, assets }: GameProps) {

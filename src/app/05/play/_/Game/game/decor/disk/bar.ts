@@ -1,6 +1,7 @@
 import {
     tgdCalcDegToRad,
     tgdCalcRandom,
+    tgdCodeFunction_mapRange,
     TgdContext,
     TgdDataGlb,
     TgdDataset,
@@ -14,12 +15,16 @@ import {
     webglElementTypeFromTypedArray,
 } from "@tolokoban/tgd"
 
-export type PainterDiskPosition = [
-    angle: number,
-    distance: number,
-    radius?: number,
+export type PainterBarPosition = [
+    angle1: number,
+    distance1: number,
+    radius1: number,
+    angle2: number,
+    distance2: number,
+    radius2: number,
 ]
-export class PainterDisk extends TgdPainter {
+
+export class PainterBar extends TgdPainter {
     public shift = 0
 
     private readonly vao: TgdVertexArray
@@ -44,11 +49,11 @@ export class PainterDisk extends TgdPainter {
             }
         },
         name: string,
-        positions: PainterDiskPosition[]
+        positions: PainterBarPosition[]
     ) {
         super()
         const texColor = new TgdTexture2D(context).loadBitmap(
-            assets.glb.getImageAsHTMLElement("Disk")
+            assets.glb.getImageAsHTMLElement(name)
         )
         const texAmbient = new TgdTextureCube(context, assets.skybox)
         const vert = new TgdShaderVertex({
@@ -61,34 +66,46 @@ export class PainterDisk extends TgdPainter {
                 POSITION: "vec4",
                 NORMAL: "vec3",
                 TEXCOORD_0: "vec2",
-                attRadius: "float",
-                attDistance: "float",
-                attCos: "float",
-                attSin: "float",
+                attRadius1: "float",
+                attDistance1: "float",
+                attAngle1: "float",
+                attRadius2: "float",
+                attDistance2: "float",
+                attAngle2: "float",
             },
             varying: {
                 varUV: "vec2",
                 varNormal: "vec3",
                 varPosition: "vec4",
             },
-            functions: {},
+            functions: {
+                ...tgdCodeFunction_mapRange(),
+            },
             mainCode: [
                 `vec4 position = POSITION;`,
+                `float scale = abs(attDistance2 - attDistance1) / 30.0;`,
+                "float alpha = mapRange(position.z, 0.0, -30.0, 0.0, 1.0);",
+                "float angle = mix(attAngle1, attAngle2, alpha);",
+                "float distance = mix(attDistance1, attDistance2, alpha);",
+                "float radius = mix(attRadius1, attRadius2, alpha);",
+                "position *= vec4(1, 1, scale, 1);",
                 "vec2 dir = vec2(0, -1);",
-                "position += vec4(dir * attRadius, uniShift - attDistance, 0);",
+                "position += vec4(dir * radius, uniShift - attDistance1, 0);",
+                "float C = cos(angle);",
+                "float S = sin(angle);",
                 "mat4 transfo = mat4(",
                 [
-                    "attCos, attSin, 0.0, 0.0,",
-                    "-attSin, attCos, 0.0, 0.0,",
+                    "C, S, 0.0, 0.0,",
+                    "-S, C, 0.0, 0.0,",
                     "0.0, 0.0, 1.0, 0.0,",
                     "0.0, 0.0, 0.0, 1.0",
                 ],
                 ");",
-                `varNormal = mat3(transfo) * NORMAL;`,
                 "position = transfo * position;",
                 "varPosition = position;",
-                `varUV = TEXCOORD_0;`,
                 `gl_Position = uniProjectionMatrix * uniModelViewMatrix * position;`,
+                `varNormal = mat3(transfo) * NORMAL;`,
+                `varUV = TEXCOORD_0;`,
             ],
         }).code
         const frag = new TgdShaderFragment({
@@ -100,7 +117,11 @@ export class PainterDisk extends TgdPainter {
                 uniSpecularIntensity: "float",
             },
             outputs: { FragColor: "vec4" },
-            varying: { varUV: "vec2", varNormal: "vec3", varPosition: "vec4" },
+            varying: {
+                varUV: "vec2",
+                varNormal: "vec3",
+                varPosition: "vec4",
+            },
             functions: {},
             mainCode: [
                 `vec3 N = normalize(varNormal);`,
@@ -179,34 +200,46 @@ export class PainterDisk extends TgdPainter {
     }
 }
 
-function createDatasetInstance(positions: PainterDiskPosition[]) {
+function createDatasetInstance(positions: PainterBarPosition[]) {
     const datasetInstance = new TgdDataset(
         {
-            attRadius: "float",
-            attDistance: "float",
-            attCos: "float",
-            attSin: "float",
+            attRadius1: "float",
+            attDistance1: "float",
+            attAngle1: "float",
+            attRadius2: "float",
+            attDistance2: "float",
+            attAngle2: "float",
         },
         {
             divisor: 1,
         }
     )
-    const attRadius: number[] = []
-    const attDistance: number[] = []
-    const attCos: number[] = []
-    const attSin: number[] = []
-    for (const [angle, distance, radius] of positions) {
-        for (let loop = 0; loop < 120; loop += 120) {
-            const radians = tgdCalcDegToRad(loop + angle)
-            attRadius.push(10 + (radius ?? 0))
-            attDistance.push(distance)
-            attCos.push(Math.cos(radians))
-            attSin.push(Math.sin(radians))
-        }
+    const attRadius1: number[] = []
+    const attDistance1: number[] = []
+    const attAngle1: number[] = []
+    const attRadius2: number[] = []
+    const attDistance2: number[] = []
+    const attAngle2: number[] = []
+    for (const [
+        angle1,
+        distance1,
+        radius1,
+        angle2,
+        distance2,
+        radius2,
+    ] of positions) {
+        attAngle1.push(tgdCalcDegToRad(angle1))
+        attDistance1.push(distance1)
+        attRadius1.push(radius1 + 10)
+        attAngle2.push(tgdCalcDegToRad(angle2))
+        attDistance2.push(distance2)
+        attRadius2.push(radius2 + 10)
     }
-    datasetInstance.set("attRadius", new Float32Array(attRadius))
-    datasetInstance.set("attDistance", new Float32Array(attDistance))
-    datasetInstance.set("attCos", new Float32Array(attCos))
-    datasetInstance.set("attSin", new Float32Array(attSin))
-    return { countInstance: attRadius.length, datasetInstance }
+    datasetInstance.set("attAngle1", new Float32Array(attAngle1))
+    datasetInstance.set("attDistance1", new Float32Array(attDistance1))
+    datasetInstance.set("attRadius1", new Float32Array(attRadius1))
+    datasetInstance.set("attAngle2", new Float32Array(attAngle2))
+    datasetInstance.set("attDistance2", new Float32Array(attDistance2))
+    datasetInstance.set("attRadius2", new Float32Array(attRadius2))
+    return { countInstance: attRadius1.length, datasetInstance }
 }

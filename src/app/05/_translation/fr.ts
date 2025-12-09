@@ -8,6 +8,7 @@ La soucoupe est maintenant pleine de carburant et on va pouvoir aller sur la Lun
     
     Il va falloir faire preuve d'un peu d'adresse pour naviguer là-dedans.`,
     intro3: `Utilise les flèches du clavier, ou touche l'écran à droite ou à gauche pour éviter les obstacles...`,
+    loading: "Chargement... ",
     start: `C'est parti !`,
     win: `Super ! Te voilà arrivé dans la base sous-lunaire.
     
