@@ -1,16 +1,16 @@
+import { TgdDataGlb, tgdLoadAssets } from "@tolokoban/tgd"
 import React from "react"
-import { TgdDataGlb, tgdLoadAssets, tgdLoadGlb } from "@tolokoban/tgd"
 
-import Spinner from "./_/Spinner"
 import Game from "./_/Game"
+import Spinner from "./_/Spinner"
 
 import AssetURL from "./_/assets/asset.glb"
-import PosX from "./_/assets/sky/posX.webp"
-import PosY from "./_/assets/sky/posY.webp"
-import PosZ from "./_/assets/sky/posZ.webp"
 import NegX from "./_/assets/sky/negX.webp"
 import NegY from "./_/assets/sky/negY.webp"
 import NegZ from "./_/assets/sky/negZ.webp"
+import PosX from "./_/assets/sky/posX.webp"
+import PosY from "./_/assets/sky/posY.webp"
+import PosZ from "./_/assets/sky/posZ.webp"
 
 export default function Page05() {
     const [asset, setAsset] = React.useState<TgdDataGlb | null>(null)

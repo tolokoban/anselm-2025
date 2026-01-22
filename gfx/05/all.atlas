@@ -1,0 +1,13 @@
+{
+    make: [
+        {
+            name: "bricks",
+            input: {
+                path: "bricks",
+            },
+            output: {
+                path: "../../src/gfx/05/",
+            },
+        },
+    ],
+}

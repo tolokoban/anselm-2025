@@ -1,0 +1,8 @@
+{
+    "imports": {
+        "chalk": "npm:chalk@^5.6.2",
+        "json5": "npm:json5@^2.2.3",
+        "sharp": "npm:sharp@^0.34.5"
+    },
+    "nodeModulesDir": "auto"
+}
