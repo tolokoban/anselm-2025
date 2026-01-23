@@ -9,5 +9,14 @@
                 path: "../../src/gfx/05/",
             },
         },
+        {
+            name: "balls",
+            input: {
+                path: "balls",
+            },
+            output: {
+                path: "../../src/gfx/05/",
+            },
+        },
     ],
 }

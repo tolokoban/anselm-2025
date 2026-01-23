@@ -4,6 +4,7 @@ import Process from "node:process"
 import Chalk from "chalk"
 import JSON5 from "json5"
 
+import { camelCase } from "./case.ts"
 import { ConfigFile, assertConfigFile } from "./types.ts"
 
 export function getArguments(): ConfigFile[] {
@@ -21,6 +22,7 @@ export function getArguments(): ConfigFile[] {
             assertConfigFile(data)
             files.push(data)
             for (const atlas of data.make) {
+                atlas.name = camelCase(atlas.name)
                 const inputFolder = Path.resolve(root, atlas.input.path)
                 if (!FS.existsSync(inputFolder)) {
                     throw Error(`Input folder not found:\n${inputFolder}`)
@@ -31,6 +33,7 @@ export function getArguments(): ConfigFile[] {
                     throw Error(`Output folder not found:\n${outputFolder}`)
                 }
                 atlas.output.path = outputFolder
+                atlas.output.columns ??= 1
             }
         } catch (error) {
             console.error(

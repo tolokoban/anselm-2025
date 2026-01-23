@@ -8,6 +8,7 @@ export interface ConfigFile {
         }
         output: {
             path: string
+            columns?: number
         }
     }>
 }
@@ -23,6 +24,7 @@ export function assertConfigFile(data: unknown): asserts data is ConfigFile {
                 },
                 output: {
                     path: "string",
+                    columns: ["?", "number"],
                 },
             },
         ],

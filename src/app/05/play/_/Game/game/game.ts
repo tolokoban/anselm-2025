@@ -1,84 +1,70 @@
-import React from "react"
+import { ArkanoidLevels } from "@/game/05/levels"
+import { PainterBalls } from "@/game/05/painters/balls"
+import { PainterBricks } from "@/game/05/painters/bricks"
 import {
-    tgdCalcModulo,
-    tgdCalcRandom,
     TgdContext,
     TgdControllerCameraOrbit,
-    TgdDataGlb,
+    TgdGeometryPlane,
+    TgdMaterialFlat,
+    TgdPainterBackground,
     TgdPainterClear,
+    TgdPainterMesh,
     TgdPainterState,
+    TgdTexture2D,
+    WebglImage,
+    tgdCalcModulo,
+    tgdCalcRandom,
     webglPresetCull,
     webglPresetDepth,
 } from "@tolokoban/tgd"
-import { PainterDisk, PainterDiskPosition } from "./decor/disk"
-import { PainterBar, PainterBarPosition } from "./decor/disk/bar"
+import React from "react"
 
 class Game {
     readonly init = (
         canvas: HTMLCanvasElement | null,
         assets: {
-            glb: TgdDataGlb
-            skybox: {
-                imagePosX: HTMLImageElement
-                imagePosY: HTMLImageElement
-                imagePosZ: HTMLImageElement
-                imageNegX: HTMLImageElement
-                imageNegY: HTMLImageElement
-                imageNegZ: HTMLImageElement
-            }
+            atlasBricks: WebglImage
+            atlasBalls: WebglImage
         }
     ) => {
         if (!canvas) return
 
-        const context = new TgdContext(canvas)
+        const context = new TgdContext(canvas, {
+            alpha: true,
+        })
         const { camera } = context
-        camera.near = 1
-        camera.far = 100000
-        camera.transfo.distance = 50
-        camera.transfo.setEulerRotation(-10, 0, 0)
+        camera.near = 0.01
+        camera.far = 1000
+        camera.fitSpaceAtTarget(28, 28)
+        const bricksPainter = new PainterBricks(context, {
+            atlasImage: assets.atlasBricks,
+            level: ArkanoidLevels[0],
+        })
+        const hit = (x: number, y: number, dx: number, dy: number) => {
+            return bricksPainter.hit(x, y, dx, dy)
+        }
+        const ballsPainter = new PainterBalls(context, {
+            atlasImage: assets.atlasBalls,
+            hit,
+        })
+        const board = new TgdPainterMesh(context, {
+            geometry: new TgdGeometryPlane({ sizeX: 26, sizeY: 26 }),
+            material: new TgdMaterialFlat({ color: [0, 0, 0, 1] }),
+        })
+        context.add(
+            new TgdPainterClear(context, {
+                color: [0.1, 0.05, 0.025, 1],
+                depth: 1,
+            }),
+            new TgdPainterState(context, {
+                depth: webglPresetDepth.lessOrEqual,
+                children: [board, bricksPainter, ballsPainter],
+            })
+        )
+        context.play()
         new TgdControllerCameraOrbit(context, {
             inertiaOrbit: 1000,
         })
-        const posDisk: PainterDiskPosition[] = []
-        const posBar: PainterBarPosition[] = []
-        let distance1 = 0
-        let angle1 = 110
-        let distance2 = 0
-        let angle2 = 0
-        for (let loop = 0; loop < 50; loop++) {
-            distance1 = 0
-            angle1 = tgdCalcRandom(360)
-            for (let i = 0; i < 10; i++) {
-                distance2 = distance1 + tgdCalcRandom(10, 40)
-                angle2 = angle1 + tgdCalcRandom(-120, 120)
-                posDisk.push([angle1, distance1, loop])
-                posBar.push([angle1, distance1, loop, angle2, distance2, loop])
-                distance1 = distance2
-                angle1 = angle2
-            }
-        }
-        const meshDisk = new PainterDisk(context, assets, "Disk1", posDisk)
-        const meshBar = new PainterBar(context, assets, "Bar1", posBar)
-        context.add(
-            new TgdPainterState(context, {
-                depth: webglPresetDepth.less,
-                cull: webglPresetCull.back,
-                children: [
-                    new TgdPainterClear(context, {
-                        color: [0.0, 0.0, 0.0, 1],
-                        depth: 1,
-                    }),
-                    meshDisk,
-                    meshBar,
-                ],
-            })
-        )
-        context.logic.add((time) => {
-            const shift = tgdCalcModulo(time * 2, 0, 200)
-            meshDisk.shift = shift
-            meshBar.shift = shift
-        })
-        context.play()
         return () => context.delete()
     }
 }

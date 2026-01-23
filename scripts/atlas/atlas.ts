@@ -4,7 +4,9 @@ import Chalk from "chalk"
 import Sharp from "sharp"
 
 import { getArguments } from "./lib/args.ts"
+import { pascalCase } from "./lib/case.ts"
 import { listImages } from "./lib/filesystem.ts"
+import { pack } from "./lib/pack.ts"
 import { printTitle } from "./lib/title.ts"
 
 async function start() {
@@ -21,40 +23,18 @@ async function start() {
                 `${make.name}.webp`
             )
             console.log(
-                `${Chalk.gray(
-                    Path.dirname(outputFilename)
-                )}/${Chalk.cyanBright.bold(Path.basename(outputFilename))}`
+                `${Chalk.gray(Path.dirname(outputFilename))}/${Chalk.cyanBright.bold(
+                    Path.basename(outputFilename)
+                )}`
             )
-            const frames: Array<{
-                image: Sharp.Sharp
-                x: number
-                y: number
-                w: number
-                h: number
-            }> = []
-            const x = 0
-            let y = 0
-            let ww = 0
-            let hh = 0
-            for (const inputImage of inputImages) {
-                const { width, height } = await inputImage.metadata()
-                ww = Math.max(ww, width)
-                frames.push({
-                    image: inputImage,
-                    x,
-                    y,
-                    w: width,
-                    h: height,
-                })
-                y += height
-                hh = Math.max(hh, y)
-            }
-            ww = 2 ** Math.ceil(Math.log2(ww))
-            hh = 2 ** Math.ceil(Math.log2(hh))
+            const { size, frames } = await pack(inputImages)
+            const [width, height] = size
+            const finalWidth = 2 ** Math.ceil(Math.log2(width))
+            const finalHeight = 2 ** Math.ceil(Math.log2(height))
             let outputImage = Sharp({
                 create: {
-                    width: ww,
-                    height: hh,
+                    width: finalWidth,
+                    height: finalHeight,
                     channels: 4,
                     background: "#0000",
                 },
@@ -85,25 +65,29 @@ async function start() {
                         height: number
                     }
                 >
-            } = { size: [ww, hh], sprites: {} }
+            } = { size: [finalWidth, finalHeight], sprites: {} }
             let index = 0
             for (const frame of frames) {
                 atlasJson.sprites[`${make.name}${index++}`] = {
-                    x: frame.x / ww,
-                    y: frame.y / hh,
-                    width: frame.w / ww,
-                    height: frame.h / hh,
+                    x: frame.x / finalWidth,
+                    y: frame.y / finalHeight,
+                    width: frame.w / finalWidth,
+                    height: frame.h / finalHeight,
                 }
             }
             FS.writeFileSync(
                 Path.resolve(make.output.path, `${make.name}.ts`),
-                `export default const Atlas = ${JSON.stringify(atlasJson, null, 2)}`
+                `export const AtlasDef${pascalCase(make.name)} = ${JSON.stringify(
+                    atlasJson,
+                    null,
+                    2
+                )}`
             )
             console.log(
                 "Dimension:",
-                Chalk.cyanBright(ww),
+                Chalk.cyanBright(finalWidth),
                 "×",
-                Chalk.cyanBright(hh)
+                Chalk.cyanBright(finalHeight)
             )
         }
     }

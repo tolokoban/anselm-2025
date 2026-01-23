@@ -15,6 +15,7 @@
         "react-dom": "^19.2.1"
     },
     "scripts": {
+        "atlas": "deno --allow-env --allow-read --allow-ffi --allow-write scripts/atlas/atlas.ts gfx/05/all.atlas",
         "clean": "rm -rf src/generated",
         "copy-package": "cp -u ./package.json ./src/",
         "generate": "npm run optimize && npm run routes",
@@ -46,6 +47,7 @@
     "devDependencies": {
         "@babel/preset-typescript": "^7.27.0",
         "@mdx-js/loader": "^3.1.0",
+        "@types/chalk": "^0.4.31",
         "@types/jest": "^30.0.0",
         "@types/mdx": "^2.0.13",
         "@types/node": "^24.10.1",
@@ -77,7 +79,6 @@
         "markdown-to-jsx": "^7.7.4",
         "mini-css-extract-plugin": "^2.9.2",
         "prettier": "^3.5.3",
-        "sharp": "^0.34.5",
         "style-loader": "^3.3.4",
         "ts-jest": "^29.3.1",
         "ts-loader": "^9.5.2",

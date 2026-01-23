@@ -1,5 +1,5 @@
+import { TgdDataGlb, WebglImage } from "@tolokoban/tgd"
 import React from "react"
-import { TgdDataGlb } from "@tolokoban/tgd"
 
 import { useGame } from "./game/index"
 
@@ -8,15 +8,8 @@ import styles from "./Game.module.css"
 export interface GameProps {
     className?: string
     assets: {
-        glb: TgdDataGlb
-        skybox: {
-            imagePosX: HTMLImageElement
-            imagePosY: HTMLImageElement
-            imagePosZ: HTMLImageElement
-            imageNegX: HTMLImageElement
-            imageNegY: HTMLImageElement
-            imageNegZ: HTMLImageElement
-        }
+        atlasBricks: WebglImage
+        atlasBalls: WebglImage
     }
 }
 
