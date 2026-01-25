@@ -1,30 +1,30 @@
 import { ArkanoidLevels } from "@/game/05/levels"
 import { PainterBalls } from "@/game/05/painters/balls"
 import { PainterBricks } from "@/game/05/painters/bricks"
+import { EnumHitResult, HitResult } from "@/game/05/types"
 import {
     TgdContext,
     TgdControllerCameraOrbit,
     TgdGeometryPlane,
     TgdMaterialFlat,
-    TgdPainterBackground,
     TgdPainterClear,
+    TgdPainterLogic,
     TgdPainterMesh,
     TgdPainterState,
-    TgdTexture2D,
     WebglImage,
-    tgdCalcModulo,
-    tgdCalcRandom,
-    webglPresetCull,
     webglPresetDepth,
 } from "@tolokoban/tgd"
 import React from "react"
+import { Inputs } from "./inputs"
+import { PainterPad } from "./painters/pad"
 
 class Game {
     readonly init = (
         canvas: HTMLCanvasElement | null,
         assets: {
-            atlasBricks: WebglImage
             atlasBalls: WebglImage
+            atlasBricks: WebglImage
+            atlasPads: WebglImage
         }
     ) => {
         if (!canvas) return
@@ -32,6 +32,7 @@ class Game {
         const context = new TgdContext(canvas, {
             alpha: true,
         })
+        const inputs = new Inputs(context)
         const { camera } = context
         camera.near = 0.01
         camera.far = 1000
@@ -40,8 +41,43 @@ class Game {
             atlasImage: assets.atlasBricks,
             level: ArkanoidLevels[0],
         })
-        const hit = (x: number, y: number, dx: number, dy: number) => {
-            return bricksPainter.hit(x, y, dx, dy)
+        const padPainter = new PainterPad(context, {
+            atlasImage: assets.atlasPads,
+        })
+        const hit = (
+            x: number,
+            y: number,
+            dx: number,
+            dy: number
+        ): HitResult | null => {
+            const brickHit = bricksPainter.hit(x, y, dx, dy)
+            if (brickHit) return brickHit
+            // Walls
+            if (x > 13 && dx > 0)
+                return {
+                    type: EnumHitResult.Wall,
+                    normalAngleDeg: -90,
+                }
+            if (x < -13 && dx < 0)
+                return {
+                    type: EnumHitResult.Wall,
+                    normalAngleDeg: 90,
+                }
+            if (y > 13 && dy > 0)
+                return {
+                    type: EnumHitResult.Wall,
+                    normalAngleDeg: 180,
+                }
+            if (y < -15 && dy < 0)
+                return {
+                    type: EnumHitResult.Wall,
+                    normalAngleDeg: 0,
+                }
+            // Pad
+            const padHit = padPainter.hit(x, y, dx, dy)
+            if (padHit) return padHit
+
+            return null
         }
         const ballsPainter = new PainterBalls(context, {
             atlasImage: assets.atlasBalls,
@@ -58,7 +94,11 @@ class Game {
             }),
             new TgdPainterState(context, {
                 depth: webglPresetDepth.lessOrEqual,
-                children: [board, bricksPainter, ballsPainter],
+                children: [board, bricksPainter, padPainter, ballsPainter],
+            }),
+            new TgdPainterLogic((time, delay) => {
+                if (inputs.right) padPainter.x += 15 * delay
+                if (inputs.left) padPainter.x -= 15 * delay
             })
         )
         context.play()

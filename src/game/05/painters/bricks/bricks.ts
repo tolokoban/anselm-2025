@@ -10,7 +10,7 @@ import {
 } from "@tolokoban/tgd"
 import { text } from "stream/consumers"
 import { ArkanoidLevel } from "../../levels/types"
-import { HitResult } from "../../types"
+import { EnumBrick, EnumHitResult, HitResult } from "../../types"
 import { Brick } from "./brick"
 import { parseLevel } from "./parse-level"
 
@@ -70,6 +70,10 @@ export class PainterBricks extends TgdPainter {
             if (Math.abs(brick.x - x) < 1) {
                 brick.punch(this.time)
                 return {
+                    type:
+                        brick.type === EnumBrick.Unbreakable
+                            ? EnumHitResult.Wall
+                            : EnumHitResult.Brick,
                     normalAngleDeg: computeAngle(brick, x, y, dx, dy),
                 }
             }

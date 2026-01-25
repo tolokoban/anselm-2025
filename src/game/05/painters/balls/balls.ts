@@ -63,13 +63,14 @@ export class PainterBalls extends TgdPainter {
             texture,
             atlasUnit: 2,
         })
-        for (let i = -2; i < 3; i++) {
+        const BALLS_COUNT = 1
+        for (let i = 0; i < BALLS_COUNT; i++) {
             const ball = new Ball(this.spritesPainter, {
                 hit: options.hit,
             })
-            ball.y = -12
+            ball.y = -11
             ball.speed = tgdCalcRandom(8, 20)
-            ball.angle = -30 + 15 * i
+            ball.angle = -30 + 15 * (i - (BALLS_COUNT - 1) / 2)
             this.balls.push(ball)
         }
         this.painter = new TgdPainterState(context, {

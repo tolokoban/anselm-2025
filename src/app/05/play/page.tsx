@@ -6,6 +6,7 @@ import Spinner from "./_/Spinner"
 
 import AtlasBallsURL from "@/gfx/05/balls.webp"
 import AtlasBricksURL from "@/gfx/05/bricks.webp"
+import AtlasPadsURL from "@/gfx/05/pads.webp"
 
 export default function Page05() {
     const [images, setImages] = React.useState<WebglImage[]|undefined>(undefined)
@@ -15,24 +16,25 @@ export default function Page05() {
                 img: {
                     atlasBalls: AtlasBallsURL,
                     atlasBricks: AtlasBricksURL,
+                    atlasPads: AtlasPadsURL
                 },
             }),
             sleep(1),
         ])
         all.then(([assets]) => {
-            const {atlasBalls, atlasBricks}=assets.img
-            if(!atlasBalls||!atlasBricks) {
+            const {atlasBalls, atlasBricks, atlasPads}=assets.img
+            if(!atlasBalls||!atlasBricks||!atlasPads) {
                 console.error("Unable to load atlas:", AtlasBricksURL)
                 throw new Error("Unable to load atlas!")
             }
-            setImages([atlasBalls, atlasBricks])
+            setImages([atlasBalls, atlasBricks, atlasPads])
         })
     }, [])
 
     if (!images) return <Spinner />
 
-    const [atlasBalls, atlasBricks]=images
-    return <Game assets={{atlasBalls, atlasBricks}} />
+    const [atlasBalls, atlasBricks, atlasPads]=images
+    return <Game assets={{atlasBalls, atlasBricks, atlasPads}} />
 }
 
 function sleep(delay: number) {

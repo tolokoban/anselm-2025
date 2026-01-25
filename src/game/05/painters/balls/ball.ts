@@ -6,7 +6,7 @@ import {
     tgdCalcModulo,
     tgdCalcRandom,
 } from "@tolokoban/tgd"
-import { HitResult } from "../../types"
+import { EnumHitResult, HitResult } from "../../types"
 
 export interface BallOptions {
     hit(x: number, y: number, dx: number, dy: number): HitResult | null
@@ -74,16 +74,18 @@ export class Ball {
         const dy = this._dirY * this.speed * delay
         sprite.x += dx
         sprite.y += dy
-        if ((dy > 0 && sprite.y > 13) || (dy < 0 && sprite.y < -13)) {
-            this.angle = 180 - this.angle + tgdCalcRandom(-3, +3)
-        }
-        if ((dx > 0 && sprite.x > 13) || (dx < 0 && sprite.x < -13)) {
-            this.angle = -this.angle + tgdCalcRandom(-3, +3)
-        }
+        // if ((dy > 0 && sprite.y > 13) || (dy < 0 && sprite.y < -13)) {
+        //     this.angle = 180 - this.angle + tgdCalcRandom(-3, +3)
+        // }
+        // if ((dx > 0 && sprite.x > 13) || (dx < 0 && sprite.x < -13)) {
+        //     this.angle = -this.angle + tgdCalcRandom(-3, +3)
+        // }
 
         const hit = this.options.hit(sprite.x, sprite.y, dx, dy)
-        if (hit && !this.powerBall) {
-            this.angle = 2 * hit.normalAngleDeg - (this.angle + 180)
+        if (hit) {
+            if (hit.type === EnumHitResult.Wall || !this.powerBall) {
+                this.angle = 2 * hit.normalAngleDeg - (this.angle + 180)
+            }
         }
 
         this.powerBall = tgdCalcModulo(time + this.timeShift, 0, 20) > 15

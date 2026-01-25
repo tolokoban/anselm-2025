@@ -1,4 +1,5 @@
 import { TgdPainterSprites, TgdSprite } from "@tolokoban/tgd"
+import { EnumBrick } from "../../types"
 
 export interface BrickOptions {
     index: number
@@ -31,14 +32,18 @@ export class Brick {
         return this.sprite.z !== 0
     }
 
+    get type(): EnumBrick {
+        return this.sprite.index as EnumBrick
+    }
+
     /**
      * @returns `false` if indestructible.
      */
     punch(time: number): boolean {
-        if (this.sprite.index === 5) return false
+        if (this.type === EnumBrick.Unbreakable) return false
 
         if (time - this.lastPunchTime > 0.3) {
-            if (this.sprite.index === 2 || this.sprite.index === 3) {
+            if ([EnumBrick.Glass1, EnumBrick.Glass2].includes(this.type)) {
                 this.sprite.index++
             } else this.sprite.z += 100
             return true
