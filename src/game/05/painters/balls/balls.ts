@@ -1,24 +1,19 @@
-import { AtlasDefBalls } from "@/gfx/05/balls"
 import {
-    TgdContext,
+    type TgdContext,
     TgdPainter,
     TgdPainterSprites,
     TgdPainterState,
     TgdTexture2D,
-    WebglImage,
     tgdCalcRandom,
+    type WebglImage,
     webglPresetBlend,
 } from "@tolokoban/tgd"
-import { HitResult } from "../../types"
+import { AtlasDefBalls } from "@/gfx/05/balls"
+import type { HitResult } from "../../types"
 import { Ball } from "./ball"
 
 export interface PainterBallsOptions {
     atlasImage: WebglImage
-    /**
-     * Every ball will call this function to know if it has hit
-     * a brick or the pad.
-     */
-    hit(x: number, y: number, dx: number, dy: number): HitResult | null
 }
 
 export class PainterBalls extends TgdPainter {
@@ -65,9 +60,7 @@ export class PainterBalls extends TgdPainter {
         })
         const BALLS_COUNT = 1
         for (let i = 0; i < BALLS_COUNT; i++) {
-            const ball = new Ball(this.spritesPainter, {
-                hit: options.hit,
-            })
+            const ball = new Ball(this.spritesPainter)
             ball.y = -11
             ball.speed = tgdCalcRandom(8, 20)
             ball.angle = -30 + 15 * (i - (BALLS_COUNT - 1) / 2)
@@ -77,6 +70,22 @@ export class PainterBalls extends TgdPainter {
             blend: webglPresetBlend.alpha,
             children: [this.spritesPainter],
         })
+    }
+
+    peformHitTest(
+        hit: (args: {
+            x: number
+            y: number
+            dx: number
+            dy: number
+        }) => HitResult | null
+    ) {
+        for (const ball of this.balls) {
+            const result = hit(ball)
+            if (result) {
+                ball.applyHit(result)
+            }
+        }
     }
 
     delete() {

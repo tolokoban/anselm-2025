@@ -1,17 +1,17 @@
-import { AtlasDefBricks } from "@/gfx/05/bricks"
 import {
-    TgdContext,
+    type TgdContext,
     TgdPainter,
     TgdPainterSprites,
     TgdPainterState,
     TgdTexture2D,
-    WebglImage,
+    type WebglImage,
     webglPresetBlend,
 } from "@tolokoban/tgd"
 import { text } from "stream/consumers"
-import { ArkanoidLevel } from "../../levels/types"
-import { EnumBrick, EnumHitResult, HitResult } from "../../types"
-import { Brick } from "./brick"
+import { AtlasDefBricks } from "@/gfx/05/bricks"
+import type { ArkanoidLevel } from "../../levels/types"
+import { EnumBrick, EnumHitResult, type HitResult } from "../../types"
+import type { Brick } from "./brick"
 import { parseLevel } from "./parse-level"
 
 export interface PainterBricksOptions {
@@ -59,7 +59,13 @@ export class PainterBricks extends TgdPainter {
         this.bricks = parseLevel(this.spritesPainter, options.level)
     }
 
-    hit(x: number, y: number, dx: number, dy: number): HitResult | null {
+    readonly hit = (args: {
+        x: number
+        y: number
+        dx: number
+        dy: number
+    }): HitResult | null => {
+        const { x, y, dx, dy } = args
         const row = Math.floor(12.5 - y)
         const bricks = this.bricks[row]
         if (!bricks) return null
@@ -74,7 +80,7 @@ export class PainterBricks extends TgdPainter {
                         brick.type === EnumBrick.Unbreakable
                             ? EnumHitResult.Wall
                             : EnumHitResult.Brick,
-                    normalAngleDeg: computeAngle(brick, x, y, dx, dy),
+                    normalAngleDeg: computeAngle(brick, args),
                 }
             }
         }
@@ -94,11 +100,9 @@ export class PainterBricks extends TgdPainter {
 
 function computeAngle(
     brick: Brick,
-    x: number,
-    y: number,
-    dx: number,
-    dy: number
+    args: { x: number; y: number; dx: number; dy: number }
 ): number {
+    const { x, y, dx, dy } = args
     const x0 = x - brick.x
     const y0 = y - brick.y
     const xx = x0 - (Math.abs(0.5 - y0) * dx) / dy

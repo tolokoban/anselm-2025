@@ -1,16 +1,12 @@
 import {
-    TgdPainterSprites,
-    TgdSprite,
+    type TgdPainterSprites,
+    type TgdSprite,
     tgdCalcDegToRad,
     tgdCalcMapRange,
     tgdCalcModulo,
     tgdCalcRandom,
 } from "@tolokoban/tgd"
-import { EnumHitResult, HitResult } from "../../types"
-
-export interface BallOptions {
-    hit(x: number, y: number, dx: number, dy: number): HitResult | null
-}
+import { EnumHitResult, type HitResult } from "../../types"
 
 export class Ball {
     public powerBall = false
@@ -22,12 +18,11 @@ export class Ball {
     private _angle = 0
     private _dirX = 0
     private _dirY = 1
+    private _dx = 0
+    private _dy = 0
     private timeShift = tgdCalcRandom(15)
 
-    constructor(
-        private readonly spritesPainter: TgdPainterSprites,
-        private readonly options: BallOptions
-    ) {
+    constructor(private readonly spritesPainter: TgdPainterSprites) {
         this.sprite = spritesPainter.spriteCreate()
     }
 
@@ -43,6 +38,14 @@ export class Ball {
     }
     set y(value: number) {
         this.sprite.y = value
+    }
+
+    get dx() {
+        return this._dx
+    }
+
+    get dy() {
+        return this._dy
     }
 
     get angle() {
@@ -74,20 +77,14 @@ export class Ball {
         const dy = this._dirY * this.speed * delay
         sprite.x += dx
         sprite.y += dy
-        // if ((dy > 0 && sprite.y > 13) || (dy < 0 && sprite.y < -13)) {
-        //     this.angle = 180 - this.angle + tgdCalcRandom(-3, +3)
-        // }
-        // if ((dx > 0 && sprite.x > 13) || (dx < 0 && sprite.x < -13)) {
-        //     this.angle = -this.angle + tgdCalcRandom(-3, +3)
-        // }
-
-        const hit = this.options.hit(sprite.x, sprite.y, dx, dy)
-        if (hit) {
-            if (hit.type === EnumHitResult.Wall || !this.powerBall) {
-                this.angle = 2 * hit.normalAngleDeg - (this.angle + 180)
-            }
-        }
-
+        this._dx = dx
+        this._dy = dy
         this.powerBall = tgdCalcModulo(time + this.timeShift, 0, 20) > 15
+    }
+
+    applyHit(hit: HitResult) {
+        if (hit.type === EnumHitResult.Wall || !this.powerBall) {
+            this.angle = 2 * hit.normalAngleDeg - (this.angle + 180)
+        }
     }
 }

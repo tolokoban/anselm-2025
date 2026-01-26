@@ -1,6 +1,7 @@
 export enum EnumHitResult {
     Brick = 0,
-    Wall = 1,
+    Wall,
+    Death,
 }
 
 export interface HitResult {
