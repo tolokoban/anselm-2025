@@ -7,6 +7,12 @@ export enum EnumHitResult {
 export interface HitResult {
     type: EnumHitResult
     normalAngleDeg: number
+    /**
+     * When the object crosses a line,
+     * its coords are put back to the line.
+     */
+    x: number
+    y: number
 }
 
 export enum EnumBrick {

@@ -65,7 +65,7 @@ export class PainterBricks extends TgdPainter {
         dx: number
         dy: number
     }): HitResult | null => {
-        const { x, y, dx, dy } = args
+        const { x, y } = args
         const row = Math.floor(12.5 - y)
         const bricks = this.bricks[row]
         if (!bricks) return null
@@ -73,14 +73,14 @@ export class PainterBricks extends TgdPainter {
         for (const brick of bricks) {
             if (brick.dead) continue
 
-            if (Math.abs(brick.x - x) < 1) {
+            if (Math.abs(brick.x - x) < 1 && Math.abs(brick.y - y) < 0.5) {
                 brick.punch(this.time)
                 return {
                     type:
                         brick.type === EnumBrick.Unbreakable
                             ? EnumHitResult.Wall
                             : EnumHitResult.Brick,
-                    normalAngleDeg: computeAngle(brick, args),
+                    ...computeAngle(brick, args),
                 }
             }
         }
@@ -101,11 +101,109 @@ export class PainterBricks extends TgdPainter {
 function computeAngle(
     brick: Brick,
     args: { x: number; y: number; dx: number; dy: number }
-): number {
+): {
+    x: number
+    y: number
+    normalAngleDeg: number
+} {
     const { x, y, dx, dy } = args
     const x0 = x - brick.x
     const y0 = y - brick.y
-    const xx = x0 - (Math.abs(0.5 - y0) * dx) / dy
-    const angle = Math.abs(xx) > 1 ? (dx > 0 ? 90 : -90) : dy > 0 ? 180 : 0
-    return angle
+    const xx = x - dx
+    const yy = y - dy
+    if (dy > 0) {
+        // Ball is going up.
+        const hori = crossHori(x0, y0, dx, dy, 0, -0.5)
+        if (Math.abs(hori) <= 1) {
+            return {
+                normalAngleDeg: 180,
+                x,
+                y,
+            }
+        } else {
+            return {
+                normalAngleDeg: dx > 0 ? 90 : -90,
+                x,
+                y,
+            }
+        }
+    } else {
+        // Ball is going down.
+        const hori = crossHori(x0, y0, dx, dy, 0, +0.5)
+        if (Math.abs(hori) <= 1) {
+            return {
+                normalAngleDeg: 0,
+                x,
+                y,
+            }
+        } else {
+            return {
+                normalAngleDeg: dx > 0 ? 90 : -90,
+                x,
+                y,
+            }
+        }
+    }
+}
+
+/**
+ * @return The coefficient of the crossing point on line 2.
+ *
+ * Let's call this value `alpha`, then the crossing point will
+ * be:
+ *
+ * ```ts
+ * x = x2 + alpha * vx2
+ * y = y2 + alpha * vy2
+ * ```
+ *
+ * This value can be infinite if the lines do not cross.
+ */
+function cross(
+    x1: number,
+    y1: number,
+    vx1: number,
+    vy1: number,
+    x2: number,
+    y2: number,
+    vx2: number,
+    vy2: number
+) {
+    /**
+     * x1 + t1.vx1 = x2 + t2.vx2
+     * y1 + t1.vy1 = y2 + t2.vy2
+     *
+     * x1.vy1 + t1.vx1.vy1 = x2.vy1 + t2.vx2.vy1
+     * y1.vx1 + t1.vx1.vy1 = y2.vx1 + t2.vx1.vy2
+     *
+     * x1.vy1 - y1.vx1 = x2.vy1 - y2.vx1 = t2.(vx2.vy1 - vx1.vy2)
+     *
+     * t2 = (x2*vy1 - y2*vx1 + y1*vx1 - x1*vy1) / det
+     */
+    const det = vx1 * vy2 - vy1 * vx2
+    if (det === 0) return Infinity
+
+    return (x2 * vy1 - y2 * vx1 + y1 * vx1 - x1 * vy1) / det
+}
+
+function crossHori(
+    x1: number,
+    y1: number,
+    vx1: number,
+    vy1: number,
+    x2: number,
+    y2: number
+) {
+    return cross(x1, y1, vx1, vy1, x2, y2, 1, 0)
+}
+
+function crossVert(
+    x1: number,
+    y1: number,
+    vx1: number,
+    vy1: number,
+    x2: number,
+    y2: number
+) {
+    return cross(x1, y1, vx1, vy1, x2, y2, 0, 1)
 }

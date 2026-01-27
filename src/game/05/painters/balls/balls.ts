@@ -1,5 +1,6 @@
 import {
     type TgdContext,
+    TgdEvent,
     TgdPainter,
     TgdPainterSprites,
     TgdPainterState,
@@ -17,15 +18,14 @@ export interface PainterBallsOptions {
 }
 
 export class PainterBalls extends TgdPainter {
+    public readonly eventDead = new TgdEvent()
+
     private readonly painter: TgdPainter
     private readonly spritesPainter: TgdPainterSprites
     private readonly texture: TgdTexture2D
     private balls: Ball[] = []
 
-    constructor(
-        private readonly context: TgdContext,
-        options: PainterBallsOptions
-    ) {
+    constructor(context: TgdContext, options: PainterBallsOptions) {
         super()
         const texture = new TgdTexture2D(context, {
             load: options.atlasImage,
@@ -58,18 +58,34 @@ export class PainterBalls extends TgdPainter {
             texture,
             atlasUnit: 2,
         })
-        const BALLS_COUNT = 1
-        for (let i = 0; i < BALLS_COUNT; i++) {
-            const ball = new Ball(this.spritesPainter)
-            ball.y = -11
-            ball.speed = tgdCalcRandom(8, 20)
-            ball.angle = -30 + 15 * (i - (BALLS_COUNT - 1) / 2)
-            this.balls.push(ball)
-        }
         this.painter = new TgdPainterState(context, {
             blend: webglPresetBlend.alpha,
             children: [this.spritesPainter],
         })
+        this.reset()
+    }
+
+    reset() {
+        const ball = new Ball(this.spritesPainter)
+        ball.y = -11
+        ball.speed = 10
+        ball.angle = -30
+        ball.stuck = true
+        this.balls.push(ball)
+        ball.eventDead.addListener(this.removeBall)
+        this.balls.splice(0).push(ball)
+    }
+
+    private readonly removeBall = (ball: Ball) => {
+        const index = this.balls.indexOf(ball)
+        if (index < 0) return
+
+        this.balls.splice(index, 1)
+        if (this.balls.length === 0) this.eventDead.dispatch()
+    }
+
+    releaseBalls() {
+        for (const ball of this.balls) ball.stuck = false
     }
 
     peformHitTest(
@@ -85,6 +101,12 @@ export class PainterBalls extends TgdPainter {
             if (result) {
                 ball.applyHit(result)
             }
+        }
+    }
+
+    setPadXY(x: number, y: number) {
+        for (const ball of this.balls) {
+            ball.setPadXY(x, y)
         }
     }
 

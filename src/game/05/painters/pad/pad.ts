@@ -1,19 +1,18 @@
-import { AtlasDefPads } from "@/gfx/05/pads"
 import {
-    TgdContext,
+    type TgdContext,
     TgdPainter,
     TgdPainterSprites,
     TgdPainterState,
-    TgdSprite,
+    type TgdSprite,
     TgdTexture2D,
-    WebglImage,
     tgdCalcClamp,
     tgdCalcMapRange,
     tgdCalcModulo,
-    tgdCalcRandom,
+    type WebglImage,
     webglPresetBlend,
 } from "@tolokoban/tgd"
-import { EnumHitResult, HitResult } from "../../types"
+import { AtlasDefPads } from "@/gfx/05/pads"
+import { EnumHitResult, type HitResult } from "../../types"
 
 export interface PainterPadOptions {
     atlasImage: WebglImage
@@ -101,6 +100,8 @@ export class PainterPad extends TgdPainter {
         return {
             type: EnumHitResult.Wall,
             normalAngleDeg,
+            x,
+            y,
         }
     }
 

@@ -1,5 +1,4 @@
-import { Translation } from "@/lang"
-import FR from "./fr"
+import type FR from "./fr"
 
 const EN: typeof FR = {
     intro1: `You're the best, Anselm!
@@ -9,6 +8,7 @@ The saucer is now full of fuel, and we can go to the Moon to find a more powerfu
 
 It'll take some skill to navigate through there.`,
     intro3: `Use the keyboad's arrow keys, or touch the screen on the left or on the right to try to avoid abstacles...`,
+    lifes: "Lifes:",
     loading: "Loading... ",
     start: `Let's start!`,
     win: `Great! You found the under-moon-ground base.

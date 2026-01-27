@@ -9,6 +9,14 @@ export class PadLogic {
         private readonly pad: PainterPad
     ) {}
 
+    get x() {
+        return this.pad.x
+    }
+
+    get y() {
+        return this.pad.y
+    }
+
     update(time: number, delay: number) {
         const { inputs, pad, speed } = this
         if (inputs.right) pad.x += speed * delay
