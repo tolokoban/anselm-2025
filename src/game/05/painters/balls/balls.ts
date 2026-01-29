@@ -1,15 +1,15 @@
+import { AtlasDefBalls } from "@/gfx/05/balls"
 import {
     type TgdContext,
     TgdEvent,
     TgdPainter,
     TgdPainterSprites,
     TgdPainterState,
+    TgdSprite,
     TgdTexture2D,
-    tgdCalcRandom,
     type WebglImage,
     webglPresetBlend,
 } from "@tolokoban/tgd"
-import { AtlasDefBalls } from "@/gfx/05/balls"
 import type { HitResult } from "../../types"
 import { Ball } from "./ball"
 
@@ -29,11 +29,6 @@ export class PainterBalls extends TgdPainter {
         super()
         const texture = new TgdTexture2D(context, {
             load: options.atlasImage,
-            params: {
-                wrapR: "CLAMP_TO_EDGE",
-                wrapS: "CLAMP_TO_EDGE",
-                wrapT: "CLAMP_TO_EDGE",
-            },
         })
         this.texture = texture
         this.spritesPainter = new TgdPainterSprites(context, {
@@ -62,25 +57,39 @@ export class PainterBalls extends TgdPainter {
             blend: webglPresetBlend.alpha,
             children: [this.spritesPainter],
         })
-        this.reset()
+    }
+
+    clear() {
+        this.spritesPainter.clear()
+    }
+
+    add() {
+        return this.spritesPainter.spriteCreate()
+    }
+
+    remove(sprite: TgdSprite) {
+        this.spritesPainter.spriteDelete(sprite)
     }
 
     reset() {
+        for (const ball of this.balls) ball.delete()
+        this.balls.splice(0)
         const ball = new Ball(this.spritesPainter)
         ball.y = -11
         ball.speed = 10
         ball.angle = -30
-        ball.stuck = true
         this.balls.push(ball)
         ball.eventDead.addListener(this.removeBall)
-        this.balls.splice(0).push(ball)
+        ball.stuck = true
     }
 
     private readonly removeBall = (ball: Ball) => {
+        console.log("removeBall")
         const index = this.balls.indexOf(ball)
         if (index < 0) return
 
         this.balls.splice(index, 1)
+        ball.delete()
         if (this.balls.length === 0) this.eventDead.dispatch()
     }
 
@@ -124,5 +133,9 @@ export class PainterBalls extends TgdPainter {
         for (const ball of this.balls) {
             ball.update(time, delay)
         }
+    }
+
+    debug() {
+        console.log("🐞 [balls@124] this.balls =", this.balls) // @FIXME: Remove this line written on 2026-01-28 at 10:29
     }
 }

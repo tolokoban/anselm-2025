@@ -1,7 +1,7 @@
-import { TgdPainterSprites } from "@tolokoban/tgd"
+import { TgdSprite } from "@tolokoban/tgd"
 import { isNumber } from "@tolokoban/type-guards"
 import { ArkanoidLevel } from "../../levels/types"
-import { Brick, BrickOptions } from "./brick"
+import { LogicBrick } from "./brick"
 
 const INDEXES: Record<string, number> = {
     "[": 0,
@@ -11,28 +11,30 @@ const INDEXES: Record<string, number> = {
 }
 
 export function parseLevel(
-    spritesPainter: TgdPainterSprites,
-    level: ArkanoidLevel
-) {
-    const spritesPerRow: Brick[][] = []
+    level: ArkanoidLevel,
+    add: () => TgdSprite
+): { bricks: LogicBrick[][]; count: number } {
+    const spritesPerRow: LogicBrick[][] = []
+    let count = 0
     let y = 12
     for (const row of level.pose) {
         let x = -12
-        const currentSprites: Brick[] = []
+        const currentSprites: LogicBrick[] = []
         spritesPerRow.push(currentSprites)
         for (let i = 0; i < row.length; i++) {
             const index = INDEXES[row.charAt(i)]
             if (isNumber(index)) {
-                const brick = new Brick(spritesPainter, {
+                const brick = new LogicBrick(add(), {
                     index,
                     x,
                     y,
                 })
                 currentSprites.push(brick)
+                if (index < INDEXES["{"]) count++
             }
             x++
         }
         y--
     }
-    return spritesPerRow
+    return { bricks: spritesPerRow, count }
 }

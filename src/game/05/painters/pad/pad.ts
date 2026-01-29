@@ -5,14 +5,12 @@ import {
     TgdPainterState,
     type TgdSprite,
     TgdTexture2D,
-    tgdCalcClamp,
-    tgdCalcMapRange,
-    tgdCalcModulo,
     type WebglImage,
     webglPresetBlend,
+    tgdCalcModuloDiscrete,
 } from "@tolokoban/tgd"
+
 import { AtlasDefPads } from "@/gfx/05/pads"
-import { EnumHitResult, type HitResult } from "../../types"
 
 export interface PainterPadOptions {
     atlasImage: WebglImage
@@ -74,35 +72,21 @@ export class PainterPad extends TgdPainter {
         return this.sprite.x
     }
     set x(value: number) {
-        this.sprite.x = tgdCalcClamp(value, -11, 11)
+        this.sprite.x = value
     }
 
     get y() {
         return this.sprite.y
     }
     set y(value: number) {
-        this.sprite.y = tgdCalcClamp(value, -12, 12)
+        this.sprite.y = value
     }
 
-    hit(x: number, y: number, dx: number, dy: number): HitResult | null {
-        if (dy > 0 || Math.abs(y - this.y) > 0.5) return null
-
-        const dist = x - this.x
-        if (Math.abs(dist) > 2) return null
-
-        const h = 2 - 1 / 8
-        const ang = 30
-        const abs = Math.abs(dist)
-        const normalAngleDeg =
-            (abs < h
-                ? tgdCalcMapRange(abs, 0, h, 0, ang)
-                : tgdCalcMapRange(abs, h, 2, ang, -90)) * (dist < 0 ? 1 : -1)
-        return {
-            type: EnumHitResult.Wall,
-            normalAngleDeg,
-            x,
-            y,
-        }
+    get scale() {
+        return this.sprite.scaleX
+    }
+    set scale(value: number) {
+        this.sprite.scaleX = value
     }
 
     delete() {
@@ -111,12 +95,7 @@ export class PainterPad extends TgdPainter {
     }
 
     paint(time: number, delay: number) {
+        this.sprite.index = tgdCalcModuloDiscrete(time, 0.5, 16)
         this.painter.paint(time, delay)
-        this.update(time, delay)
-    }
-
-    update(time: number, delay: number) {
-        const alpha = tgdCalcModulo(time, 0, 0.5)
-        this.sprite.index = Math.floor(tgdCalcMapRange(alpha, 0, 0.5, 0, 16))
     }
 }

@@ -78,6 +78,11 @@ export class Ball {
         this._dirY = Math.cos(-radians)
     }
 
+    delete() {
+        this.speed = 0
+        this.spritesPainter.spriteDelete(this.sprite)
+    }
+
     setPadXY(x: number, y: number) {
         this.padX = x
         this.padY = y
@@ -109,11 +114,11 @@ export class Ball {
     }
 
     applyHit(hit: HitResult) {
-        if (hit.type === EnumHitResult.Wall || !this.powerBall) {
-            this.angle = 2 * hit.normalAngleDeg - (this.angle + 180)
-        } else if (hit.type === EnumHitResult.Death) {
+        if (hit.type === EnumHitResult.Death) {
             // The ball as fallen too far: it's dead!
             this.eventDead.dispatch(this)
+        } else if (hit.type === EnumHitResult.Wall || !this.powerBall) {
+            this.angle = 2 * hit.normalAngleDeg - (this.angle + 180)
         }
     }
 }

@@ -1,21 +1,18 @@
+import { ArkanoidLevels } from "@/game/05/levels"
+import { PainterBalls } from "@/game/05/painters/balls"
+import { PainterBricks } from "@/game/05/painters/bricks"
 import {
     TgdContext,
     TgdControllerCameraOrbit,
     TgdGeometryPlane,
     TgdMaterialFlat,
     TgdPainterClear,
-    TgdPainterLogic,
     TgdPainterMesh,
     TgdPainterState,
     type WebglImage,
     webglPresetDepth,
 } from "@tolokoban/tgd"
 import React from "react"
-import { ArkanoidLevels } from "@/game/05/levels"
-import { PainterBalls } from "@/game/05/painters/balls"
-import { PainterBricks } from "@/game/05/painters/bricks"
-import { EnumHitResult, type HitResult } from "@/game/05/types"
-import { Inputs } from "./inputs"
 import { Logic } from "./logic"
 import { PainterPad } from "./painters/pad"
 
@@ -33,14 +30,12 @@ class Game {
         const context = new TgdContext(canvas, {
             alpha: true,
         })
-        const inputs = new Inputs(context)
         const { camera } = context
         camera.near = 0.01
         camera.far = 1000
         camera.fitSpaceAtTarget(28, 28)
         const bricksPainter = new PainterBricks(context, {
             atlasImage: assets.atlasBricks,
-            level: ArkanoidLevels[0],
         })
         const padPainter = new PainterPad(context, {
             atlasImage: assets.atlasPads,
