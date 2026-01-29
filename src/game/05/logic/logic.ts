@@ -64,7 +64,7 @@ export class Logic extends TgdPainterLogic {
     private readonly update = (time: number, delay: number) => {
         const { pad, balls, bricks, inputs } = this
         inputs.update(time, delay)
-        if (inputs.fire) balls.unstick()
+        if (inputs.fire || inputs.gamepad.buttonAorB) balls.unstick()
         pad.update(time, delay)
         balls.update(time, delay)
         for (const ball of balls.list()) {

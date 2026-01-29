@@ -18,9 +18,11 @@ export class LogicPad {
     }
 
     update(time: number, delay: number) {
-        const { inputs, speed } = this
-        if (inputs.right) this.x += speed * delay
-        if (inputs.left) this.x -= speed * delay
+        const { inputs } = this
+        const speed = this.speed * delay
+        if (inputs.right) this.x += speed
+        if (inputs.left) this.x -= speed
+        this.x += speed * inputs.gamepad.stickV1
     }
 
     get x() {

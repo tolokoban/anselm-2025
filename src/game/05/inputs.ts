@@ -1,10 +1,13 @@
-import type { TgdContext } from "@tolokoban/tgd"
+import type { TgdContext, TgdInputGamepad } from "@tolokoban/tgd"
 
 export class Inputs {
+    public readonly gamepad: TgdInputGamepad
+
     private readonly pressedButtons = new Set<string>()
 
     constructor(private readonly context: TgdContext) {
         ;["fire", "left", "right"].forEach(this.registerButton)
+        this.gamepad = context.inputs.gamepad
     }
 
     update(time: number, delay: number) {}
