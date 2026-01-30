@@ -1,4 +1,3 @@
-import { debug } from "./debug"
 import { intro } from "./intro"
 import { spaceinvader } from "./spaceinvader"
 
