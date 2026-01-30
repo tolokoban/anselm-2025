@@ -1,11 +1,16 @@
 import { TgdEvent } from "@tolokoban/tgd"
-import { PainterBricks } from "../../painters/bricks"
-import { ArkanoidLevel } from "../../levels/types"
+import type { ArkanoidLevel, EnumBonusType } from "../../levels/types"
+import type { PainterBricks } from "../../painters/bricks"
+import { EnumBrickType, type LogicBrick } from "./brick"
 import { parseLevel } from "./parse-level"
-import { EnumBrickType, LogicBrick } from "./brick"
 
 export class LogicBricks {
     public readonly eventVictory = new TgdEvent()
+    public readonly eventBonus = new TgdEvent<{
+        type: EnumBonusType
+        x: number
+        y: number
+    }>()
 
     private _level: ArkanoidLevel | null = null
     private _count = 0
@@ -43,10 +48,11 @@ export class LogicBricks {
         y: number
         dx: number
         dy: number
-    }): number | null => {
+    }): { normalAngle: number; brick: LogicBrick } | null => {
         const brick = this.getBrick(args)
         if (!brick) return null
 
+        const normalAngle = brick.hitTest(args)
         if (
             [EnumBrickType.Glass, EnumBrickType.GlassBroken].includes(
                 brick.index
@@ -55,10 +61,17 @@ export class LogicBricks {
             brick.index++
         } else if (brick.index !== EnumBrickType.Unbreakable) {
             brick.dead = true
+            if (brick.bonus) {
+                this.eventBonus.dispatch({
+                    type: brick.bonus,
+                    x: brick.x,
+                    y: brick.y,
+                })
+            }
             this.painter.remove(brick.sprite)
             this.count--
         }
-        return brick.hitTest(args)
+        return { normalAngle, brick }
     }
 
     private getBrick({ x, y }: { x: number; y: number }) {
@@ -71,8 +84,9 @@ export class LogicBricks {
                 !brick.dead &&
                 Math.abs(brick.x - x) < 1 &&
                 Math.abs(brick.y - y) < 0.5
-            )
+            ) {
                 return brick
+            }
         }
         return null
     }

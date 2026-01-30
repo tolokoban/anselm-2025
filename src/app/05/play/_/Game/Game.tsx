@@ -1,15 +1,11 @@
-import type { WebglImage } from "@tolokoban/tgd";
 import { useTranslator } from "@/app/05/_translation";
 import { useGame } from "@/game/05/game";
+import type { Assets } from "@/game/05/types";
 import styles from "./Game.module.css";
 
 export interface GameProps {
 	className?: string;
-	assets: {
-		atlasBricks: WebglImage;
-		atlasBalls: WebglImage;
-		atlasPads: WebglImage;
-	};
+	assets: Assets;
 }
 
 export default function Game({ className, assets }: GameProps) {

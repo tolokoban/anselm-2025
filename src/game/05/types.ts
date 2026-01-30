@@ -1,3 +1,5 @@
+import type { WebglImage } from "@tolokoban/tgd"
+
 export enum EnumHitResult {
     Brick = 0,
     Wall,
@@ -22,4 +24,11 @@ export enum EnumBrick {
     Glass2 = 3,
     Glass3 = 4,
     Unbreakable = 5,
+}
+
+export interface Assets {
+    atlasBalls: WebglImage
+    atlasBonuses: WebglImage
+    atlasBricks: WebglImage
+    atlasPads: WebglImage
 }

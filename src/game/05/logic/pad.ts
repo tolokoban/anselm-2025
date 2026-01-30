@@ -3,7 +3,7 @@ import type { Inputs } from "../inputs"
 import type { PainterPad } from "../painters/pad"
 
 export class LogicPad {
-    public speed = 15
+    public speed = 16
 
     constructor(
         private readonly inputs: Inputs,

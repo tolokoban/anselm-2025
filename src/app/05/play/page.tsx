@@ -1,6 +1,7 @@
 import { tgdLoadAssets, type WebglImage } from "@tolokoban/tgd";
 import React from "react";
 import AtlasBallsURL from "@/gfx/05/balls.webp";
+import AtlasBonusesURL from "@/gfx/05/bonuses.webp";
 import AtlasBricksURL from "@/gfx/05/bricks.webp";
 import AtlasPadsURL from "@/gfx/05/pads.webp";
 import Game from "./_/Game";
@@ -16,25 +17,26 @@ export default function Page05() {
 				img: {
 					atlasBalls: AtlasBallsURL,
 					atlasBricks: AtlasBricksURL,
+					atlasBonuses: AtlasBonusesURL,
 					atlasPads: AtlasPadsURL,
 				},
 			}),
 			sleep(1),
 		]);
 		all.then(([assets]) => {
-			const { atlasBalls, atlasBricks, atlasPads } = assets.img;
-			if (!atlasBalls || !atlasBricks || !atlasPads) {
+			const { atlasBalls, atlasBricks, atlasBonuses, atlasPads } = assets.img;
+			if (!atlasBalls || !atlasBricks || !atlasBonuses || !atlasPads) {
 				console.error("Unable to load atlas:", AtlasBricksURL);
 				throw new Error("Unable to load atlas!");
 			}
-			setImages([atlasBalls, atlasBricks, atlasPads]);
+			setImages([atlasBalls, atlasBricks, atlasBonuses, atlasPads]);
 		});
 	}, []);
 
 	if (!images) return <Spinner />;
 
-	const [atlasBalls, atlasBricks, atlasPads] = images;
-	return <Game assets={{ atlasBalls, atlasBricks, atlasPads }} />;
+	const [atlasBalls, atlasBricks, atlasBonuses, atlasPads] = images;
+	return <Game assets={{ atlasBalls, atlasBricks, atlasBonuses, atlasPads }} />;
 }
 
 function sleep(delay: number) {

@@ -1,73 +1,113 @@
-import { ArkanoidLevels } from "@/game/05/levels"
-import { PainterBalls } from "@/game/05/painters/balls"
-import { PainterBricks } from "@/game/05/painters/bricks"
 import {
+    TgdCameraPerspective,
     TgdContext,
-    TgdControllerCameraOrbit,
-    TgdGeometryPlane,
-    TgdMaterialFlat,
     TgdPainterClear,
-    TgdPainterMesh,
-    TgdPainterState,
-    type WebglImage,
-    webglPresetDepth,
+    TgdPainterGroup,
+    TgdPainterGroupCamera,
+    tgdCalcDegToRad,
+    tgdCalcMix,
+    tgdEasingFunctionInOutBounce,
+    tgdEasingFunctionInOutElastic,
 } from "@tolokoban/tgd"
 import React from "react"
-import { Logic } from "./logic"
-import { PainterPad } from "./painters/pad"
+
+import { makeLevelPainterAndLogic } from "./factory"
+import type { Assets } from "./types"
 
 class Game {
-    readonly init = (
-        canvas: HTMLCanvasElement | null,
-        assets: {
-            atlasBalls: WebglImage
-            atlasBricks: WebglImage
-            atlasPads: WebglImage
-        }
-    ) => {
+    private levelIndex = 0
+    private context: TgdContext | null = null
+    private assets: Assets | null = null
+    private readonly painters = new TgdPainterGroup()
+    private readonly logics = new TgdPainterGroup()
+
+    readonly init = (canvas: HTMLCanvasElement | null, assets: Assets) => {
         if (!canvas) return
 
+        if (this.context) this.context.delete()
+        this.assets = assets
         const context = new TgdContext(canvas, {
             alpha: true,
         })
-        const { camera } = context
-        camera.near = 0.01
-        camera.far = 1000
-        camera.fitSpaceAtTarget(28, 28)
-        const bricksPainter = new PainterBricks(context, {
-            atlasImage: assets.atlasBricks,
-        })
-        const padPainter = new PainterPad(context, {
-            atlasImage: assets.atlasPads,
-        })
-        const ballsPainter = new PainterBalls(context, {
-            atlasImage: assets.atlasBalls,
-        })
-        const board = new TgdPainterMesh(context, {
-            geometry: new TgdGeometryPlane({ sizeX: 26, sizeY: 26 }),
-            material: new TgdMaterialFlat({ color: [0, 0, 0, 1] }),
-        })
+        this.context = context
+        context.camera = createCamera()
         context.add(
             new TgdPainterClear(context, {
                 color: [0.1, 0.05, 0.025, 1],
                 depth: 1,
             }),
-            new TgdPainterState(context, {
-                depth: webglPresetDepth.lessOrEqual,
-                children: [board, bricksPainter, padPainter, ballsPainter],
-            }),
-            new Logic(context, {
-                balls: ballsPainter,
-                bricks: bricksPainter,
-                pad: padPainter,
-            })
+            this.painters,
+            this.logics
         )
-        context.play()
-        new TgdControllerCameraOrbit(context, {
-            inertiaOrbit: 1000,
-        })
+        this.installLevel()
         return () => context.delete()
     }
+
+    installLevel() {
+        const { context, assets } = this
+        if (!context || !assets) return
+
+        const camera1 = createCamera()
+        const { painter: painter1, logic: logic1 } = makeLevelPainterAndLogic(
+            context,
+            assets,
+            this.levelIndex
+        )
+        const camera2 = createCamera()
+        camera2.transfo.setEulerRotation(0, 90, 0)
+        const { painter: painter2 } = makeLevelPainterAndLogic(
+            context,
+            assets,
+            this.levelIndex + 1
+        )
+        this.painters.removeAll()
+        this.logics.removeAll()
+        this.painters.add(
+            new TgdPainterGroupCamera(context, {
+                camera: camera1,
+                children: [painter1],
+            }),
+            new TgdPainterGroupCamera(context, {
+                camera: camera2,
+                children: [painter2],
+            })
+        )
+        this.logics.add(logic1)
+        logic1.eventVictory.addListener(() => {
+            context.pause()
+            this.logics.removeAll()
+            context.animSchedule({
+                delay: 0.5,
+                duration: 1.5,
+                action(t) {
+                    camera1.transfo.setEulerRotation(
+                        0,
+                        tgdCalcMix(0, -90, t),
+                        0
+                    )
+                    camera2.transfo.setEulerRotation(0, tgdCalcMix(90, 0, t), 0)
+                },
+                onEnd: () => {
+                    this.levelIndex++
+                    this.installLevel()
+                },
+                easingFunction: tgdEasingFunctionInOutElastic,
+            })
+            context.play()
+        })
+    }
+}
+
+function createCamera() {
+    return new TgdCameraPerspective({
+        far: 100,
+        near: 1,
+        fovy: tgdCalcDegToRad(90),
+        transfo: {
+            distance: 0,
+            position: [0, 0, 13],
+        },
+    })
 }
 
 export function useGame() {

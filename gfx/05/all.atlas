@@ -10,6 +10,15 @@
             },
         },
         {
+            name: "bonuses",
+            input: {
+                path: "bonuses",
+            },
+            output: {
+                path: "../../src/gfx/05/",
+            },
+        },
+        {
             name: "balls",
             input: {
                 path: "balls",

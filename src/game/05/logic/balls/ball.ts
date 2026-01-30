@@ -1,7 +1,7 @@
 import {
+    type TgdSprite,
     tgdCalcDegToRad,
     tgdCalcModuloDiscrete,
-    TgdSprite,
 } from "@tolokoban/tgd"
 
 export enum EnumBallType {
@@ -12,7 +12,7 @@ export enum EnumBallType {
 export class LogicBall {
     /** Radians */
     public angle = 0
-    public speed = 10
+    public speed = 12
     public type = EnumBallType.Normal
 
     private _dx = 0

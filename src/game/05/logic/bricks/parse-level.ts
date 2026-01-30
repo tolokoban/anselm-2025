@@ -1,7 +1,7 @@
-import { TgdSprite } from "@tolokoban/tgd"
+import type { TgdSprite } from "@tolokoban/tgd"
 import { isNumber } from "@tolokoban/type-guards"
-import { ArkanoidLevel } from "../../levels/types"
-import { LogicBrick } from "./brick"
+import type { ArkanoidLevel } from "../../levels/types"
+import { EnumBrickType, LogicBrick } from "./brick"
 
 const INDEXES: Record<string, number> = {
     "[": 0,
@@ -28,9 +28,10 @@ export function parseLevel(
                     index,
                     x,
                     y,
+                    ...level.options?.[row.charAt(i + 1)],
                 })
                 currentSprites.push(brick)
-                if (index < INDEXES["{"]) count++
+                if (brick.index !== EnumBrickType.Unbreakable) count++
             }
             x++
         }

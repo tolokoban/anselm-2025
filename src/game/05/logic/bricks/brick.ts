@@ -1,4 +1,5 @@
-import { TgdSprite } from "@tolokoban/tgd"
+import type { TgdSprite } from "@tolokoban/tgd"
+import type { BrickOption } from "../../levels/types"
 
 export enum EnumBrickType {
     Normal1,
@@ -8,7 +9,7 @@ export enum EnumBrickType {
     GlassAlmostDead,
     Unbreakable,
 }
-export interface LogicBrickOptions {
+export interface LogicBrickOptions extends BrickOption {
     index: number
     x: number
     y: number
@@ -19,7 +20,7 @@ export class LogicBrick {
 
     constructor(
         public readonly sprite: TgdSprite,
-        options: LogicBrickOptions
+        private readonly options: LogicBrickOptions
     ) {
         sprite.index = options.index
         sprite.x = options.x
@@ -41,12 +42,11 @@ export class LogicBrick {
         this.sprite.index = v
     }
 
-    readonly hitTest = (args: {
-        x: number
-        y: number
-        dx: number
-        dy: number
-    }): number | null => {
+    get bonus() {
+        return this.options.bonus
+    }
+
+    hitTest(args: { x: number; y: number; dx: number; dy: number }): number {
         const { x, y, dx, dy } = args
         const x0 = x - this.x
         const y0 = y - this.y
