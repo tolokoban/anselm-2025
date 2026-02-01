@@ -1,4 +1,4 @@
-import type { TgdSprite } from "@tolokoban/tgd"
+import type { TgdSpriteHue } from "@tolokoban/tgd"
 import type { BrickOption } from "../../levels/types"
 
 export enum EnumBrickType {
@@ -13,18 +13,20 @@ export interface LogicBrickOptions extends BrickOption {
     index: number
     x: number
     y: number
+    hue: number
 }
 
 export class LogicBrick {
     public dead = false
 
     constructor(
-        public readonly sprite: TgdSprite,
+        public readonly sprite: TgdSpriteHue,
         private readonly options: LogicBrickOptions
     ) {
         sprite.index = options.index
         sprite.x = options.x
         sprite.y = options.y
+        sprite.hue = options.hue
     }
 
     get x() {

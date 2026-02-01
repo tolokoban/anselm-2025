@@ -1,14 +1,14 @@
-import { AtlasDefBricks } from "@/gfx/05/bricks"
 import {
     type TgdContext,
     TgdPainter,
-    TgdPainterSprites,
+    TgdPainterSpritesHue,
     TgdPainterState,
-    TgdSprite,
+    type TgdSpriteHue,
     TgdTexture2D,
     type WebglImage,
     webglPresetBlend,
 } from "@tolokoban/tgd"
+import { AtlasDefBricks } from "@/gfx/05/bricks"
 
 export interface PainterBricksOptions {
     atlasImage: WebglImage
@@ -16,7 +16,7 @@ export interface PainterBricksOptions {
 
 export class PainterBricks extends TgdPainter {
     private readonly painter: TgdPainter
-    private readonly spritesPainter: TgdPainterSprites
+    private readonly spritesPainter: TgdPainterSpritesHue
     private readonly texture: TgdTexture2D
 
     constructor(context: TgdContext, options: PainterBricksOptions) {
@@ -30,7 +30,7 @@ export class PainterBricks extends TgdPainter {
             },
         })
         this.texture = texture
-        this.spritesPainter = new TgdPainterSprites(context, {
+        this.spritesPainter = new TgdPainterSpritesHue(context, {
             atlas: [
                 AtlasDefBricks.sprites.bricks0,
                 AtlasDefBricks.sprites.bricks1,
@@ -56,7 +56,7 @@ export class PainterBricks extends TgdPainter {
         return this.spritesPainter.spriteCreate()
     }
 
-    remove(sprite: TgdSprite) {
+    remove(sprite: TgdSpriteHue) {
         this.spritesPainter.spriteDelete(sprite)
     }
 

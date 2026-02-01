@@ -48,6 +48,7 @@ class Game {
         if (!context || !assets) return
 
         const camera1 = createCamera()
+        context.camera = camera1
         const { painter: painter1, logic: logic1 } = makeLevelPainterAndLogic(
             context,
             assets,

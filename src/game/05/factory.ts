@@ -59,6 +59,7 @@ export function makeLevelPainterAndLogic(
         }),
     ])
     const logic = new Logic(context, {
+        camera: context.camera,
         levelIndex,
         balls: ballsPainter,
         bonuses: bonusesPainter,
