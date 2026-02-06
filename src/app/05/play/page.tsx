@@ -3,8 +3,8 @@ import React from "react";
 import AtlasBallsURL from "@/gfx/05/balls.webp";
 import AtlasBonusesURL from "@/gfx/05/bonuses.webp";
 import AtlasBricksURL from "@/gfx/05/bricks.webp";
-import AtlasPadsURL from "@/gfx/05/pads.webp";
 import AtlasLaserURL from "@/gfx/05/laser.webp";
+import AtlasPadsURL from "@/gfx/05/pads.webp";
 import Game from "./_/Game";
 import Spinner from "./_/Spinner";
 
@@ -20,25 +20,43 @@ export default function Page05() {
 					atlasBricks: AtlasBricksURL,
 					atlasBonuses: AtlasBonusesURL,
 					atlasPads: AtlasPadsURL,
-                    atlasLasers: AtlasLaserURL,
+					atlasLasers: AtlasLaserURL,
 				},
 			}),
 			sleep(1),
 		]);
 		all.then(([assets]) => {
-			const { atlasBalls, atlasBricks, atlasBonuses, atlasPads, atlasLasers } = assets.img;
-			if (!atlasBalls || !atlasBricks || !atlasBonuses || !atlasPads||!atlasLasers) {
+			const { atlasBalls, atlasBricks, atlasBonuses, atlasPads, atlasLasers } =
+				assets.img;
+			if (
+				!atlasBalls ||
+				!atlasBricks ||
+				!atlasBonuses ||
+				!atlasPads ||
+				!atlasLasers
+			) {
 				console.error("Unable to load atlas:", AtlasBricksURL);
 				throw new Error("Unable to load atlas!");
 			}
-			setImages([atlasBalls, atlasBricks, atlasBonuses, atlasPads, atlasLasers]);
+			setImages([
+				atlasBalls,
+				atlasBricks,
+				atlasBonuses,
+				atlasPads,
+				atlasLasers,
+			]);
 		});
 	}, []);
 
 	if (!images) return <Spinner />;
 
-	const [atlasBalls, atlasBricks, atlasBonuses, atlasPads,atlasLasers] = images;
-	return <Game assets={{ atlasBalls, atlasBricks, atlasBonuses, atlasPads, atlasLasers }} />;
+	const [atlasBalls, atlasBricks, atlasBonuses, atlasPads, atlasLasers] =
+		images;
+	return (
+		<Game
+			assets={{ atlasBalls, atlasBricks, atlasBonuses, atlasPads, atlasLasers }}
+		/>
+	);
 }
 
 function sleep(delay: number) {

@@ -17,7 +17,7 @@ export class LogicPad {
         pad.scale = 1
     }
 
-    update(time: number, delay: number) {
+    update(_time: number, delay: number) {
         const { inputs } = this
         const speed = this.speed * delay
         if (inputs.right) this.x += speed

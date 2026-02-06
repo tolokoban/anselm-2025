@@ -1,6 +1,8 @@
 import { type ArkanoidLevel, EnumBonusType } from "./types"
 
 export const intro: ArkanoidLevel = {
+    hueShift: 60,
+    hueRandom: 30,
     pose: [
         "                          ",
         "        <><><><><>        ",

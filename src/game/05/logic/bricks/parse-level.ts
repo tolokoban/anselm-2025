@@ -1,11 +1,11 @@
 import {
-    type TgdSprite,
     type TgdSpriteHue,
+    tgdCalcDegToRad,
     tgdCalcRandom,
 } from "@tolokoban/tgd"
 import { isNumber } from "@tolokoban/type-guards"
 import type { ArkanoidLevel } from "../../levels/types"
-import { EnumBrickType, LogicBrick } from "./brick"
+import { EnumBrickType, LogicBrick, type LogicBrickOptions } from "./brick"
 
 const INDEXES: Record<string, number> = {
     "[": 0,
@@ -16,7 +16,7 @@ const INDEXES: Record<string, number> = {
 
 export function parseLevel(
     level: ArkanoidLevel,
-    add: () => TgdSpriteHue
+    add: (x: number, y: number) => TgdSpriteHue
 ): { bricks: LogicBrick[][]; count: number } {
     const spritesPerRow: LogicBrick[][] = []
     let count = 0
@@ -28,13 +28,17 @@ export function parseLevel(
         for (let i = 0; i < row.length; i++) {
             const index = INDEXES[row.charAt(i)]
             if (isNumber(index)) {
-                const brick = new LogicBrick(add(), {
+                const data: LogicBrickOptions = {
                     index,
                     x,
                     y,
                     hue: 0,
                     ...level.options?.[row.charAt(i + 1)],
-                })
+                }
+                data.hue +=
+                    tgdCalcDegToRad(level.hueShift ?? 0) +
+                    tgdCalcRandom(tgdCalcDegToRad(level.hueRandom ?? 0))
+                const brick = new LogicBrick(add(x, y), data)
                 currentSprites.push(brick)
                 if (brick.index !== EnumBrickType.Unbreakable) count++
             }

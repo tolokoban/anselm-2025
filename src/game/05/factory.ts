@@ -14,9 +14,9 @@ import { Logic } from "./logic"
 import { PainterBalls } from "./painters/balls"
 import { PainterBonuses } from "./painters/bonuses"
 import { PainterBricks } from "./painters/bricks"
+import { PainterLaser } from "./painters/laser/laser"
 import { PainterPad } from "./painters/pad"
 import type { Assets } from "./types"
-import { PainterLaser } from "./painters/laser/laser"
 
 export function makeLevelPainterAndLogic(
     context: TgdContext,
@@ -45,7 +45,7 @@ export function makeLevelPainterAndLogic(
         transfo: {
             position: [0, 0, -1e-1],
         },
-        geometry: new TgdGeometryPlane({ sizeX: 26, sizeY: 26 }),
+        geometry: new TgdGeometryPlane({ sizeX: 26, sizeY: 26, uv1: [3, 3] }),
         material: new TgdMaterialFlatTexture({
             texture: new TgdTexture2D(context, { load: BackgroundURL }),
         }),

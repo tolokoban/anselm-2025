@@ -2,6 +2,7 @@ import { OPTIONS } from "./common"
 import { type ArkanoidLevel, EnumBonusType } from "./types"
 
 export const upsideDown: ArkanoidLevel = {
+    hueShift: 120,
     pose: [
         "      (a         [][]     ",
         "     (b(b        [][]     ",

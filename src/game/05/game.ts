@@ -6,7 +6,6 @@ import {
     TgdPainterGroupCamera,
     tgdCalcDegToRad,
     tgdCalcMix,
-    tgdEasingFunctionInOutBounce,
     tgdEasingFunctionInOutElastic,
 } from "@tolokoban/tgd"
 import React from "react"

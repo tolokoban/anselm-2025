@@ -1,11 +1,11 @@
 import {
-    type TgdAnimation,
     type TgdCamera,
     type TgdContext,
     TgdEvent,
     TgdPainterLogic,
+    tgdCalcClamp,
     tgdCalcDegToRad,
-    tgdCalcMix,
+    tgdCalcModulo,
 } from "@tolokoban/tgd"
 import { isNumber } from "@tolokoban/type-guards"
 import { byId } from "@/utils/dom"
@@ -14,6 +14,7 @@ import { ArkanoidLevels } from "../levels"
 import type { PainterBalls } from "../painters/balls"
 import type { PainterBonuses } from "../painters/bonuses"
 import type { PainterBricks } from "../painters/bricks"
+import type { PainterLaser } from "../painters/laser/laser"
 import type { PainterPad } from "../painters/pad"
 import { EnumBallType, type LogicBall } from "./balls/ball"
 import { LogicBalls } from "./balls/balls"
@@ -21,9 +22,8 @@ import { BonusManager } from "./bonus-manager"
 import { LogicBonuses } from "./bonuses/bonuses"
 import { LogicBricks } from "./bricks"
 import { EnumBrickType } from "./bricks/brick"
-import { LogicPad } from "./pad"
-import { PainterLaser } from "../painters/laser/laser"
 import { LogicLaser } from "./laser"
+import { LogicPad } from "./pad"
 
 export interface LogicOptions {
     camera: TgdCamera
@@ -83,6 +83,11 @@ export class Logic extends TgdPainterLogic {
             bonuses: this.bonuses,
             laser: this.laser,
         })
+        context.inputs.keyboard.eventKeyPress.addListener((evt) => {
+            evt.preventDefault()
+            evt.stopPropagation()
+            if (evt.key === "N") this.handleLevelVictory()
+        })
     }
 
     get lifes() {
@@ -141,6 +146,10 @@ function collideWithPad(ball: LogicBall, pad: LogicPad): number | null {
     if (Math.abs(alpha) > 1) return null
 
     const ang = 30
-    const normalAngleDeg = ang * alpha ** 3
+    const normalAngleDeg = tgdCalcClamp(
+        tgdCalcModulo(ang * alpha ** 3, -180, +180),
+        -60,
+        +60
+    )
     return tgdCalcDegToRad(-normalAngleDeg)
 }

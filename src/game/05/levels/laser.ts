@@ -1,7 +1,8 @@
 import { OPTIONS } from "./common"
-import { type ArkanoidLevel, EnumBonusType } from "./types"
+import type { ArkanoidLevel } from "./types"
 
 export const laser: ArkanoidLevel = {
+    hueShift: 180,
     pose: [
         "<><Z<><><Z<><Z<><Z<><><Z<>",
         "<>()()()()()()()()()()()<>",

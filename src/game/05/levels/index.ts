@@ -8,4 +8,4 @@ import { laser } from "./laser"
  * All levels: https://strategywiki.org/wiki/Arkanoid:_Revenge_of_Doh/Walkthrough
  */
 
-export const ArkanoidLevels = [laser, upsideDown, intro, spaceinvader]
+export const ArkanoidLevels = [intro, spaceinvader, laser, upsideDown]
