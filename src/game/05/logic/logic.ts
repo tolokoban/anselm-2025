@@ -22,6 +22,8 @@ import { LogicBonuses } from "./bonuses/bonuses"
 import { LogicBricks } from "./bricks"
 import { EnumBrickType } from "./bricks/brick"
 import { LogicPad } from "./pad"
+import { PainterLaser } from "../painters/laser/laser"
+import { LogicLaser } from "./laser"
 
 export interface LogicOptions {
     camera: TgdCamera
@@ -30,6 +32,7 @@ export interface LogicOptions {
     bricks: PainterBricks
     bonuses: PainterBonuses
     pad: PainterPad
+    laser: PainterLaser
 }
 
 export class Logic extends TgdPainterLogic {
@@ -40,6 +43,7 @@ export class Logic extends TgdPainterLogic {
     private readonly balls: LogicBalls
     private readonly bricks: LogicBricks
     private readonly bonuses: LogicBonuses
+    private readonly laser: LogicLaser
     private readonly inputs: Inputs
     private bonusManager: BonusManager
 
@@ -61,6 +65,7 @@ export class Logic extends TgdPainterLogic {
             this.pad.reset()
             this.balls.reset()
             this.bonuses.reset()
+            this.laser.enabled = false
         })
         this.balls.reset()
         this.bonuses = new LogicBonuses(options.bonuses)
@@ -69,12 +74,14 @@ export class Logic extends TgdPainterLogic {
         this.bricks.eventBonus.addListener((bonus) => this.bonuses.add(bonus))
         this.bricks.level =
             ArkanoidLevels[options.levelIndex % ArkanoidLevels.length]
+        this.laser = new LogicLaser(this.pad, options.laser)
         this.bonusManager = new BonusManager({
             context,
             camera: context.camera,
             pad: this.pad,
             balls: this.balls,
             bonuses: this.bonuses,
+            laser: this.laser,
         })
     }
 
@@ -92,7 +99,7 @@ export class Logic extends TgdPainterLogic {
     private readonly update = (time: number, delta: number) => {
         this.bonusManager.update(time)
 
-        const { pad, balls, bricks, bonuses, inputs } = this
+        const { pad, balls, bricks, bonuses, laser, inputs } = this
         inputs.update(time, delta)
         if (inputs.fire || inputs.gamepad.buttonAorB) balls.unstick()
         pad.update(time, delta)
@@ -116,6 +123,8 @@ export class Logic extends TgdPainterLogic {
             }
         }
         bonuses.update(time, delta)
+        laser.update(time, delta)
+        laser.hitTest(bricks)
     }
 
     private handleLevelVictory = () => {

@@ -20,7 +20,7 @@ export function parseLevel(
 ): { bricks: LogicBrick[][]; count: number } {
     const spritesPerRow: LogicBrick[][] = []
     let count = 0
-    let y = 12
+    let y = 12.5
     for (const row of level.pose) {
         let x = -12
         const currentSprites: LogicBrick[] = []

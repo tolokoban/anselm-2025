@@ -6,6 +6,7 @@ export enum EnumBonusType {
     LargePad,
     SmallPad,
     UpsideDown,
+    Laser,
 }
 
 export type BrickOption = Partial<{

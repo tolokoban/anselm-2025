@@ -1,15 +1,15 @@
-import { AtlasDefBalls } from "@/gfx/05/balls"
 import {
     type TgdContext,
     TgdEvent,
     TgdPainter,
     TgdPainterSprites,
     TgdPainterState,
-    TgdSprite,
+    type TgdSprite,
     TgdTexture2D,
     type WebglImage,
     webglPresetBlend,
 } from "@tolokoban/tgd"
+import { AtlasDefBalls } from "@/gfx/05/balls"
 import type { HitResult } from "../../types"
 import { Ball } from "./ball"
 
@@ -64,11 +64,11 @@ export class PainterBalls extends TgdPainter {
     }
 
     add() {
-        return this.spritesPainter.spriteCreate()
+        return this.spritesPainter.add({})
     }
 
     remove(sprite: TgdSprite) {
-        this.spritesPainter.spriteDelete(sprite)
+        this.spritesPainter.remove(sprite)
     }
 
     reset() {

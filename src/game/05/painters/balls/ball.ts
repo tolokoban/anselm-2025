@@ -40,7 +40,7 @@ export class Ball {
     private timeShift = tgdCalcRandom(15)
 
     constructor(private readonly spritesPainter: TgdPainterSprites) {
-        this.sprite = spritesPainter.spriteCreate()
+        this.sprite = spritesPainter.add({})
     }
 
     get x() {
@@ -80,7 +80,7 @@ export class Ball {
 
     delete() {
         this.speed = 0
-        this.spritesPainter.spriteDelete(this.sprite)
+        this.spritesPainter.remove(this.sprite)
     }
 
     setPadXY(x: number, y: number) {

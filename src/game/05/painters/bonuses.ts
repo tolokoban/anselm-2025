@@ -57,11 +57,11 @@ export class PainterBonuses extends TgdPainter {
     }
 
     readonly add = () => {
-        return this.spritesPainter.spriteCreate()
+        return this.spritesPainter.add({})
     }
 
     remove(sprite: TgdSprite) {
-        this.spritesPainter.spriteDelete(sprite)
+        this.spritesPainter.remove(sprite)
     }
 
     delete() {
@@ -94,7 +94,7 @@ function addLabels(img: WebglImage) {
     ctx.strokeStyle = "#0009"
     ctx.fillStyle = "#fffb"
     ctx.font = `bold ${h / 8}px sans-serif`
-    ctx.lineWidth = h / 16
+    ctx.lineWidth = h / 64
     ctx.textAlign = "center"
     ctx.textBaseline = "middle"
     const cases: Array<[EnumBonusType, string]> = [
@@ -104,6 +104,7 @@ function addLabels(img: WebglImage) {
         [EnumBonusType.LargePad, "GRW"],
         [EnumBonusType.SmallPad, "SHR"],
         [EnumBonusType.UpsideDown, "UPD"],
+        [EnumBonusType.Laser, "LAS"],
     ]
     for (const [type, text] of cases) {
         const { x, y, width, height } = defs[type % 8]
@@ -112,6 +113,5 @@ function addLabels(img: WebglImage) {
         ctx.strokeText(text, xx, yy)
         ctx.fillText(text, xx, yy)
     }
-    document.body.appendChild(canvas)
     return canvas
 }

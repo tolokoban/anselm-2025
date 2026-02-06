@@ -32,6 +32,7 @@
         justify-content: space-between;
         align-items: stretch;
         gap: 1em;
+        background-image: linear-gradient(to left, #000, #222, #222, #000);
 
         > header {
             font-size: 3vh;

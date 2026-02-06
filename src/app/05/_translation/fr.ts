@@ -1,13 +1,17 @@
 import type { Translation } from "@/lang"
 
 const FR = {
-    intro1: `Tu es le meilleur Anselm!
+    intro1: `Désolé de te faire patienter Anselm,
+mais la tour de contrôle ne veut pas nous donner le feu vert pour le décollage.
+Il semblerait que la météo des météorites soit mauvaise en ce moment,
+et que les conditions de vol soient trop dangereuses.`,
+    intro2: `En attendant, je te propose de faire un peu de ménage de façon ludique.
 
-La soucoupe est maintenant pleine de carburant et on va pouvoir aller sur la Lune chercher un vaisseau plus puissant pour sortir du système solaire.`,
-    intro2: `Pour rester discrets, on l'a caché dans un cratère.
-    
-    Il va falloir faire preuve d'un peu d'adresse pour naviguer là-dedans.`,
-    intro3: `Utilise les flèches du clavier, ou touche l'écran à droite ou à gauche pour éviter les obstacles...`,
+Dans les salles de cette base lunaire, il reste de nombreuses caisses inutilisées dont il faudrait se débarasser.`,
+    intro3: `Comme les salles ne sont pas pressurisées, on va envoyer un petit robot que tu télécommandera.
+Grâce à lui, tu pourras diriger une balle en métal sur les caisses pour les détruire.
+
+Amuse-toi bien, et on te tiens au courant de la météo.`,
     lifes: "Vies:",
     loading: "Chargement... ",
     start: `C'est parti !`,

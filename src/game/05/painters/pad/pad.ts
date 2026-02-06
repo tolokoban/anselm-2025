@@ -5,9 +5,9 @@ import {
     TgdPainterState,
     type TgdSprite,
     TgdTexture2D,
+    tgdCalcModuloDiscrete,
     type WebglImage,
     webglPresetBlend,
-    tgdCalcModuloDiscrete,
 } from "@tolokoban/tgd"
 
 import { AtlasDefPads } from "@/gfx/05/pads"
@@ -58,7 +58,7 @@ export class PainterPad extends TgdPainter {
             texture,
             atlasUnit: 4,
         })
-        const sprite = this.spritesPainter.spriteCreate({
+        const sprite = this.spritesPainter.add({
             y: -12,
         })
         this.sprite = sprite

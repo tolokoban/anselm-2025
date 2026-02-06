@@ -53,11 +53,11 @@ export class PainterBricks extends TgdPainter {
     }
 
     readonly add = () => {
-        return this.spritesPainter.spriteCreate()
+        return this.spritesPainter.add({})
     }
 
     remove(sprite: TgdSpriteHue) {
-        this.spritesPainter.spriteDelete(sprite)
+        this.spritesPainter.remove(sprite)
     }
 
     delete() {

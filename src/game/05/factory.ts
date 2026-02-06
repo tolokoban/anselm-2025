@@ -16,6 +16,7 @@ import { PainterBonuses } from "./painters/bonuses"
 import { PainterBricks } from "./painters/bricks"
 import { PainterPad } from "./painters/pad"
 import type { Assets } from "./types"
+import { PainterLaser } from "./painters/laser/laser"
 
 export function makeLevelPainterAndLogic(
     context: TgdContext,
@@ -37,6 +38,9 @@ export function makeLevelPainterAndLogic(
     const ballsPainter = new PainterBalls(context, {
         atlasImage: assets.atlasBalls,
     })
+    const laserPainter = new PainterLaser(context, {
+        atlasImage: assets.atlasLasers,
+    })
     const board = new TgdPainterMesh(context, {
         transfo: {
             position: [0, 0, -1e-1],
@@ -53,6 +57,7 @@ export function makeLevelPainterAndLogic(
                 board,
                 bricksPainter,
                 padPainter,
+                laserPainter,
                 bonusesPainter,
                 ballsPainter,
             ],
@@ -65,6 +70,7 @@ export function makeLevelPainterAndLogic(
         bonuses: bonusesPainter,
         bricks: bricksPainter,
         pad: padPainter,
+        laser: laserPainter,
     })
     return { painter, logic }
 }

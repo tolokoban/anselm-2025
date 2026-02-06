@@ -36,5 +36,14 @@
                 path: "../../src/gfx/05/",
             },
         },
+        {
+            name: "laser",
+            input: {
+                path: "laser",
+            },
+            output: {
+                path: "../../src/gfx/05/",
+            },
+        },
     ],
 }

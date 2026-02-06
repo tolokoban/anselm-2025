@@ -1,4 +1,4 @@
-import { tgdCalcClamp } from "@tolokoban/tgd"
+import { tgdCalcClamp, tgdCalcMapRange } from "@tolokoban/tgd"
 import type { Inputs } from "../inputs"
 import type { PainterPad } from "../painters/pad"
 
@@ -23,12 +23,15 @@ export class LogicPad {
         if (inputs.right) this.x += speed
         if (inputs.left) this.x -= speed
         this.x += speed * inputs.gamepad.stickV1
+        if (inputs.isTouching) {
+            this.x = tgdCalcMapRange(inputs.pointerX, -1, +1, -13, +13)
+        }
     }
 
     get x() {
         return this.pad.x
     }
-    private set x(value: number) {
+    set x(value: number) {
         const { pad } = this
         const size = 2 * pad.scale
         pad.x = tgdCalcClamp(value, -13 + size, 13 - size)

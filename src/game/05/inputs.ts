@@ -3,14 +3,30 @@ import type { TgdContext, TgdInputGamepad } from "@tolokoban/tgd"
 export class Inputs {
     public readonly gamepad: TgdInputGamepad
 
+    private _isTouching = false
+
+    private click = false
+
     private readonly pressedButtons = new Set<string>()
 
     constructor(private readonly context: TgdContext) {
-        ;["fire", "left", "right"].forEach(this.registerButton)
+        const buttons = ["fire", "left", "right"]
+        buttons.forEach(this.registerButton)
         this.gamepad = context.inputs.gamepad
+        context.inputs.pointer.eventTap.addListener(() => (this.click = true))
     }
 
-    update(time: number, delay: number) {}
+    update(time: number, delay: number) {
+        this._isTouching = this.context.inputs.pointer.isTouching()
+    }
+
+    get isTouching() {
+        return this._isTouching
+    }
+
+    get pointerX() {
+        return this.context.inputs.pointer.x
+    }
 
     get right() {
         return (
@@ -27,6 +43,10 @@ export class Inputs {
     }
 
     get fire() {
+        if (this.click) {
+            this.click = false
+            return true
+        }
         return (
             this.context.inputs.keyboard.isDown(" ") ||
             this.pressedButtons.has("fire")

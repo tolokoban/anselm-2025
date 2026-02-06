@@ -1,13 +1,16 @@
 import type FR from "./fr"
 
 const EN: typeof FR = {
-    intro1: `You're the best, Anselm!
+    intro1: `Sorry to keep you waiting, Anselm,
+but the control tower won't give us the go-ahead for takeoff.
+It seems the meteorite weather is bad right now, and the flight conditions are too dangerous.`,
+    intro2: `In the meantime, I suggest we do some fun cleaning up.
 
-The saucer is now full of fuel, and we can go to the Moon to find a more powerful ship to leave the solar system.`,
-    intro2: `To remain discreet, we hid it in a crater.
+There are many unused crates in the rooms of this lunar base that we need to get rid of.`,
+    intro3: `Since the rooms aren't pressurized, we'll send in a small robot that you can control remotely.
+With it, you can aim a metal ball at the crates to destroy them.
 
-It'll take some skill to navigate through there.`,
-    intro3: `Use the keyboad's arrow keys, or touch the screen on the left or on the right to try to avoid abstacles...`,
+Have fun, and we'll keep you updated on the weather.`,
     lifes: "Lifes:",
     loading: "Loading... ",
     start: `Let's start!`,

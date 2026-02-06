@@ -8,6 +8,8 @@ import { BonusBurningBall } from "./burning-ball"
 import { BonusResizePad } from "./resize-pad"
 import { BonusStickyPad } from "./sticky-pad"
 import { BonusUpsideDown } from "./upside-down"
+import { BonusLaser } from "./laser"
+import { LogicLaser } from "../laser"
 
 export class BonusManager {
     private readonly animations: { resize: TgdAnimation[] } = {
@@ -19,6 +21,7 @@ export class BonusManager {
     private readonly bonusLargePad: BonusState
     private readonly bonusSmallPad: BonusState
     private readonly bonusUpsideDown: BonusState
+    private readonly bonusLaser: BonusState
 
     private readonly pad: LogicPad
     private readonly balls: LogicBalls
@@ -30,8 +33,9 @@ export class BonusManager {
         balls: LogicBalls
         pad: LogicPad
         bonuses: LogicBonuses
+        laser: LogicLaser
     }) {
-        const { context, camera, pad, balls, bonuses } = options
+        const { context, camera, pad, balls, bonuses, laser } = options
         this.pad = pad
         this.balls = balls
         this.bonuses = bonuses
@@ -50,6 +54,7 @@ export class BonusManager {
             0.5
         )
         this.bonusUpsideDown = new BonusUpsideDown(context, camera)
+        this.bonusLaser = new BonusLaser(laser)
     }
 
     get stickyPad() {
@@ -62,6 +67,7 @@ export class BonusManager {
         this.bonusLargePad.update(time)
         this.bonusSmallPad.update(time)
         this.bonusUpsideDown.update(time)
+        this.bonusLaser.update(time)
 
         const { pad, bonuses } = this
         const bonus = bonuses.hitTest(pad.x, pad.y, 2 * pad.scale, 0.5)
@@ -83,6 +89,9 @@ export class BonusManager {
                 break
             case EnumBonusType.UpsideDown:
                 this.bonusUpsideDown.start()
+                break
+            case EnumBonusType.Laser:
+                this.bonusLaser.start()
                 break
         }
     }

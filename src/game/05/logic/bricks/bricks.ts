@@ -75,7 +75,7 @@ export class LogicBricks {
     }
 
     private getBrick({ x, y }: { x: number; y: number }) {
-        const row = Math.floor(12.5 - y)
+        const row = Math.floor(13 - y)
         const bricks = this.bricks[row]
         if (!bricks) return null
 

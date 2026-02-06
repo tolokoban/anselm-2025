@@ -8,6 +8,7 @@ export const OPTIONS: Record<string, BrickOption> = {
     L: { bonus: EnumBonusType.LargePad },
     S: { bonus: EnumBonusType.SmallPad },
     U: { bonus: EnumBonusType.UpsideDown },
+    Z: { bonus: EnumBonusType.Laser },
 }
 
 "abcdefghijklmno".split("").forEach((letter, index) => {
