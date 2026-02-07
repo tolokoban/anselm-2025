@@ -34,7 +34,7 @@ export class LogicBalls {
      * Multiply the number of balls by 3.
      */
     triple() {
-        if (this.balls.length > 10) return
+        if (this.balls.length > 3) return
 
         for (const ball of this.list()) {
             this.copyBall(ball, -10)
@@ -47,7 +47,9 @@ export class LogicBalls {
             this.remove(ball)
         }
         this.painter.clear()
-        this.add().stick()
+        const ball = this.add()
+        ball.y = -50
+        ball.stick()
     }
 
     add() {

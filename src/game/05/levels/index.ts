@@ -9,4 +9,4 @@ import { upsideDown } from "./upside-down"
  * All levels: https://strategywiki.org/wiki/Arkanoid:_Revenge_of_Doh/Walkthrough
  */
 
-export const ArkanoidLevels = [pacman, intro, spaceinvader, laser, upsideDown]
+export const ArkanoidLevels = [intro, spaceinvader, laser, upsideDown, pacman]

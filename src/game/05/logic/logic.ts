@@ -112,7 +112,7 @@ export class Logic extends TgdPainterLogic {
         for (const ball of balls.list()) {
             const anglePad = collideWithPad(ball, pad)
             if (isNumber(anglePad)) {
-                ball.bounce(anglePad)
+                ball.bounce(anglePad, true)
                 if (this.bonusManager.stickyPad) ball.stick()
             } else {
                 const hit = bricks.hitTest(ball)
@@ -150,11 +150,7 @@ function collideWithPad(ball: LogicBall, pad: LogicPad): number | null {
     if (Math.abs(alpha) > 1) return null
 
     const ang = 30
-    const normalAngleDeg = tgdCalcClamp(
-        tgdCalcModulo(ang * alpha ** 3, -180, +180),
-        -60,
-        +60
-    )
+    const normalAngleDeg = ang * alpha ** 3
     return tgdCalcDegToRad(-normalAngleDeg)
 }
 

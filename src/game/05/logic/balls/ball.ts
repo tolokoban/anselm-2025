@@ -1,7 +1,10 @@
 import {
     type TgdSprite,
+    tgdCalcClamp,
     tgdCalcDegToRad,
+    tgdCalcModulo,
     tgdCalcModuloDiscrete,
+    tgdCalcRandom,
 } from "@tolokoban/tgd"
 
 export enum EnumBallType {
@@ -41,9 +44,21 @@ export class LogicBall {
 
     /**
      * @param normalAngle Radians
+     * @param clamp If `true`, the resulting angle can only be
+     * between -60 and +60 degrees. Thats's used for the pad.
      */
-    bounce(normalAngle: number) {
-        this.angle = 2 * normalAngle - (this.angle + Math.PI)
+    bounce(normalAngle: number, clamp = false) {
+        const RND = 0.017453292519943295
+        this.angle =
+            2 * normalAngle - (this.angle + Math.PI) + tgdCalcRandom(-RND, +RND)
+        if (clamp) {
+            const ang = tgdCalcDegToRad(60)
+            this.angle = tgdCalcClamp(
+                tgdCalcModulo(this.angle, -Math.PI, +Math.PI),
+                -ang,
+                +ang
+            )
+        }
     }
 
     get x() {
