@@ -32,10 +32,10 @@ export function parseLevel(
                     index,
                     x,
                     y,
-                    hue: 0,
+                    hueShift: 0,
                     ...level.options?.[row.charAt(i + 1)],
                 }
-                data.hue +=
+                data.hueShift +=
                     tgdCalcDegToRad(level.hueShift ?? 0) +
                     tgdCalcRandom(tgdCalcDegToRad(level.hueRandom ?? 0))
                 const brick = new LogicBrick(add(x, y), data)

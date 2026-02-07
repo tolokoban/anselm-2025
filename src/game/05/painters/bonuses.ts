@@ -105,6 +105,7 @@ function addLabels(img: WebglImage) {
         [EnumBonusType.SmallPad, "SHR"],
         [EnumBonusType.UpsideDown, "UPD"],
         [EnumBonusType.Laser, "LAS"],
+        [EnumBonusType.Slow, "\\@_"],
     ]
     for (const [type, text] of cases) {
         const { x, y, width, height } = defs[type % 8]

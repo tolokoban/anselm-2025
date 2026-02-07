@@ -31,5 +31,11 @@ export interface Assets {
     atlasBonuses: WebglImage
     atlasBricks: WebglImage
     atlasPads: WebglImage
+    atlasPadsBloom: WebglImage
     atlasLasers: WebglImage
+}
+
+export interface AssetsEdit {
+    atlasBonuses: WebglImage
+    atlasBricks: WebglImage
 }

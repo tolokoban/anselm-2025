@@ -2,14 +2,15 @@ import type { TgdAnimation, TgdCamera, TgdContext } from "@tolokoban/tgd"
 import { EnumBonusType } from "../../levels/types"
 import type { LogicBalls } from "../balls"
 import type { LogicBonuses } from "../bonuses"
+import type { LogicLaser } from "../laser"
 import type { LogicPad } from "../pad"
 import type { BonusState } from "./bonus-state"
 import { BonusBurningBall } from "./burning-ball"
+import { BonusLaser } from "./laser"
 import { BonusResizePad } from "./resize-pad"
+import { BonusSlow } from "./slow"
 import { BonusStickyPad } from "./sticky-pad"
 import { BonusUpsideDown } from "./upside-down"
-import { BonusLaser } from "./laser"
-import { LogicLaser } from "../laser"
 
 export class BonusManager {
     private readonly animations: { resize: TgdAnimation[] } = {
@@ -22,6 +23,7 @@ export class BonusManager {
     private readonly bonusSmallPad: BonusState
     private readonly bonusUpsideDown: BonusState
     private readonly bonusLaser: BonusState
+    private readonly bonusSlow: BonusSlow
 
     private readonly pad: LogicPad
     private readonly balls: LogicBalls
@@ -55,6 +57,7 @@ export class BonusManager {
         )
         this.bonusUpsideDown = new BonusUpsideDown(context, camera)
         this.bonusLaser = new BonusLaser(laser)
+        this.bonusSlow = new BonusSlow(context, pad)
     }
 
     get stickyPad() {
@@ -68,6 +71,7 @@ export class BonusManager {
         this.bonusSmallPad.update(time)
         this.bonusUpsideDown.update(time)
         this.bonusLaser.update(time)
+        this.bonusSlow.update(time)
 
         const { pad, bonuses } = this
         const bonus = bonuses.hitTest(pad.x, pad.y, 2 * pad.scale, 0.5)
@@ -92,6 +96,9 @@ export class BonusManager {
                 break
             case EnumBonusType.Laser:
                 this.bonusLaser.start()
+                break
+            case EnumBonusType.Slow:
+                this.bonusSlow.start()
                 break
         }
     }

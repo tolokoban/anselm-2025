@@ -9,7 +9,7 @@ import {
     TgdTexture2D,
     webglPresetDepth,
 } from "@tolokoban/tgd"
-import BackgroundURL from "@/gfx/05/background.webp"
+import { getBackgroundURL } from "./background"
 import { Logic } from "./logic"
 import { PainterBalls } from "./painters/balls"
 import { PainterBonuses } from "./painters/bonuses"
@@ -34,6 +34,7 @@ export function makeLevelPainterAndLogic(
     })
     const padPainter = new PainterPad(context, {
         atlasImage: assets.atlasPads,
+        atlasImageBloom: assets.atlasPadsBloom,
     })
     const ballsPainter = new PainterBalls(context, {
         atlasImage: assets.atlasBalls,
@@ -47,7 +48,9 @@ export function makeLevelPainterAndLogic(
         },
         geometry: new TgdGeometryPlane({ sizeX: 26, sizeY: 26, uv1: [3, 3] }),
         material: new TgdMaterialFlatTexture({
-            texture: new TgdTexture2D(context, { load: BackgroundURL }),
+            texture: new TgdTexture2D(context, {
+                load: getBackgroundURL(levelIndex),
+            }),
         }),
     })
     const painter = new TgdPainterGroup([

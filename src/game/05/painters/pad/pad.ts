@@ -1,6 +1,7 @@
 import {
     type TgdContext,
     TgdPainter,
+    TgdPainterGroup,
     TgdPainterSprites,
     TgdPainterState,
     type TgdSprite,
@@ -8,26 +9,32 @@ import {
     tgdCalcModuloDiscrete,
     type WebglImage,
     webglPresetBlend,
+    webglPresetDepth,
 } from "@tolokoban/tgd"
 
 import { AtlasDefPads } from "@/gfx/05/pads"
+import { AtlasDefPadsbloom } from "@/gfx/05/padsbloom"
 
 export interface PainterPadOptions {
     atlasImage: WebglImage
+    atlasImageBloom: WebglImage
 }
 
 export class PainterPad extends TgdPainter {
     private readonly painter: TgdPainter
-    private readonly spritesPainter: TgdPainterSprites
-    private readonly texture: TgdTexture2D
-    private readonly sprite: TgdSprite
+    private readonly padPainter: TgdPainterSprites
+    private readonly bloomPainter: TgdPainterSprites
+    private readonly texturePad: TgdTexture2D
+    private readonly textureBloom: TgdTexture2D
+    private readonly pad: TgdSprite
+    private readonly bloom: TgdSprite
 
     constructor(
         private readonly context: TgdContext,
         options: PainterPadOptions
     ) {
         super()
-        const texture = new TgdTexture2D(context, {
+        const texturePad = new TgdTexture2D(context, {
             load: options.atlasImage,
             params: {
                 wrapR: "CLAMP_TO_EDGE",
@@ -35,8 +42,8 @@ export class PainterPad extends TgdPainter {
                 wrapT: "CLAMP_TO_EDGE",
             },
         })
-        this.texture = texture
-        this.spritesPainter = new TgdPainterSprites(context, {
+        this.texturePad = texturePad
+        this.padPainter = new TgdPainterSprites(context, {
             atlas: [
                 AtlasDefPads.sprites.pads0,
                 AtlasDefPads.sprites.pads1,
@@ -55,47 +62,91 @@ export class PainterPad extends TgdPainter {
                 AtlasDefPads.sprites.pads14,
                 AtlasDefPads.sprites.pads15,
             ],
-            texture,
+            texture: texturePad,
             atlasUnit: 4,
         })
-        const sprite = this.spritesPainter.add({
+        const sprite = this.padPainter.add({
             y: -12,
         })
-        this.sprite = sprite
-        this.painter = new TgdPainterState(context, {
-            blend: webglPresetBlend.alpha,
-            children: [this.spritesPainter],
+        this.pad = sprite
+        const textureBloom = new TgdTexture2D(context, {
+            load: options.atlasImageBloom,
+            params: {
+                wrapR: "CLAMP_TO_EDGE",
+                wrapS: "CLAMP_TO_EDGE",
+                wrapT: "CLAMP_TO_EDGE",
+            },
         })
+        this.textureBloom = textureBloom
+        this.bloomPainter = new TgdPainterSprites(context, {
+            atlas: [
+                AtlasDefPadsbloom.sprites.padsbloom0,
+                AtlasDefPadsbloom.sprites.padsbloom1,
+                AtlasDefPadsbloom.sprites.padsbloom2,
+                AtlasDefPadsbloom.sprites.padsbloom3,
+                AtlasDefPadsbloom.sprites.padsbloom4,
+                AtlasDefPadsbloom.sprites.padsbloom5,
+                AtlasDefPadsbloom.sprites.padsbloom6,
+                AtlasDefPadsbloom.sprites.padsbloom7,
+                AtlasDefPadsbloom.sprites.padsbloom8,
+                AtlasDefPadsbloom.sprites.padsbloom9,
+                AtlasDefPadsbloom.sprites.padsbloom10,
+                AtlasDefPadsbloom.sprites.padsbloom11,
+                AtlasDefPadsbloom.sprites.padsbloom12,
+                AtlasDefPadsbloom.sprites.padsbloom13,
+                AtlasDefPadsbloom.sprites.padsbloom14,
+                AtlasDefPadsbloom.sprites.padsbloom15,
+            ],
+            texture: textureBloom,
+            atlasUnit: 4,
+        })
+        const bloom = this.bloomPainter.add({
+            y: -12,
+        })
+        this.bloom = bloom
+        this.painter = new TgdPainterGroup([
+            new TgdPainterState(context, {
+                blend: webglPresetBlend.alpha,
+                children: [this.padPainter],
+            }),
+            new TgdPainterState(context, {
+                depth: webglPresetDepth.off,
+                blend: webglPresetBlend.add,
+                children: [this.bloomPainter],
+            }),
+        ])
     }
 
     get x() {
-        return this.sprite.x
+        return this.pad.x
     }
     set x(value: number) {
-        this.sprite.x = value
+        this.pad.x = value
     }
 
     get y() {
-        return this.sprite.y
+        return this.pad.y
     }
     set y(value: number) {
-        this.sprite.y = value
+        this.pad.y = value
     }
 
     get scale() {
-        return this.sprite.scaleX
+        return this.pad.scaleX
     }
     set scale(value: number) {
-        this.sprite.scaleX = value
+        this.pad.scaleX = value
     }
 
     delete() {
-        this.texture.delete()
-        this.spritesPainter.delete()
+        this.texturePad.delete()
+        this.padPainter.delete()
     }
 
     paint(time: number, delay: number) {
-        this.sprite.index = tgdCalcModuloDiscrete(time, 0.5, 16)
+        this.pad.index = tgdCalcModuloDiscrete(time, 0.5, 16)
+        this.bloom.index = this.pad.index
+        this.bloom.x = this.pad.x
         this.painter.paint(time, delay)
     }
 }

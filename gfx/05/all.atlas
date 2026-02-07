@@ -30,7 +30,16 @@
         {
             name: "pads",
             input: {
-                path: "pads",
+                path: "pads/normal",
+            },
+            output: {
+                path: "../../src/gfx/05/",
+            },
+        },
+        {
+            name: "padsBloom",
+            input: {
+                path: "pads/bloom",
             },
             output: {
                 path: "../../src/gfx/05/",

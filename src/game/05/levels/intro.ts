@@ -1,3 +1,4 @@
+import { OPTIONS } from "./common"
 import { type ArkanoidLevel, EnumBonusType } from "./types"
 
 export const intro: ArkanoidLevel = {
@@ -15,9 +16,5 @@ export const intro: ArkanoidLevel = {
         "       [][][][][][]       ",
         "        (F(T(G(T(F        ",
     ],
-    options: {
-        T: { bonus: EnumBonusType.TripleBall },
-        G: { bonus: EnumBonusType.StickyPad },
-        F: { bonus: EnumBonusType.BurningBall },
-    },
+    options: OPTIONS,
 }

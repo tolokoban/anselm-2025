@@ -65,7 +65,11 @@ export class PainterBricks extends TgdPainter {
 
     readonly add = (x: number, y: number) => {
         const sprite = this.spritesPainter.add({ x, y })
-        const shadow = this.shadowsPainter.add({ x: x + 0.25, y: y - 0.5 })
+        const shadow = this.shadowsPainter.add({
+            x: x + 0.25,
+            y: y - 0.5,
+            z: -0.5e-1,
+        })
         this.links.set(sprite, shadow)
         return sprite
     }

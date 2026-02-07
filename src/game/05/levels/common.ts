@@ -9,8 +9,9 @@ export const OPTIONS: Record<string, BrickOption> = {
     S: { bonus: EnumBonusType.SmallPad },
     U: { bonus: EnumBonusType.UpsideDown },
     Z: { bonus: EnumBonusType.Laser },
+    "@": { bonus: EnumBonusType.Slow },
 }
 
 "abcdefghijklmno".split("").forEach((letter, index) => {
-    OPTIONS[letter] = { hue: tgdCalcDegToRad(24 * index) }
+    OPTIONS[letter] = { hueShift: tgdCalcDegToRad(24 * index) }
 })

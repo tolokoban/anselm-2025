@@ -3,7 +3,9 @@ import type { Inputs } from "../inputs"
 import type { PainterPad } from "../painters/pad"
 
 export class LogicPad {
-    public speed = 16
+    static readonly speed = 16
+
+    public speed = LogicPad.speed
 
     constructor(
         private readonly inputs: Inputs,

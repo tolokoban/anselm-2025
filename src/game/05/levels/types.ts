@@ -7,11 +7,13 @@ export enum EnumBonusType {
     SmallPad,
     UpsideDown,
     Laser,
+    Slow,
 }
 
 export type BrickOption = Partial<{
     bonus: EnumBonusType
-    hue: number
+    hueShift: number
+    hueRandom: number
 }>
 
 export interface ArkanoidLevel {

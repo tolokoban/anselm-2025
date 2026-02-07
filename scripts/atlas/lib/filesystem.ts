@@ -1,7 +1,7 @@
 import { readdir } from "node:fs/promises"
 import Path from "node:path"
 
-const RX = /^[0-9]+\.png$/g
+const RX = /^[^0-9]*[0-9]+\.png$/g
 
 export async function listImages(path: string): Promise<string[]> {
     const files: string[] = []

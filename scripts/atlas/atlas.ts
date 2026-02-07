@@ -15,6 +15,15 @@ async function start() {
     for (const config of configs) {
         for (const make of config.make) {
             const inputFiles = await listImages(make.input.path)
+            if (inputFiles.length === 0) {
+                console.error(
+                    Chalk.redBright(`No file found for atlas "${make.name}"!`)
+                )
+                console.error(
+                    Chalk.redBright(`Input folder: "${make.input.path}"!`)
+                )
+                continue
+            }
             const inputImages: Sharp.Sharp[] = inputFiles.map((file) =>
                 Sharp(file)
             )

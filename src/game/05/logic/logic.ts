@@ -51,7 +51,7 @@ export class Logic extends TgdPainterLogic {
 
     constructor(context: TgdContext, options: LogicOptions) {
         super((time: number, delay: number) => this.update(time, delay))
-        this.levelIndex = options.levelIndex
+        this.levelIndex = checkForTestOverride(options.levelIndex)
         this.lifes = 3
         const inputs = new Inputs(context)
         this.inputs = inputs
@@ -73,7 +73,7 @@ export class Logic extends TgdPainterLogic {
         this.bricks.eventVictory.addListener(this.handleLevelVictory)
         this.bricks.eventBonus.addListener((bonus) => this.bonuses.add(bonus))
         this.bricks.level =
-            ArkanoidLevels[options.levelIndex % ArkanoidLevels.length]
+            ArkanoidLevels[this.levelIndex % ArkanoidLevels.length]
         this.laser = new LogicLaser(this.pad, options.laser)
         this.bonusManager = new BonusManager({
             context,
@@ -133,7 +133,11 @@ export class Logic extends TgdPainterLogic {
     }
 
     private handleLevelVictory = () => {
-        this.eventVictory.dispatch()
+        if (isTestMode()) {
+            globalThis.location.hash = "#/05/edit"
+        } else {
+            this.eventVictory.dispatch()
+        }
     }
 }
 
@@ -152,4 +156,17 @@ function collideWithPad(ball: LogicBall, pad: LogicPad): number | null {
         +60
     )
     return tgdCalcDegToRad(-normalAngleDeg)
+}
+
+function checkForTestOverride(levelIndex: number): number {
+    const params = new URLSearchParams(globalThis.location.search)
+    const index = parseInt(params.get("level") ?? "NaN", 10)
+    if (Number.isNaN(index)) return levelIndex
+    return index
+}
+
+function isTestMode(): boolean {
+    const params = new URLSearchParams(globalThis.location.search)
+    const index = parseInt(params.get("level") ?? "NaN", 10)
+    return !Number.isNaN(index)
 }

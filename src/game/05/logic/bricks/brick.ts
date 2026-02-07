@@ -13,7 +13,7 @@ export interface LogicBrickOptions extends BrickOption {
     index: number
     x: number
     y: number
-    hue: number
+    hueShift: number
 }
 
 export class LogicBrick {
@@ -26,7 +26,7 @@ export class LogicBrick {
         sprite.index = options.index
         sprite.x = options.x
         sprite.y = options.y
-        sprite.hue = options.hue
+        sprite.hue = options.hueShift
     }
 
     get x() {
