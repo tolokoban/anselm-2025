@@ -55,12 +55,12 @@ export class LogicBrick {
         if (dy > 0) {
             // Ball is going up.
             const hori = crossHori(x0, y0, dx, dy, 0, -0.5)
-            if (Math.abs(hori) <= 1) return Math.PI
+            if (Math.abs(hori) <= 1.1) return Math.PI
             else return dx > 0 ? +Math.PI / 2 : -Math.PI / 2
         } else {
             // Ball is going down.
             const hori = crossHori(x0, y0, dx, dy, 0, +0.5)
-            if (Math.abs(hori) <= 1) return 0
+            if (Math.abs(hori) <= 1.1) return 0
             else return dx > 0 ? +Math.PI / 2 : -Math.PI / 2
         }
     }
