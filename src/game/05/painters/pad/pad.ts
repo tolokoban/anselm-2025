@@ -3,8 +3,10 @@ import {
     TgdPainter,
     TgdPainterGroup,
     TgdPainterSprites,
+    TgdPainterSpritesHue,
     TgdPainterState,
     type TgdSprite,
+    type TgdSpriteHue,
     TgdTexture2D,
     tgdCalcModuloDiscrete,
     type WebglImage,
@@ -23,11 +25,11 @@ export interface PainterPadOptions {
 export class PainterPad extends TgdPainter {
     private readonly painter: TgdPainter
     private readonly padPainter: TgdPainterSprites
-    private readonly bloomPainter: TgdPainterSprites
+    private readonly bloomPainter: TgdPainterSpritesHue
     private readonly texturePad: TgdTexture2D
     private readonly textureBloom: TgdTexture2D
     private readonly pad: TgdSprite
-    private readonly bloom: TgdSprite
+    private readonly bloom: TgdSpriteHue
 
     constructor(
         private readonly context: TgdContext,
@@ -78,7 +80,7 @@ export class PainterPad extends TgdPainter {
             },
         })
         this.textureBloom = textureBloom
-        this.bloomPainter = new TgdPainterSprites(context, {
+        this.bloomPainter = new TgdPainterSpritesHue(context, {
             atlas: [
                 AtlasDefPadsbloom.sprites.padsbloom0,
                 AtlasDefPadsbloom.sprites.padsbloom1,
@@ -140,12 +142,14 @@ export class PainterPad extends TgdPainter {
 
     delete() {
         this.texturePad.delete()
+        this.textureBloom.delete()
         this.padPainter.delete()
     }
 
     paint(time: number, delay: number) {
         this.pad.index = tgdCalcModuloDiscrete(time, 0.5, 16)
         this.bloom.index = this.pad.index
+        this.bloom.hue = time * 0.25
         this.bloom.x = this.pad.x
         this.painter.paint(time, delay)
     }
