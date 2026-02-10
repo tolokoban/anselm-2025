@@ -6,7 +6,6 @@ import {
     TgdPainterGroup,
     TgdPainterMesh,
     TgdPainterState,
-    TgdTexture2D,
     webglPresetDepth,
 } from "@tolokoban/tgd"
 import { getBackgroundTexture } from "./background"
