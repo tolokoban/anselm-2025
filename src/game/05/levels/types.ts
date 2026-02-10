@@ -17,6 +17,9 @@ export type BrickOption = Partial<{
 }>
 
 export interface ArkanoidLevel {
+    backgroundIndex: number
+    backgroundRepeats?: number
+    backgroundHueShift?: number
     hueShift?: number
     hueRandom?: number
     pose: string[]

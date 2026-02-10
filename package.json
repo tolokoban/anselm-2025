@@ -93,5 +93,5 @@
         "webpack-shell-plugin-next": "^2.3.3",
         "workbox-webpack-plugin": "^7.4.0"
     },
-    "port": 4764
+    "port": 8214
 }

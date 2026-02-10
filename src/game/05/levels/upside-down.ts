@@ -20,6 +20,7 @@ export const upsideDown: ArkanoidLevel = {
         "     (n(n        [][]     ",
         "     (o(o         []      ",
     ],
+    backgroundIndex: 3,
     options: {
         ...OPTIONS,
         "]": { bonus: EnumBonusType.UpsideDown },

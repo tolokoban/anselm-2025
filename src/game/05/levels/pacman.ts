@@ -25,5 +25,8 @@ export const pacman: ArkanoidLevel = {
         "        {}[][][]{}        ",
         "         {}{}{}{}         ",
     ],
+    backgroundIndex: 4,
+    backgroundRepeats: 2,
+    backgroundHueShift: 180,
     options: OPTIONS,
 }

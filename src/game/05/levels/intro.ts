@@ -16,5 +16,6 @@ export const intro: ArkanoidLevel = {
         "       [][][][][][]       ",
         "        (F(T(G(T(F        ",
     ],
+    backgroundIndex: 0,
     options: OPTIONS,
 }

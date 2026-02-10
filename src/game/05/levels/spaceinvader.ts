@@ -19,5 +19,7 @@ export const spaceinvader: ArkanoidLevel = {
         "        [][L  [L[]        ",
         "        S][]  [][S        ",
     ],
+    backgroundIndex: 1,
+    backgroundRepeats: 4,
     options: OPTIONS,
 }

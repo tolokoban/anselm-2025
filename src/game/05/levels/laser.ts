@@ -20,5 +20,7 @@ export const laser: ArkanoidLevel = {
         "<>()()()()()()()()()()()<>",
         "<><Z<><><Z<><Z<><Z<><><Z<>",
     ],
+    backgroundIndex: 2,
+    backgroundRepeats: 5,
     options: OPTIONS,
 }

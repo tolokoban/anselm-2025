@@ -10,5 +10,6 @@ export const debug: ArkanoidLevel = {
         "     (U(U(U(U(U(U(U(U     ",
         "      (U(U(U(U(U(U(U      ",
     ],
+    backgroundIndex: 0,
     options: OPTIONS,
 }

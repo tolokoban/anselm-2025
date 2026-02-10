@@ -37,8 +37,9 @@ const Page11 = React.lazy(() => import("./04/page"))
 const Page12 = React.lazy(() => import("./04/play/page"))
 const Page13 = React.lazy(() => import("./04/win/page"))
 const Page14 = React.lazy(() => import("./05/page"))
-const Page15 = React.lazy(() => import("./05/play/page"))
-const Page16 = React.lazy(() => import("./06/page"))
+const Page15 = React.lazy(() => import("./05/editor/page"))
+const Page16 = React.lazy(() => import("./05/play/page"))
+const Page17 = React.lazy(() => import("./06/page"))
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function App({ lang }: { lang?: string }) {
@@ -65,6 +66,7 @@ export default function App({ lang }: { lang?: string }) {
     const pg14 = Page14
     const pg15 = Page15
     const pg16 = Page16
+    const pg17 = Page17
     return (
         <Route path="/" Page={pg0} Layout={ly0} fallback={fb0} context={context}>
             <Route path="/01" Page={pg1} Layout={ly1} fallback={fb0} context={context}>
@@ -85,9 +87,10 @@ export default function App({ lang }: { lang?: string }) {
                 <Route path="/04/win" Page={pg13} fallback={fb0} context={context}/>
             </Route>
             <Route path="/05" Page={pg14} fallback={fb0} context={context}>
-                <Route path="/05/play" Page={pg15} fallback={fb0} context={context}/>
+                <Route path="/05/editor" Page={pg15} fallback={fb0} context={context}/>
+                <Route path="/05/play" Page={pg16} fallback={fb0} context={context}/>
             </Route>
-            <Route path="/06" Page={pg16} fallback={fb0} context={context}/>
+            <Route path="/06" Page={pg17} fallback={fb0} context={context}/>
         </Route>
     )
 }
