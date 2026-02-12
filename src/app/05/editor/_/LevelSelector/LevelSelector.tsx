@@ -1,0 +1,65 @@
+import LevelPreview05 from "@/components/05/LevelPreview05";
+import { useArkanoidLevels } from "@/game/05/levels";
+
+import styles from "./LevelSelector.module.css";
+
+export interface GameProps {
+	className?: string;
+}
+
+export function LevelSelector({ className }: GameProps) {
+	const { levels, swapLevels } = useArkanoidLevels();
+
+	return (
+		<div>
+			<div className={join(className, styles.game)}>
+				<div className={styles.grid}>
+					{range(levels.length, (levelIndex) => (
+						<div key={levelIndex}>
+							<a
+								href={`?level=${levelIndex}#/05/editor/${levelIndex}`}
+							>
+								<LevelPreview05
+									className={styles.preview}
+									level={levels[levelIndex]}
+								/>
+							</a>
+							<div>
+								<button
+									type="button"
+									onClick={() => {
+										swapLevels(
+											levelIndex,
+											(levelIndex + levels.length - 1) % levels.length,
+										);
+									}}
+								>
+									&lt;
+								</button>
+								<button
+									type="button"
+									onClick={() => {
+										swapLevels(
+											levelIndex,
+											(levelIndex +  1) % levels.length,
+										);
+									}}
+								>
+									&gt;
+								</button>
+							</div>
+						</div>
+					))}
+				</div>
+			</div>
+		</div>
+	);
+}
+
+function join(...classes: unknown[]): string {
+	return classes.filter((cls) => typeof cls === "string").join(" ");
+}
+
+function range<T>(count: number, callback: (index: number) => T): T[] {
+	return new Array(count).fill(0).map((_, index) => callback(index));
+}

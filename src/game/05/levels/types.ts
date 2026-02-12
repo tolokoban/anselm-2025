@@ -1,3 +1,5 @@
+import { isType } from "@tolokoban/type-guards"
+
 export enum EnumBonusType {
     None = 0,
     TripleBall,
@@ -24,4 +26,29 @@ export interface ArkanoidLevel {
     hueRandom?: number
     pose: string[]
     options?: Record<string, BrickOption>
+}
+
+export function isArkanoidLevelArray(data: unknown): data is ArkanoidLevel[] {
+    return isType(data, [
+        "array",
+        {
+            backgroundIndex: "number",
+            backgroundRepeats: ["?", "number"],
+            backgroundHueShift: ["?", "number"],
+            hueShift: ["?", "number"],
+            hueRandom: ["?", "number"],
+            pose: ["array", "string"],
+            options: [
+                "?",
+                [
+                    "map",
+                    {
+                        bonus: "number",
+                        hueShift: "number",
+                        hueRandom: "number",
+                    },
+                ],
+            ],
+        },
+    ])
 }

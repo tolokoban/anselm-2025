@@ -6,19 +6,19 @@ import {
     TgdPainterClear,
     TgdPainterGroup,
     TgdPainterMesh,
-    TgdTexture2D,
     tgdCalcDegToRad,
 } from "@tolokoban/tgd"
 import React from "react"
 import { getBackgroundTexture } from "./background"
 import { ArkanoidLevels } from "./levels"
+import type { ArkanoidLevel } from "./levels/types"
 import { LogicBricks } from "./logic/bricks"
 import { PainterBricks } from "./painters/bricks"
 import type { AssetsEdit } from "./types"
 
 class Editor {
     private context: TgdContext | null = null
-    private levelIndex: number = -1
+    private level: ArkanoidLevel | null = null
     private assets: AssetsEdit | null = null
     private readonly painters = new TgdPainterGroup()
 
@@ -38,20 +38,20 @@ class Editor {
             }),
             this.painters
         )
-        if (this.assets) this.installLevel(this.levelIndex, this.assets)
+        if (this.assets && this.level)
+            this.installLevel(this.level, this.assets)
         return () => context.delete()
     }
 
-    installLevel(levelIndex: number, assets: AssetsEdit) {
+    installLevel(level: ArkanoidLevel, assets: AssetsEdit) {
         const { context } = this
         if (!context || !assets) {
-            this.levelIndex = levelIndex
+            this.level = level
             this.assets = assets
             return
         }
 
         context.camera = createCamera()
-        const level = ArkanoidLevels[levelIndex % ArkanoidLevels.length]
         this.painters.removeAll()
         const scale = level.backgroundRepeats ?? 3
         const texture = getBackgroundTexture(context, level)
