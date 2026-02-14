@@ -1,20 +1,19 @@
-import { pick } from "@/utils/array"
 import {
-    tgdCalcClamp,
-    TgdContext,
+    type TgdContext,
     TgdDataset,
     TgdPainter,
     TgdPainterState,
     TgdProgram,
     TgdTexture2D,
     TgdVertexArray,
+    tgdCalcClamp,
     webglPresetBlend,
     webglPresetCull,
     webglPresetDepth,
 } from "@tolokoban/tgd"
-
-import { vert } from "./vert"
+import { pick } from "@/utils/array"
 import { frag } from "./frag"
+import { vert } from "./vert"
 
 export class Miniature extends TgdPainter {
     private readonly texFront: TgdTexture2D
@@ -70,15 +69,12 @@ export class Miniature extends TgdPainter {
         texFront.activate(1, prg, "uniTextureFront")
         prg.uniform1f("uniPercent", percent)
         vao.bind()
-        TgdPainterState.do(
-            {
-                gl: context.gl,
-                cull: webglPresetCull.off,
-                depth: webglPresetDepth.off,
-                blend: webglPresetBlend.alpha,
-            },
-            () => gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
-        )
+        TgdPainterState.do(context, {
+            cull: webglPresetCull.off,
+            depth: webglPresetDepth.off,
+            blend: webglPresetBlend.alpha,
+            action: () => gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4),
+        })
         vao.unbind()
     }
 }
