@@ -8,8 +8,8 @@
 
     > div.grid {
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr;
-        gap: 0.5em;
+        grid-template-columns: repeat(8, 1fr);
+        gap: 0;
         place-items: stretch;
 
         b {

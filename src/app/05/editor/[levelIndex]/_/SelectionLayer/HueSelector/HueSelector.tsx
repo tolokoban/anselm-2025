@@ -1,5 +1,6 @@
+/** biome-ignore-all lint/suspicious/noArrayIndexKey: <explanation> */
+import { tgdCalcRandom } from "@tolokoban/tgd";
 import React from "react";
-
 import styles from "./HueSelector.module.css";
 
 export interface HueSelectorProps {
@@ -22,39 +23,42 @@ export default function HueSelector({
 			<Slider value={hueShift} onChange={onHueShiftChange} />
 			<Slider value={hueRandom} onChange={onHueRandomChange} />
 			<div className={styles.grid}>
-				<div
-					className={styles.brick1}
-					style={{ filter: `hue-rotate(${hueShift}deg)` }}
-				/>
-				<div
-					className={styles.brick2}
-					style={{ filter: `hue-rotate(${hueShift}deg)` }}
-				/>
-				<div
-					className={styles.brick3}
-					style={{ filter: `hue-rotate(${hueShift}deg)` }}
-				/>
-				<div
-					className={styles.brick4}
-					style={{ filter: `hue-rotate(${hueShift}deg)` }}
-				/>
-				<div
-					className={styles.brick1}
-					style={{ filter: `hue-rotate(${hueShift + hueRandom}deg)` }}
-				/>
-				<div
-					className={styles.brick2}
-					style={{ filter: `hue-rotate(${hueShift + hueRandom}deg)` }}
-				/>
-				<div
-					className={styles.brick3}
-					style={{ filter: `hue-rotate(${hueShift + hueRandom}deg)` }}
-				/>
-				<div
-					className={styles.brick4}
-					style={{ filter: `hue-rotate(${hueShift + hueRandom}deg)` }}
-				/>
-                <b>1</b><b>2</b><b>3</b><b>4</b>
+				{"abcdefgh".split("").map((c, index) => (
+					<>
+						<div key={`${c}/${index}/A`}
+							className={styles.brick1}
+							style={{
+								filter: `hue-rotate(${hueShift + tgdCalcRandom(hueRandom)}deg)`,
+							}}
+						/>
+						<div key={`${c}/${index}/B`}
+							className={styles.brick2}
+							style={{
+								filter: `hue-rotate(${hueShift + tgdCalcRandom(hueRandom)}deg)`,
+							}}
+						/>
+						<div key={`${c}/${index}/C`}
+							className={styles.brick3}
+							style={{
+								filter: `hue-rotate(${hueShift + tgdCalcRandom(hueRandom)}deg)`,
+							}}
+						/>
+						<div key={`${c}/${index}/D`}
+							className={styles.brick4}
+							style={{
+								filter: `hue-rotate(${hueShift + tgdCalcRandom(hueRandom)}deg)`,
+							}}
+						/>
+					</>
+				))}
+				<b>1</b>
+				<b>2</b>
+				<b>3</b>
+				<b>4</b>
+				<b>1</b>
+				<b>2</b>
+				<b>3</b>
+				<b>4</b>
 			</div>
 		</div>
 	);
