@@ -149,8 +149,9 @@ export class PainterPad extends TgdPainter {
     paint(time: number, delay: number) {
         this.pad.index = tgdCalcModuloDiscrete(time, 0.5, 16)
         this.bloom.index = this.pad.index
-        this.bloom.hue = time * 0.25
+        this.bloom.hue = time * 0.2
         this.bloom.x = this.pad.x
+        this.bloom.scaleX = this.pad.scaleX
         this.painter.paint(time, delay)
     }
 }

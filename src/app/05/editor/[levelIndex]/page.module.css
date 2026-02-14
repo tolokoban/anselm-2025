@@ -23,4 +23,16 @@
             height: 100%;
         }
     }
+
+    > nav {
+        background: linear-gradient(to left, #333, #000, #333);
+        font-size: 5vmin;
+        padding: 1em;
+
+        > h1 {
+            font-size: 1.5em;
+            margin: 0 0 0.5em 0;
+            text-align: center;
+        }
+    }
 }

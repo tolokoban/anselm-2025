@@ -1,6 +1,7 @@
 import { tgdCalcClamp } from "@tolokoban/tgd"
 import React from "react"
 import type { AreaSelection } from "./types"
+import { type LevelUpdater, useLevelUpdater } from "./updater"
 
 const COLS = 26
 const ROWS = 26
@@ -13,14 +14,16 @@ export class SelectionViewer {
     private cursorRow = -1
     private raf = -1
     private _selection: AreaSelection = {
-        col1: 0,
-        row1: 0,
-        col2: COLS - 1,
-        row2: ROWS - 1,
+        col1: 12,
+        row1: 12,
+        col2: 12,
+        row2: 12,
     }
     private pointerDown = false
     private col0 = 0
     private row0 = 0
+
+    constructor(private readonly updater: LevelUpdater) {}
 
     get selection() {
         return this._selection
@@ -182,6 +185,14 @@ export class SelectionViewer {
         }
     }
 
+    readonly clearRegion = () => {
+        this.updater.clear(this.selection)
+    }
+
+    readonly fillRegion = (type: "[" | "(" | "{" | "<") => {
+        this.updater.fill(this.selection, type)
+    }
+
     readonly moveRight = () => this.moveSelection(+1, 0)
     readonly moveLeft = () => this.moveSelection(-1, 0)
     readonly moveUp = () => this.moveSelection(0, -1)
@@ -305,9 +316,10 @@ export class SelectionViewer {
     }
 }
 
-export function useSelectionViewer() {
+export function useSelectionViewer(levelIndex: number) {
+    const { updater, level } = useLevelUpdater(levelIndex)
     const ref = React.useRef<SelectionViewer | null>(null)
-    if (!ref.current) ref.current = new SelectionViewer()
+    if (!ref.current) ref.current = new SelectionViewer(updater)
     return ref.current
 }
 

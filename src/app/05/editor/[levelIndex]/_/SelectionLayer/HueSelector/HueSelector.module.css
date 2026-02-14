@@ -1,0 +1,49 @@
+.hueSelector {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 0.5em;
+
+    > div.grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        gap: 0.5em;
+        place-items: stretch;
+
+        b {
+            display: block;
+            text-align: center;
+        }
+    }
+
+    .brick1,
+    .brick2,
+    .brick3,
+    .brick4 {
+        content: "";
+        aspect-ratio: 2/1;
+        width: 100%;
+        border: none;
+        background-image: url(@/gfx/05/bricks.webp);
+        background-repeat: no-repeat;
+        background-size: 200%;
+    }
+
+    .brick1 {
+        background-position: 0 0;
+    }
+
+    .brick2 {
+        background-position: 0 33%;
+    }
+
+    .brick3 {
+        background-position: 0 66%;
+    }
+
+    .brick4 {
+        background-position: 100% 33%;
+    }
+}

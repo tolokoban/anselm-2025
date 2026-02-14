@@ -10,7 +10,6 @@ import {
 } from "@tolokoban/tgd"
 import React from "react"
 import { getBackgroundTexture } from "./background"
-import { ArkanoidLevels } from "./levels"
 import type { ArkanoidLevel } from "./levels/types"
 import { LogicBricks } from "./logic/bricks"
 import { PainterBricks } from "./painters/bricks"
