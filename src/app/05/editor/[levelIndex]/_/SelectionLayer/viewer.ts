@@ -1,5 +1,6 @@
 import { tgdCalcClamp } from "@tolokoban/tgd"
 import React from "react"
+import type { ArkanoidLevel } from "@/game/05/levels/types"
 import type { AreaSelection } from "./types"
 import { type LevelUpdater, useLevelUpdater } from "./updater"
 
@@ -62,6 +63,12 @@ export class SelectionViewer {
         console.debug(JSON.stringify(this._selection))
         this.paint()
     }
+
+    update(value: Partial<ArkanoidLevel>) {
+        this.updater.update(value)
+    }
+
+    readonly undo = () => this.updater.undo()
 
     readonly init = (canvas: HTMLCanvasElement | null) => {
         this.detach()
@@ -197,6 +204,27 @@ export class SelectionViewer {
     readonly moveLeft = () => this.moveSelection(-1, 0)
     readonly moveUp = () => this.moveSelection(0, -1)
     readonly moveDown = () => this.moveSelection(0, +1)
+
+    get hueShift() {
+        return this.updater.level.hueShift ?? 0
+    }
+    set hueShift(hueShift: number) {
+        this.updater.update({ hueShift })
+    }
+
+    get hueRandom() {
+        return this.updater.level.hueRandom ?? 0
+    }
+    set hueRandom(hueRandom: number) {
+        this.updater.update({ hueRandom })
+    }
+
+    get backgroundIndex() {
+        return this.updater.level.backgroundIndex
+    }
+    set backgroundIndex(backgroundIndex: number) {
+        this.updater.update({ backgroundIndex })
+    }
 
     private readonly attach = () => {
         const canvas = this._canvas

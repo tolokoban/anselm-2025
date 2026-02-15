@@ -1,6 +1,6 @@
+import { IconChevronRight, IconCode, ViewButton } from "@tolokoban/ui";
 import LevelPreview05 from "@/components/05/LevelPreview05";
 import { useArkanoidLevels } from "@/game/05/levels";
-
 import styles from "./LevelSelector.module.css";
 
 export interface GameProps {
@@ -9,48 +9,59 @@ export interface GameProps {
 
 export function LevelSelector({ className }: GameProps) {
 	const { levels, swapLevels } = useArkanoidLevels();
+	const handleClipboard = () => {
+        const content = JSON.stringify(levels, null, 4)
+        navigator.clipboard.writeText(content).then(()=>{
+            console.log(content)
+        })
+    };
 
 	return (
 		<div>
 			<div className={join(className, styles.game)}>
-				<div className={styles.grid}>
-					{range(levels.length, (levelIndex) => (
-						<div key={levelIndex}>
-							<a
-								href={`?level=${levelIndex}#/05/editor/${levelIndex}`}
-							>
-								<LevelPreview05
-									className={styles.preview}
-									level={levels[levelIndex]}
-								/>
-							</a>
-							<div>
-								<button
-									type="button"
-									onClick={() => {
-										swapLevels(
-											levelIndex,
-											(levelIndex + levels.length - 1) % levels.length,
-										);
-									}}
-								>
-									&lt;
-								</button>
-								<button
-									type="button"
-									onClick={() => {
-										swapLevels(
-											levelIndex,
-											(levelIndex +  1) % levels.length,
-										);
-									}}
-								>
-									&gt;
-								</button>
+				<div>
+					<div className={styles.grid}>
+						{range(levels.length, (levelIndex) => (
+							<div key={levelIndex}>
+								<a href={`?level=${levelIndex}#/05/editor/${levelIndex}`}>
+									<LevelPreview05
+										className={styles.preview}
+										level={levels[levelIndex]}
+									/>
+								</a>
+								<div>
+									<button
+										type="button"
+										onClick={() => {
+											swapLevels(
+												levelIndex,
+												(levelIndex + levels.length - 1) % levels.length,
+											);
+										}}
+									>
+										&lt;
+									</button>
+									<button
+										type="button"
+										onClick={() => {
+											swapLevels(levelIndex, (levelIndex + 1) % levels.length);
+										}}
+									>
+										&gt;
+									</button>
+								</div>
 							</div>
-						</div>
-					))}
+						))}
+					</div>
 				</div>
+				<details>
+					<summary>
+                        <IconChevronRight/>
+						<div>Code:</div>
+						<ViewButton onClick={handleClipboard} icon={IconCode}>Copy to clipboard</ViewButton>
+					</summary>
+					<pre>{JSON.stringify(levels, null, 4)}</pre>
+				</details>
 			</div>
 		</div>
 	);

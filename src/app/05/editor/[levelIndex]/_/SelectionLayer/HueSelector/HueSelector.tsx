@@ -9,6 +9,10 @@ export interface HueSelectorProps {
 	hueRandom: number;
 	onHueShiftChange: (hueShift: number) => void;
 	onHueRandomChange: (hueRandom: number) => void;
+	hueShiftLevel: number;
+	hueRandomLevel: number;
+	onHueShiftLevelChange: (hueShiftLevel: number) => void;
+	onHueRandomLevelChange: (hueRandomLevel: number) => void;
 }
 
 export default function HueSelector({
@@ -17,38 +21,30 @@ export default function HueSelector({
 	hueRandom,
 	onHueShiftChange,
 	onHueRandomChange,
+	hueShiftLevel,
+	hueRandomLevel,
+	onHueShiftLevelChange,
+	onHueRandomLevelChange,
 }: HueSelectorProps) {
-	return (
+	return (<>
+        <fieldset><legend>Bricks</legend>
 		<div className={join(className, styles.hueSelector)}>
 			<Slider value={hueShift} onChange={onHueShiftChange} />
 			<Slider value={hueRandom} onChange={onHueRandomChange} />
 			<div className={styles.grid}>
-				{"abcdefgh".split("").map((c, index) => (
+				{"abcdefghijkl".split("").map((c, index) => (
 					<>
-						<div key={`${c}/${index}/A`}
-							className={styles.brick1}
-							style={{
-								filter: `hue-rotate(${hueShift + tgdCalcRandom(hueRandom)}deg)`,
-							}}
-						/>
-						<div key={`${c}/${index}/B`}
-							className={styles.brick2}
-							style={{
-								filter: `hue-rotate(${hueShift + tgdCalcRandom(hueRandom)}deg)`,
-							}}
-						/>
-						<div key={`${c}/${index}/C`}
-							className={styles.brick3}
-							style={{
-								filter: `hue-rotate(${hueShift + tgdCalcRandom(hueRandom)}deg)`,
-							}}
-						/>
-						<div key={`${c}/${index}/D`}
-							className={styles.brick4}
-							style={{
-								filter: `hue-rotate(${hueShift + tgdCalcRandom(hueRandom)}deg)`,
-							}}
-						/>
+						{[styles.brick1, styles.brick2, styles.brick3, styles.brick4].map(
+							(cls) => (
+								<div
+									key={`${c}/${index}/${cls}`}
+									className={cls}
+									style={{
+										filter: `hue-rotate(${hueShift + hueShiftLevel + tgdCalcRandom(hueRandom + hueRandomLevel)}deg)`,
+									}}
+								/>
+							),
+						)}
 					</>
 				))}
 				<b>1</b>
@@ -59,8 +55,13 @@ export default function HueSelector({
 				<b>2</b>
 				<b>3</b>
 				<b>4</b>
-			</div>
 		</div>
+			</div></fieldset>
+            <fieldset><legend>Level</legend><div className={join(className, styles.hueSelector)}>
+			<Slider value={hueShiftLevel} onChange={onHueShiftLevelChange} />
+			<Slider value={hueRandomLevel} onChange={onHueRandomLevelChange} />
+            </div></fieldset>
+        </>
 	);
 }
 

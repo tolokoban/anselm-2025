@@ -9,7 +9,8 @@ import {
     webglPresetDepth,
 } from "@tolokoban/tgd"
 import { getBackgroundTexture } from "./background"
-import { ArkanoidLevels } from "./levels"
+import { arkanoidLevelsState } from "./levels"
+import type { ArkanoidLevel } from "./levels/types"
 import { Logic } from "./logic"
 import { PainterBalls } from "./painters/balls"
 import { PainterBonuses } from "./painters/bonuses"
@@ -26,6 +27,7 @@ export function makeLevelPainterAndLogic(
     painter: TgdPainter
     logic: Logic
 } {
+    const levels: ArkanoidLevel[] = arkanoidLevelsState.value
     const bricksPainter = new PainterBricks(context, {
         atlasImage: assets.atlasBricks,
     })
@@ -42,7 +44,7 @@ export function makeLevelPainterAndLogic(
     const laserPainter = new PainterLaser(context, {
         atlasImage: assets.atlasLasers,
     })
-    const level = ArkanoidLevels[levelIndex % ArkanoidLevels.length]
+    const level = levels[levelIndex % levels.length]
     const board = new TgdPainterMesh(context, {
         transfo: {
             position: [0, 0, -1e-1],

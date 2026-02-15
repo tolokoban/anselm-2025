@@ -11,6 +11,7 @@
         "@tolokoban/react-state": "^0.7.2",
         "@tolokoban/tgd": "file:../../../tgd2",
         "@tolokoban/type-guards": "^0.9.0",
+        "@tolokoban/ui": "^0.25.3",
         "react": "^19.2.4",
         "react-dom": "^19.2.4"
     },

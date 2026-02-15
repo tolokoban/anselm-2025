@@ -1,8 +1,7 @@
 import { TgdEvent } from "@tolokoban/tgd"
-import React, { useMemo } from "react"
+import React from "react"
 import { useArkanoidLevels } from "@/game/05/levels"
 import type { ArkanoidLevel } from "@/game/05/levels/types"
-import { EnumBrickType } from "@/game/05/logic/bricks/brick"
 import { useEventValue } from "@/utils/event"
 import type { AreaSelection } from "./types"
 import { LevelUndoManager } from "./undo"
@@ -17,6 +16,14 @@ export class LevelUpdater {
 
     get level() {
         return this.manager.level
+    }
+
+    undo() {
+        this.manager.undo()
+    }
+
+    update(value: Partial<ArkanoidLevel>) {
+        this.manager.update({ ...this.level, ...value })
     }
 
     reset(level: ArkanoidLevel) {

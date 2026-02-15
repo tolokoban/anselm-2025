@@ -12,8 +12,8 @@ const Backgrounds = [
     Background04URL,
 ]
 
-function getBackgroundURL(level: number) {
-    return Backgrounds[level % Backgrounds.length]
+export function getBackgroundURL(index: number) {
+    return Backgrounds[index % Backgrounds.length]
 }
 
 export function getBackgroundTexture(

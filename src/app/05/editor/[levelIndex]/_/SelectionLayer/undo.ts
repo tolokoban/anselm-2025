@@ -25,6 +25,7 @@ export class LevelUndoManager {
 
     undo() {
         const level = this.undoStack.pop()
+        console.log("🐞 [undo@28] level =", level) // @FIXME: Remove this line written on 2026-02-15 at 15:31
         if (!level) return
 
         this._level = level
