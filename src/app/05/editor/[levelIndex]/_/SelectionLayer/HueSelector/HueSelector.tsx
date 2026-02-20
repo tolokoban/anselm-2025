@@ -26,42 +26,51 @@ export default function HueSelector({
 	onHueShiftLevelChange,
 	onHueRandomLevelChange,
 }: HueSelectorProps) {
-	return (<>
-        <fieldset><legend>Bricks</legend>
-		<div className={join(className, styles.hueSelector)}>
-			<Slider value={hueShift} onChange={onHueShiftChange} />
-			<Slider value={hueRandom} onChange={onHueRandomChange} />
-			<div className={styles.grid}>
-				{"abcdefghijkl".split("").map((c, index) => (
-					<>
-						{[styles.brick1, styles.brick2, styles.brick3, styles.brick4].map(
-							(cls) => (
-								<div
-									key={`${c}/${index}/${cls}`}
-									className={cls}
-									style={{
-										filter: `hue-rotate(${hueShift + hueShiftLevel + tgdCalcRandom(hueRandom + hueRandomLevel)}deg)`,
-									}}
-								/>
-							),
-						)}
-					</>
-				))}
-				<b>1</b>
-				<b>2</b>
-				<b>3</b>
-				<b>4</b>
-				<b>1</b>
-				<b>2</b>
-				<b>3</b>
-				<b>4</b>
-		</div>
-			</div></fieldset>
-            <fieldset><legend>Level</legend><div className={join(className, styles.hueSelector)}>
-			<Slider value={hueShiftLevel} onChange={onHueShiftLevelChange} />
-			<Slider value={hueRandomLevel} onChange={onHueRandomLevelChange} />
-            </div></fieldset>
-        </>
+	return (
+		<>
+			<fieldset>
+				<legend>Bricks</legend>
+				<div className={join(className, styles.hueSelector)}>
+					<Slider value={hueShift} onChange={onHueShiftChange} />
+					<Slider value={hueRandom} onChange={onHueRandomChange} />
+					<div className={styles.grid}>
+						{"abcdefghijkl".split("").map((c, index) => (
+							<>
+								{[
+									styles.brick1,
+									styles.brick2,
+									styles.brick3,
+									styles.brick4,
+								].map((cls) => (
+									<div
+										key={`${c}/${index}/${cls}`}
+										className={cls}
+										style={{
+											filter: `hue-rotate(${hueShift + hueShiftLevel + tgdCalcRandom(hueRandom + hueRandomLevel)}deg)`,
+										}}
+									/>
+								))}
+							</>
+						))}
+						<b>1</b>
+						<b>2</b>
+						<b>3</b>
+						<b>4</b>
+						<b>1</b>
+						<b>2</b>
+						<b>3</b>
+						<b>4</b>
+					</div>
+				</div>
+			</fieldset>
+			<fieldset>
+				<legend>Level</legend>
+				<div className={join(className, styles.hueSelector)}>
+					<Slider value={hueShiftLevel} onChange={onHueShiftLevelChange} />
+					<Slider value={hueRandomLevel} onChange={onHueRandomLevelChange} />
+				</div>
+			</fieldset>
+		</>
 	);
 }
 
