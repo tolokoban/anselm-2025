@@ -1,1 +1,1 @@
-export * from "./bricks"
+export * from "./bricks";
