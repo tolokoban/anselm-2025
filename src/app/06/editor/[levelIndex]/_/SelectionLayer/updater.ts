@@ -60,7 +60,11 @@ export class LevelUpdater {
 		const level = structuredClone(this.manager.level);
 		for (let row = selection.row1; row <= selection.row2; row++) {
 			for (let col = selection.col1; col < selection.col2 + 1; col++) {
-				if ("[<(".includes(get(level, col, row))) {
+				const char = get(level, col, row);
+				if (!char) continue;
+
+				console.log("🐞 [updater@64] char =", char); // @FIXME: Remove this line written on 2026-02-23 at 18:51
+				if ("[<(".includes(char)) {
 					if (type < 0) {
 						set(level, col + 1, row, "-");
 					} else {

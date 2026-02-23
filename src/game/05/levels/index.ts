@@ -476,6 +476,123 @@ export const ArkanoidLevels: ArkanoidLevel[] = [
 			},
 		},
 	},
+	{
+		hueShift: 107,
+		hueRandom: 67,
+		pose: [
+			"                          ",
+			"                          ",
+			"  < < < < <   (A(         ",
+			"         <H    < <(       ",
+			"       <H       <D( ( (B  ",
+			"     <H         <D( ( (B  ",
+			"   <H          < <(       ",
+			"  < < < < <   (A(         ",
+			"                    { { { ",
+			"                          ",
+			"    [A[A[A[A   [G [G[G    ",
+			"  [ [ [ [ [   [   [  [    ",
+			"  [   [B      [   [D  [   ",
+			"  [   [B      [   [D  [   ",
+			"  [ [ [ [ [    [  [   [   ",
+			"    [A[A[A[A    [F[F [F   ",
+			"                          ",
+			"                          ",
+			"         { { { {          ",
+		],
+		backgroundIndex: 4,
+		backgroundRepeats: 2,
+		backgroundHueShift: 180,
+		options: {
+			T: {
+				bonus: 1,
+			},
+			G: {
+				bonus: 6,
+			},
+			F: {
+				bonus: 5,
+			},
+			L: {
+				bonus: 4,
+			},
+			S: {
+				bonus: 5,
+			},
+			U: {
+				bonus: 6,
+			},
+			Z: {
+				bonus: 7,
+			},
+			"@": {
+				bonus: 8,
+			},
+			a: {
+				hueShift: 0,
+			},
+			b: {
+				hueShift: 0.4188790204786391,
+			},
+			c: {
+				hueShift: 0.8377580409572782,
+			},
+			d: {
+				hueShift: 1.2566370614359172,
+			},
+			e: {
+				hueShift: 1.6755160819145565,
+			},
+			f: {
+				hueShift: 2.0943951023931953,
+			},
+			g: {
+				hueShift: 2.5132741228718345,
+			},
+			h: {
+				hueShift: 2.9321531433504737,
+			},
+			i: {
+				hueShift: 3.351032163829113,
+			},
+			j: {
+				hueShift: 3.7699111843077517,
+			},
+			k: {
+				hueShift: 4.1887902047863905,
+			},
+			l: {
+				hueShift: 4.60766922526503,
+			},
+			m: {
+				hueShift: 5.026548245743669,
+			},
+			n: {
+				hueShift: 5.445427266222308,
+			},
+			o: {
+				hueShift: 5.8643062867009474,
+			},
+			H: {
+				bonus: 7,
+			},
+			A: {
+				bonus: 0,
+			},
+			B: {
+				bonus: 1,
+			},
+			C: {
+				bonus: 2,
+			},
+			D: {
+				bonus: 3,
+			},
+			E: {
+				bonus: 4,
+			},
+		},
+	},
 ]; // .slice(0, 1) as ArkanoidLevel[];
 
 export const arkanoidLevelsState = new AtomicState(ArkanoidLevels, {

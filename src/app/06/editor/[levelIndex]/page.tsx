@@ -1,13 +1,14 @@
 import {
 	IconBack,
+	IconMenu,
 	IconPlay,
 	Theme,
-	ViewButton,
+	ViewFloatingButton,
 	ViewSlider,
 } from "@tolokoban/ui";
 import React from "react";
 import { useTranslator } from "@/app/06/_translation";
-import { useRouteParamAsInt } from "@/app/routes";
+import { makeGoto, useRouteParamAsInt } from "@/app/routes";
 import LevelPreview05 from "@/components/05/LevelPreview05";
 import { getBackgroundURL } from "@/game/05/background";
 import { useArkanoidLevels } from "@/game/05/levels";
@@ -52,19 +53,20 @@ export default function Page05() {
 		"A-ArrowUp": viewer.shrinkUp,
 		"A-ArrowDown": viewer.shrinkDown,
 		Delete: viewer.clearRegion,
+		Backspace: viewer.clearRegion,
 		"1": () => viewer.fillRegion("["),
 		"2": () => viewer.fillRegion("("),
 		"3": () => viewer.fillRegion("<"),
 		"4": () => viewer.fillRegion("{"),
-		"S-0": () => viewer.setBonus(-1),
-		"S-1": () => viewer.setBonus(0),
-		"S-2": () => viewer.setBonus(1),
-		"S-3": () => viewer.setBonus(2),
-		"S-4": () => viewer.setBonus(3),
-		"S-5": () => viewer.setBonus(4),
-		"S-6": () => viewer.setBonus(5),
-		"S-7": () => viewer.setBonus(6),
-		"S-8": () => viewer.setBonus(7),
+		"C-0": () => viewer.setBonus(-1),
+		"C-1": () => viewer.setBonus(0),
+		"C-2": () => viewer.setBonus(1),
+		"C-3": () => viewer.setBonus(2),
+		"C-4": () => viewer.setBonus(3),
+		"C-5": () => viewer.setBonus(4),
+		"C-6": () => viewer.setBonus(5),
+		"C-7": () => viewer.setBonus(6),
+		"C-8": () => viewer.setBonus(7),
 		z: viewer.undo,
 	});
 
@@ -76,13 +78,17 @@ export default function Page05() {
 			</div>
 			<nav>
 				<header>
-					<ViewButton icon={IconBack} onClick="#/05/editor">
-						Back
-					</ViewButton>
+					<ViewFloatingButton
+						icon={IconMenu}
+						onClick={makeGoto("/06/editor")}
+					/>
 					<h1>Level {levelIndex}</h1>
-					<ViewButton icon={IconPlay} onClick={`?level=${levelIndex}#/05/play`}>
-						Test
-					</ViewButton>
+					<ViewFloatingButton
+						icon={IconPlay}
+						onClick={() => {
+							globalThis.location.href = `?level=${levelIndex}#/05/play`;
+						}}
+					/>
 				</header>
 				<HueSelector
 					hueShift={hueShift}
