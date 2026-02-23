@@ -1,4 +1,5 @@
 import { IconChevronRight, IconCode, ViewButton } from "@tolokoban/ui";
+import { useTranslator } from "@/app/06/_translation";
 import LevelPreview05 from "@/components/05/LevelPreview05";
 import { useArkanoidLevels } from "@/game/05/levels";
 import styles from "./LevelSelector.module.css";
@@ -8,22 +9,24 @@ export interface GameProps {
 }
 
 export function LevelSelector({ className }: GameProps) {
+	const tr = useTranslator();
 	const { levels, swapLevels } = useArkanoidLevels();
 	const handleClipboard = () => {
-        const content = JSON.stringify(levels, null, 4)
-        navigator.clipboard.writeText(content).then(()=>{
-            console.log(content)
-        })
-    };
+		const content = JSON.stringify(levels, null, 4);
+		navigator.clipboard.writeText(content).then(() => {
+			console.log(content);
+		});
+	};
 
 	return (
 		<div>
 			<div className={join(className, styles.game)}>
+				<p>{tr.LevelSelector()}</p>
 				<div>
 					<div className={styles.grid}>
 						{range(levels.length, (levelIndex) => (
 							<div key={levelIndex}>
-								<a href={`?level=${levelIndex}#/05/editor/${levelIndex}`}>
+								<a href={`?level=${levelIndex}#/06/editor/${levelIndex}`}>
 									<LevelPreview05
 										className={styles.preview}
 										level={levels[levelIndex]}
@@ -56,9 +59,11 @@ export function LevelSelector({ className }: GameProps) {
 				</div>
 				<details>
 					<summary>
-                        <IconChevronRight/>
+						<IconChevronRight />
 						<div>Code:</div>
-						<ViewButton onClick={handleClipboard} icon={IconCode}>Copy to clipboard</ViewButton>
+						<ViewButton onClick={handleClipboard} icon={IconCode}>
+							Copy to clipboard
+						</ViewButton>
 					</summary>
 					<pre>{JSON.stringify(levels, null, 4)}</pre>
 				</details>

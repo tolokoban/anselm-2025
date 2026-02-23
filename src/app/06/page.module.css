@@ -1,2 +1,17 @@
-.05 {
+.page {
+	display: grid;
+	grid-template-rows: 1fr auto;
+	padding: 1em;
+	gap: 1em;
+	margin: 0;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	box-sizing: border-box;
+}
+
+.page > button {
+	place-self: end;
 }

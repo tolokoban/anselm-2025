@@ -1,5 +1,12 @@
-import { IconBack, IconPlay, Theme, ViewButton, ViewSlider } from "@tolokoban/ui";
+import {
+	IconBack,
+	IconPlay,
+	Theme,
+	ViewButton,
+	ViewSlider,
+} from "@tolokoban/ui";
 import React from "react";
+import { useTranslator } from "@/app/06/_translation";
 import { useRouteParamAsInt } from "@/app/routes";
 import LevelPreview05 from "@/components/05/LevelPreview05";
 import { getBackgroundURL } from "@/game/05/background";
@@ -11,9 +18,10 @@ import { useKeyboard } from "./_/SelectionLayer/keyboard";
 import { useSelectionViewer } from "./_/SelectionLayer/viewer";
 import styles from "./page.module.css";
 
-Theme.apply({})
+Theme.apply({});
 
 export default function Page05() {
+	const tr = useTranslator();
 	const levelIndex = useRouteParamAsInt("levelIndex");
 	const { levels } = useArkanoidLevels();
 	const level = levels[levelIndex];
@@ -48,6 +56,15 @@ export default function Page05() {
 		"2": () => viewer.fillRegion("("),
 		"3": () => viewer.fillRegion("<"),
 		"4": () => viewer.fillRegion("{"),
+		"S-0": () => viewer.setBonus(-1),
+		"S-1": () => viewer.setBonus(0),
+		"S-2": () => viewer.setBonus(1),
+		"S-3": () => viewer.setBonus(2),
+		"S-4": () => viewer.setBonus(3),
+		"S-5": () => viewer.setBonus(4),
+		"S-6": () => viewer.setBonus(5),
+		"S-7": () => viewer.setBonus(6),
+		"S-8": () => viewer.setBonus(7),
 		z: viewer.undo,
 	});
 
@@ -59,9 +76,13 @@ export default function Page05() {
 			</div>
 			<nav>
 				<header>
-					<ViewButton icon={IconBack} onClick="#/05/editor">Back</ViewButton>
+					<ViewButton icon={IconBack} onClick="#/05/editor">
+						Back
+					</ViewButton>
 					<h1>Level {levelIndex}</h1>
-					<ViewButton icon={IconPlay} onClick={`?level=${levelIndex}#/05/play`}>Test</ViewButton>
+					<ViewButton icon={IconPlay} onClick={`?level=${levelIndex}#/05/play`}>
+						Test
+					</ViewButton>
 				</header>
 				<HueSelector
 					hueShift={hueShift}
@@ -76,7 +97,7 @@ export default function Page05() {
 				<fieldset>
 					<legend>Background</legend>
 					<div className={styles.backgrounds}>
-						{[0, 1, 2, 3].map((backgroundIndex) => (
+						{[0, 1, 2, 3, 4].map((backgroundIndex) => (
 							<button
 								key={backgroundIndex}
 								className={classNames(
@@ -94,7 +115,7 @@ export default function Page05() {
 							/>
 						))}
 					</div>
-					<ViewSlider
+					{/* <ViewSlider
 						min={0}
 						max={360}
 						step={1}
@@ -111,8 +132,9 @@ export default function Page05() {
 						onChange={(backgroundRepeats) => {
 							viewer.update({ backgroundRepeats });
 						}}
-					/>
+					/> */}
 				</fieldset>
+				<p>{tr.help1()}</p>
 			</nav>
 		</div>
 	);

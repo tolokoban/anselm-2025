@@ -1,17 +1,23 @@
-import { Translation } from "@/lang"
+import type { Translation } from "@/lang";
 
 const FR = {
-    intro1: `Tu es le meilleur Anselm!
-
-La soucoupe est maintenant pleine de carburant et on va pouvoir aller sur la Lune chercher un vaisseau plus puissant pour sortir du système solaire.`,
-    intro2: `Pour rester discrets, on l'a caché dans un cratère.
-    
-    Il va falloir faire preuve d'un peu d'adresse pour naviguer là-dedans.`,
-    intro3: `Utilise les flèches du clavier, ou touche l'écran à droite ou à gauche pour éviter les obstacles...`,
-    start: `C'est parti !`,
-    win: `Super ! Te voilà arrivé dans la base sous-lunaire.
+	help1: "déplacer la sélection (rectangle blanc).",
+	help2: "agrandir/rétrécir la sélection.",
+	help3: "agrandir la sélection.",
+	help4: "rétrécir la sélection.",
+	intro1: `Mon pauvre Anselm...
+Vous vous ētes encore fait avoir comme un bleu.
+Vous avez nettoyé toutes les preuves qu'on aurait pū receuillir dans cette base lunaire.`,
+	intro2: `Il reste une chance pour que vous vous rattrappiez.
+Essayer de recréer d'autres salles dans ce simulateur.`,
+	intro3: `Votre mémoire inconsciente pourra peut-ētre nous aider.
+Laisser aller votre imagination !`,
+	LevelSelector: `Clique sur une salle pour la modifier.
+Utilise les flèches pour les réordonner.`,
+	start: `C'est parti !`,
+	win: `Super ! Te voilà arrivé dans la base sous-lunaire.
     
 Repose-toi bien : demain, on part avec le gros vaisseau !`,
-} satisfies Translation
+} satisfies Translation;
 
-export default FR
+export default FR;

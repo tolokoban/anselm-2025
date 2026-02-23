@@ -1,15 +1,15 @@
 {
     "name": "ansy-2025",
     "description": "...",
-    "version": "1.4.3",
+    "version": "1.5.0",
     "private": true,
     "sideEffects": [
         "*.css"
     ],
     "homepage": "https://tolokoban.github.io/...",
     "dependencies": {
-        "@tolokoban/react-state": "^0.7.2",
-        "@tolokoban/tgd": "file:../../../tgd2",
+        "@tolokoban/react-state": "^0.7.3",
+        "@tolokoban/tgd": "^2.0.92",
         "@tolokoban/type-guards": "^0.9.0",
         "@tolokoban/ui": "^0.25.3",
         "react": "^19.2.4",
@@ -22,6 +22,7 @@
         "generate": "npm run optimize && npm run routes",
         "optimize": "node scripts/optimize-images/optimize-images.mjs",
         "routes": "npx build-react-routes src/app",
+        "prestart": "npm run routes",
         "start": "webpack serve --mode=development",
         "build": "webpack --mode=production",
         "predeploy": "npm run build",

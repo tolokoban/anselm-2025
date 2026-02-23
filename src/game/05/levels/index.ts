@@ -1,18 +1,11 @@
 import AtomicState from "@tolokoban/react-state";
-import { debug } from "./debug";
-import { intro } from "./intro";
-import { laser } from "./laser";
-import { pacman } from "./pacman";
-import { spaceinvader } from "./spaceinvader";
 import { type ArkanoidLevel, isArkanoidLevelArray } from "./types";
-import { upsideDown } from "./upside-down";
 
 /**
  * All levels: https://strategywiki.org/wiki/Arkanoid:_Revenge_of_Doh/Walkthrough
  */
 
 export const ArkanoidLevels: ArkanoidLevel[] = [
-	pacman,
 	{
 		hueShift: 60,
 		hueRandom: 30,
@@ -200,13 +193,13 @@ export const ArkanoidLevels: ArkanoidLevel[] = [
 			"      (T          (T      ",
 			"        (F      (F        ",
 			"        (S      (S        ",
-			"      [][][][][][][]      ",
+			"      {}[][][][][]{}      ",
 			"      [][][][Z[][][]      ",
 			"    [][]<><>[]<><>[][]    ",
 			"    [][]<><F[]<F<>[][]    ",
 			"  [][][][][][][][][][][]  ",
 			"  [][S[][][][S[][][][S[]  ",
-			"  []  []{}{}{}{}{}[]  []  ",
+			"  []  []{}[]{}[]{}[]  []  ",
 			"  []  []          []  []  ",
 			"  [U  []          []  [U  ",
 			"        [][L  [L[]        ",
@@ -483,7 +476,7 @@ export const ArkanoidLevels: ArkanoidLevel[] = [
 			},
 		},
 	},
-];
+]; // .slice(0, 1) as ArkanoidLevel[];
 
 export const arkanoidLevelsState = new AtomicState(ArkanoidLevels, {
 	storage: {

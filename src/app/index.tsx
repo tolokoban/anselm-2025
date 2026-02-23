@@ -21,6 +21,8 @@ import Layout0 from "./layout"
 import Layout1 from "./01/layout"
 import Layout4 from "./02/layout"
 import Layout11 from "./04/layout"
+import Layout17 from "./06/layout"
+import Layout20 from "./07/layout"
 import Loading0 from "./loading"
 const Page0 = React.lazy(() => import("./page"))
 const Page1 = React.lazy(() => import("./01/page"))
@@ -37,10 +39,12 @@ const Page11 = React.lazy(() => import("./04/page"))
 const Page12 = React.lazy(() => import("./04/play/page"))
 const Page13 = React.lazy(() => import("./04/win/page"))
 const Page14 = React.lazy(() => import("./05/page"))
-const Page15 = React.lazy(() => import("./05/editor/page"))
-const Page16 = React.lazy(() => import("./05/editor/[levelIndex]/page"))
-const Page17 = React.lazy(() => import("./05/play/page"))
-const Page18 = React.lazy(() => import("./06/page"))
+const Page15 = React.lazy(() => import("./05/gameover/page"))
+const Page16 = React.lazy(() => import("./05/play/page"))
+const Page17 = React.lazy(() => import("./06/page"))
+const Page18 = React.lazy(() => import("./06/editor/page"))
+const Page19 = React.lazy(() => import("./06/editor/[levelIndex]/page"))
+const Page20 = React.lazy(() => import("./07/page"))
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function App({ lang }: { lang?: string }) {
@@ -67,8 +71,12 @@ export default function App({ lang }: { lang?: string }) {
     const pg14 = Page14
     const pg15 = Page15
     const pg16 = Page16
+    const ly17 = Layout17
     const pg17 = Page17
     const pg18 = Page18
+    const pg19 = Page19
+    const ly20 = Layout20
+    const pg20 = Page20
     return (
         <Route path="/" Page={pg0} Layout={ly0} fallback={fb0} context={context}>
             <Route path="/01" Page={pg1} Layout={ly1} fallback={fb0} context={context}>
@@ -89,12 +97,15 @@ export default function App({ lang }: { lang?: string }) {
                 <Route path="/04/win" Page={pg13} fallback={fb0} context={context}/>
             </Route>
             <Route path="/05" Page={pg14} fallback={fb0} context={context}>
-                <Route path="/05/editor" Page={pg15} fallback={fb0} context={context}>
-                    <Route path="/05/editor/[levelIndex]" Page={pg16} fallback={fb0} context={context}/>
-                </Route>
-                <Route path="/05/play" Page={pg17} fallback={fb0} context={context}/>
+                <Route path="/05/gameover" Page={pg15} fallback={fb0} context={context}/>
+                <Route path="/05/play" Page={pg16} fallback={fb0} context={context}/>
             </Route>
-            <Route path="/06" Page={pg18} fallback={fb0} context={context}/>
+            <Route path="/06" Page={pg17} Layout={ly17} fallback={fb0} context={context}>
+                <Route path="/06/editor" Page={pg18} fallback={fb0} context={context}>
+                    <Route path="/06/editor/[levelIndex]" Page={pg19} fallback={fb0} context={context}/>
+                </Route>
+            </Route>
+            <Route path="/07" Page={pg20} Layout={ly20} fallback={fb0} context={context}/>
         </Route>
     )
 }

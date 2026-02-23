@@ -1,19 +1,15 @@
 import { goto } from "@/app/routes";
 
 import ViewBook from "@/components/ViewBook";
+import WorkInProgress from "@/components/WorkInProgress";
 import { useTranslator } from "./_translation";
 
 export default function Page() {
 	const tr = useTranslator();
 	const handleClick = () => {
-		goto("/06/editor");
+		goto("/");
 		document.body.requestFullscreen();
 	};
 
-	return (
-		<ViewBook
-			pages={[tr.intro1(), tr.intro2(), tr.intro3()]}
-			onDone={handleClick}
-		/>
-	);
+	return <WorkInProgress />;
 }

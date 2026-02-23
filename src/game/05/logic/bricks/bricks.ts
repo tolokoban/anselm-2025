@@ -36,6 +36,20 @@ export class LogicBricks {
 		this._count = count;
 	}
 
+	forEachBrick(callback: (brick: LogicBrick) => void) {
+		const set = new Set<LogicBrick>();
+		for (const row of this.bricks) {
+			for (const brick of row) {
+				if (set.has(brick)) continue;
+
+				if (brick) {
+					callback(brick);
+					set.add(brick);
+				}
+			}
+		}
+	}
+
 	clear() {
 		this.painter.clear();
 	}
