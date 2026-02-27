@@ -121,12 +121,6 @@ export class LogicBricks {
 				});
 			}
 		}
-		console.log(
-			`(${col0}, ${row0}) -> (${col1}, ${row1}}) : `,
-			dx,
-			dy,
-			candidates,
-		);
 		for (const candidate of candidates) {
 			const brick = this.getBrick(candidate.col, candidate.row);
 			if (!brick || brick === brick0) continue;

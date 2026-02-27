@@ -10,7 +10,7 @@ import {
 import { isNumber } from "@tolokoban/type-guards";
 import { byId } from "@/utils/dom";
 import { Inputs } from "../inputs";
-import { ArkanoidLevels } from "../levels";
+import { ArkanoidLevels, StateArkanoid } from "../levels";
 import type { PainterBalls } from "../painters/balls";
 import type { PainterBonuses } from "../painters/bonuses";
 import type { PainterBricks } from "../painters/bricks";
@@ -48,12 +48,9 @@ export class Logic extends TgdPainterLogic {
 	private readonly inputs: Inputs;
 	private bonusManager: BonusManager;
 
-	private _lifes = 3;
-
 	constructor(context: TgdContext, options: LogicOptions) {
 		super((time: number, delay: number) => this.update(time, delay));
 		this.levelIndex = checkForTestOverride(options.levelIndex);
-		this.lifes = 3;
 		const inputs = new Inputs(context);
 		this.inputs = inputs;
 		this.pad = new LogicPad(inputs, options.pad);
@@ -95,14 +92,10 @@ export class Logic extends TgdPainterLogic {
 	}
 
 	get lifes() {
-		return this._lifes;
+		return StateArkanoid.lifes.value;
 	}
 	set lifes(value: number) {
-		this._lifes = value;
-		for (const i of [1, 2, 3]) {
-			const elem = byId(`life-${i}`);
-			elem.style.opacity = i > value ? "0" : "1";
-		}
+		StateArkanoid.lifes.value = value;
 	}
 
 	private readonly update = (time: number, delta: number) => {

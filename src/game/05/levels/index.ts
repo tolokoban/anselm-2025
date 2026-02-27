@@ -595,15 +595,18 @@ export const ArkanoidLevels: ArkanoidLevel[] = [
 	},
 ]; // .slice(0, 1) as ArkanoidLevel[];
 
-export const arkanoidLevelsState = new AtomicState(ArkanoidLevels, {
-	storage: {
-		id: "05/levels",
-		guard: isArkanoidLevelArray,
-	},
-});
+export const StateArkanoid = {
+	levels: new AtomicState(ArkanoidLevels, {
+		storage: {
+			id: "05/levels.1",
+			guard: isArkanoidLevelArray,
+		},
+	}),
+	lifes: new AtomicState(3),
+};
 
 export function useArkanoidLevels() {
-	const [levels, setLevels] = arkanoidLevelsState.useState();
+	const [levels, setLevels] = StateArkanoid.levels.useState();
 	return {
 		levels,
 		updateLevel(levelIndex: number, level: ArkanoidLevel) {

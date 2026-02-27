@@ -13,7 +13,7 @@ import React from "react";
 import { goto } from "@/app";
 import { GameStorage } from "@/storage";
 import { makeLevelPainterAndLogic } from "./factory";
-import { ArkanoidLevels } from "./levels";
+import { ArkanoidLevels, StateArkanoid } from "./levels";
 import type { Assets } from "./types";
 
 class Game {
@@ -88,12 +88,11 @@ class Game {
 				},
 				onEnd: () => {
 					this.levelIndex++;
-					if (this.levelIndex >= ArkanoidLevels.length) {
+					if (this.levelIndex >= StateArkanoid.levels.value.length) {
 						GameStorage.ep05.victories++;
 						goto("/06");
 						return;
 					}
-					this.levelIndex = 0;
 					this.installLevel();
 				},
 				easingFunction: tgdEasingFunctionInOutElastic,
@@ -101,6 +100,7 @@ class Game {
 			context.play();
 		});
 		logic1.eventGameOver.addListener(() => {
+			console.log("Game Over!");
 			context.pause();
 			const { camera } = context;
 			const from = 0;

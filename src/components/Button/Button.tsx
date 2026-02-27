@@ -1,7 +1,6 @@
-import React from "react"
-
-import styles from "./Button.module.css"
+import type React from "react"
 import { classNames } from "@/utils/class-names"
+import styles from "./Button.module.css"
 
 export interface ButtonProps {
     className?: string
