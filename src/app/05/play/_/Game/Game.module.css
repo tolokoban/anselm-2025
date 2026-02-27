@@ -92,10 +92,6 @@
                 border-radius: 99vmax;
                 overflow: hidden;
 
-                &:active {
-                    filter: brightness(120%);
-                }
-
                 &::after, &:hover {
                     cursor: pointer;
                     content: "";
