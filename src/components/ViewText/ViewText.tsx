@@ -36,7 +36,7 @@ export default function ViewText({
                 return
             }
             setLength(refLength.current)
-        }, 20)
+        }, 5)
         return () => window.clearTimeout(refInterval.current)
     }, [children])
     const handleRevealAll = () => {

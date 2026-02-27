@@ -1,7 +1,6 @@
 import { goto } from "@/app/routes"
-
-import Background from "@/generated/background"
 import ViewBook from "@/components/ViewBook"
+import Background from "@/generated/background"
 import { useTranslator } from "./_translation"
 
 export default function Page() {
@@ -15,7 +14,14 @@ export default function Page() {
         <div>
             <Background type="background" />
             <ViewBook
-                pages={[tr.intro1(), tr.intro2(), tr.intro3()]}
+                pages={[
+                    tr.intro1(),
+                    tr.intro2(),
+                    tr.intro3(),
+                    tr.intro4(),
+                    tr.intro5(),
+                    tr.intro6(),
+                ]}
                 onDone={handleClick}
             />
         </div>

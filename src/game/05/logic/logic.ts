@@ -3,12 +3,9 @@ import {
 	type TgdContext,
 	TgdEvent,
 	TgdPainterLogic,
-	tgdCalcClamp,
 	tgdCalcDegToRad,
-	tgdCalcModulo,
 } from "@tolokoban/tgd";
 import { isNumber } from "@tolokoban/type-guards";
-import { byId } from "@/utils/dom";
 import { Inputs } from "../inputs";
 import { ArkanoidLevels, StateArkanoid } from "../levels";
 import type { PainterBalls } from "../painters/balls";

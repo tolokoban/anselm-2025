@@ -1,52 +1,52 @@
-import { tgdCalcClamp, tgdCalcMapRange } from "@tolokoban/tgd"
-import type { Inputs } from "../inputs"
-import type { PainterPad } from "../painters/pad"
+import { tgdCalcClamp, tgdCalcMapRange } from "@tolokoban/tgd";
+import type { Inputs } from "../inputs";
+import type { PainterPad } from "../painters/pad";
 
 export class LogicPad {
-    static readonly speed = 16
+	static readonly speed = 16;
 
-    public speed = LogicPad.speed
+	public speed = LogicPad.speed;
 
-    constructor(
-        private readonly inputs: Inputs,
-        private readonly pad: PainterPad
-    ) {}
+	constructor(
+		private readonly inputs: Inputs,
+		private readonly pad: PainterPad,
+	) {}
 
-    reset() {
-        const { pad } = this
-        pad.x = 0
-        pad.y = -12
-        pad.scale = 1
-    }
+	reset() {
+		const { pad } = this;
+		pad.x = 0;
+		pad.y = -12;
+		pad.scale = 1;
+	}
 
-    update(_time: number, delay: number) {
-        const { inputs } = this
-        const speed = this.speed * delay
-        if (inputs.right) this.x += speed
-        if (inputs.left) this.x -= speed
-        this.x += speed * inputs.gamepad.stickV1
-        if (inputs.isTouching) {
-            this.x = tgdCalcMapRange(inputs.pointerX, -1, +1, -13, +13)
-        }
-    }
+	update(_time: number, delay: number) {
+		const { inputs } = this;
+		const speed = this.speed * delay;
+		if (inputs.right) this.x += speed;
+		if (inputs.left) this.x -= speed;
+		this.x += speed * inputs.gamepad.stickV1;
+		if (inputs.isTouching) {
+			this.x = tgdCalcMapRange(inputs.pointerX, -1, +1, -13, +13, true);
+		}
+	}
 
-    get x() {
-        return this.pad.x
-    }
-    set x(value: number) {
-        const { pad } = this
-        const size = 2 * pad.scale
-        pad.x = tgdCalcClamp(value, -13 + size, 13 - size)
-    }
+	get x() {
+		return this.pad.x;
+	}
+	set x(value: number) {
+		const { pad } = this;
+		const size = 2 * pad.scale;
+		pad.x = tgdCalcClamp(value, -13 + size, 13 - size);
+	}
 
-    get y() {
-        return this.pad.y
-    }
+	get y() {
+		return this.pad.y;
+	}
 
-    get scale() {
-        return this.pad.scale
-    }
-    set scale(v: number) {
-        this.pad.scale = v
-    }
+	get scale() {
+		return this.pad.scale;
+	}
+	set scale(v: number) {
+		this.pad.scale = v;
+	}
 }

@@ -13,7 +13,7 @@ import React from "react";
 import { goto } from "@/app";
 import { GameStorage } from "@/storage";
 import { makeLevelPainterAndLogic } from "./factory";
-import { ArkanoidLevels, StateArkanoid } from "./levels";
+import { StateArkanoid } from "./levels";
 import type { Assets } from "./types";
 
 class Game {

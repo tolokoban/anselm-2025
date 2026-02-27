@@ -1,9 +1,11 @@
-import type { TgdContext, TgdInputGamepad } from "@tolokoban/tgd";
+import type {
+	TgdContext,
+	TgdInputGamepad,
+	TgdInputPointerEventMove,
+} from "@tolokoban/tgd";
 
 export class Inputs {
 	public readonly gamepad: TgdInputGamepad;
-
-	private _isTouching = false;
 
 	private click = false;
 
@@ -19,15 +21,17 @@ export class Inputs {
 	}
 
 	update(time: number, delay: number) {
-		this._isTouching = this.context.inputs.pointer.isTouching();
+		// this._isTouching = this.context.inputs.pointer.isTouching();
 	}
 
 	get isTouching() {
-		return this._isTouching;
+		return true;
+		//this._isTouching;
 	}
 
 	get pointerX() {
 		return this.context.inputs.pointer.x;
+		// return this._pointerX;
 	}
 
 	get right() {
