@@ -77,7 +77,8 @@ export class Logic extends TgdPainterLogic {
 		this.bricks = new LogicBricks(options.bricks);
 		this.bricks.eventVictory.addListener(this.handleLevelVictory);
 		this.bricks.eventBonus.addListener((bonus) => this.bonuses.add(bonus));
-		this.bricks.level = ArkanoidLevels[this.levelIndex % ArkanoidLevels.length];
+		const levels = isTestMode() ? StateArkanoid.levels.value : ArkanoidLevels;
+		this.bricks.level = levels[this.levelIndex % levels.length];
 		this.laser = new LogicLaser(this.pad, options.laser);
 		this.bonusManager = new BonusManager({
 			context,
