@@ -91,18 +91,6 @@
                 background: linear-gradient(to top,#333, #000,#000);
                 border-radius: 99vmax;
                 overflow: hidden;
-
-                &::after, &:hover {
-                    cursor: pointer;
-                    content: "";
-                    position: absolute;
-                    left: 0;
-                    top: 0;
-                    width: 120%;
-                    height: 60%;
-                    border-radius: 0 0 50% 50%;
-                    background-color: #fff3;
-                }
             }
         }
     }

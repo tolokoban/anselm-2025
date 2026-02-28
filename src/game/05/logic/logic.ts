@@ -8,11 +8,13 @@ import {
 import { isNumber } from "@tolokoban/type-guards";
 import { Inputs } from "../inputs";
 import { ArkanoidLevels, StateArkanoid } from "../levels";
+import { debug } from "./../levels/debug";
 import type { PainterBalls } from "../painters/balls";
 import type { PainterBonuses } from "../painters/bonuses";
 import type { PainterBricks } from "../painters/bricks";
 import type { PainterLaser } from "../painters/laser/laser";
 import type { PainterPad } from "../painters/pad";
+import type { PainterRay } from "../painters/ray";
 import { EnumBallType, type LogicBall } from "./balls/ball";
 import { LogicBalls } from "./balls/balls";
 import { BonusManager } from "./bonus-manager";
@@ -30,6 +32,7 @@ export interface LogicOptions {
 	bonuses: PainterBonuses;
 	pad: PainterPad;
 	laser: PainterLaser;
+	ray: PainterRay;
 }
 
 export class Logic extends TgdPainterLogic {
@@ -45,7 +48,10 @@ export class Logic extends TgdPainterLogic {
 	private readonly inputs: Inputs;
 	private bonusManager: BonusManager;
 
-	constructor(context: TgdContext, options: LogicOptions) {
+	constructor(
+		context: TgdContext,
+		private readonly options: LogicOptions,
+	) {
 		super((time: number, delay: number) => this.update(time, delay));
 		this.levelIndex = checkForTestOverride(options.levelIndex);
 		const inputs = new Inputs(context);
@@ -98,11 +104,11 @@ export class Logic extends TgdPainterLogic {
 	private readonly update = (time: number, delta: number) => {
 		this.bonusManager.update(time);
 
-		const { pad, balls, bricks, bonuses, laser, inputs } = this;
+		const { pad, balls, bricks, bonuses, laser, inputs, options } = this;
 		inputs.update(time, delta);
 		if (inputs.fire || inputs.gamepad.buttonAorB) balls.unstick();
 		pad.update(time, delta);
-		balls.update(time, delta);
+		const stuckBalls = balls.update(time, delta);
 		for (const ball of balls.list()) {
 			const anglePad = collideWithPad(ball, pad);
 			if (isNumber(anglePad)) {
@@ -124,6 +130,14 @@ export class Logic extends TgdPainterLogic {
 		bonuses.update(time, delta);
 		laser.update(time, delta);
 		laser.hitTest(bricks);
+		const { ray } = options;
+		for (const ball of stuckBalls) {
+			ray.x = ball.x;
+			ray.y = ball.y;
+			ray.vx = ball.dx;
+			ray.vy = ball.dy;
+			ray.paint(time, delta);
+		}
 	};
 
 	private handleLevelVictory = () => {
@@ -143,8 +157,8 @@ function collideWithPad(ball: LogicBall, pad: LogicPad): number | null {
 	const alpha = dist / (2 * pad.scale);
 	if (Math.abs(alpha) > 1) return null;
 
-	const ang = 30;
-	const normalAngleDeg = ang * alpha ** 3;
+	const ang = 20;
+	const normalAngleDeg = ang * alpha;
 	return tgdCalcDegToRad(-normalAngleDeg);
 }
 

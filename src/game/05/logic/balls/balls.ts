@@ -73,10 +73,19 @@ export class LogicBalls {
 	}
 
 	update(time: number, delta: number) {
+		const stuckBalls: Array<{ x: number; y: number; dx: number; dy: number }> =
+			[];
 		for (const ball of [...this.balls]) {
 			this.wallsHitTest(ball);
 			ball.update(time, delta);
+			if (ball.isStuck) {
+				const { x, y, angle } = ball;
+				const dx = -Math.sin(angle);
+				const dy = Math.cos(angle);
+				stuckBalls.push({ x, y, dx, dy });
+			}
 		}
+		return stuckBalls;
 	}
 
 	private copyBall(ball: LogicBall, angleShiftDeg: number): LogicBall {
@@ -95,19 +104,5 @@ export class LogicBalls {
 		if (x < -13 && dx < 0) return ball.bounce(+Math.PI / 2);
 		if (y > +13 && dy > 0) return ball.bounce(Math.PI);
 		if (y < -16 && dy < 0) return this.remove(ball);
-	}
-
-	private debug() {
-		const out = new TgdConsole();
-		let index = 0;
-		for (const ball of this.list()) {
-			out
-				.add(`#${index++} `, { bold: true })
-				.add(
-					`(${ball.x.toFixed(1)}, ${ball.y.toFixed(1)})   ${Math.round(tgdCalcRadToDeg(ball.angle))}°   speed: ${ball.speed}`,
-				)
-				.nl();
-		}
-		out.debug();
 	}
 }

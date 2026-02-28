@@ -6,6 +6,7 @@ import {
 	tgdCalcModuloDiscrete,
 	tgdCalcRandom,
 } from "@tolokoban/tgd";
+import { PainterBalls } from "./../../painters/balls/balls";
 
 export enum EnumBallType {
 	Normal,
@@ -33,6 +34,10 @@ export class LogicBall {
 		this.angle = tgdCalcDegToRad(-30);
 	}
 
+	freeze() {
+		this.speed = 0;
+	}
+
 	stick() {
 		this.stickyShift = this.x - this.ask.padX();
 		this.stuck = true;
@@ -40,6 +45,10 @@ export class LogicBall {
 
 	unstick() {
 		this.stuck = false;
+	}
+
+	get isStuck() {
+		return this.stuck;
 	}
 
 	/**

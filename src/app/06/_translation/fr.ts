@@ -7,7 +7,7 @@ const FR = {
 	help4: "rétrécir la sélection.",
 	intro1: `Mon pauvre Anselm...
 Vous vous ētes encore fait avoir comme un bleu.
-Vous avez nettoyé toutes les preuves qu'on aurait pū receuillir dans cette base lunaire.`,
+Vous avez nettoyé toutes les preuves qu'on aurait pū recueillir dans cette base lunaire.`,
 	intro2: `Il reste une chance pour que vous vous rattrappiez.
 Essayer de recréer d'autres salles dans ce simulateur.`,
 	intro3: `Votre mémoire inconsciente pourra peut-ētre nous aider.

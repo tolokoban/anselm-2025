@@ -22,11 +22,29 @@ export class LogicPad {
 	update(_time: number, delay: number) {
 		const { inputs } = this;
 		const speed = this.speed * delay;
-		if (inputs.right) this.x += speed;
-		if (inputs.left) this.x -= speed;
-		this.x += speed * inputs.gamepad.stickV1;
-		if (inputs.isTouching) {
-			this.x = tgdCalcMapRange(inputs.pointerX, -1, +1, -13, +13, true);
+		if (inputs.right) {
+			this.x += speed;
+			return;
+		}
+		if (inputs.left) {
+			this.x -= speed;
+			return;
+		}
+		if (Math.abs(inputs.gamepad.stickV1) > 0) {
+			this.x += speed * inputs.gamepad.stickV1;
+			return;
+		}
+		if (inputs.pointerIsMoving) {
+			const targetX = tgdCalcMapRange(inputs.pointerX, -1, +1, -13, +13, true);
+			if (Math.abs(targetX) < 12.5) {
+				if (targetX > this.x) {
+					// Go right!
+					this.x = Math.min(targetX, this.x + speed);
+				} else {
+					// Go left!
+					this.x = Math.max(targetX, this.x - speed);
+				}
+			}
 		}
 	}
 

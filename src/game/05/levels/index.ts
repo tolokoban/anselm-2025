@@ -1,4 +1,5 @@
 import AtomicState from "@tolokoban/react-state";
+import { debug } from "./debug";
 import { type ArkanoidLevel, isArkanoidLevelArray } from "./types";
 
 /**
@@ -6,6 +7,7 @@ import { type ArkanoidLevel, isArkanoidLevelArray } from "./types";
  */
 
 export const ArkanoidLevels: ArkanoidLevel[] = [
+	// debug,
 	{
 		hueShift: 60,
 		hueRandom: 30,

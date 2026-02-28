@@ -49,23 +49,6 @@ export class LogicBrick {
 	get bonus() {
 		return this.options.bonus;
 	}
-
-	// hitTest(args: { x: number; y: number; dx: number; dy: number }): number {
-	// 	const { x, y, dx, dy } = args;
-	// 	const x0 = x - this.x;
-	// 	const y0 = y - this.y;
-	// 	if (dy > 0) {
-	// 		// Ball is going up.
-	// 		const hori = crossHori(x0, y0, dx, dy, 0, -0.5);
-	// 		if (Math.abs(hori) <= 1.1) return Math.PI;
-	// 		else return dx > 0 ? +Math.PI / 2 : -Math.PI / 2;
-	// 	} else {
-	// 		// Ball is going down.
-	// 		const hori = crossHori(x0, y0, dx, dy, 0, +0.5);
-	// 		if (Math.abs(hori) <= 1.1) return 0;
-	// 		else return dx > 0 ? +Math.PI / 2 : -Math.PI / 2;
-	// 	}
-	// }
 }
 
 /**

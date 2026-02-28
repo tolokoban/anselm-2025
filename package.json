@@ -9,7 +9,7 @@
     "homepage": "https://tolokoban.github.io/...",
     "dependencies": {
         "@tolokoban/react-state": "^0.7.3",
-        "@tolokoban/tgd": "^2.0.92",
+        "@tolokoban/tgd": "^2.0.95",
         "@tolokoban/type-guards": "^0.9.0",
         "@tolokoban/ui": "^0.25.3",
         "react": "^19.2.4",

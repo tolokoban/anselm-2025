@@ -9,6 +9,12 @@ const NORMAL_DOWN = Math.PI;
 const NORMAL_LEFT = +Math.PI / 2;
 const NORMAL_RIGHT = -Math.PI / 2;
 
+interface InternalHit {
+	brick: LogicBrick;
+	normalAngle: number;
+	t: number;
+}
+
 export class LogicBricks {
 	public readonly eventVictory = new TgdEvent();
 	public readonly eventBonus = new TgdEvent<{
@@ -68,73 +74,167 @@ export class LogicBricks {
 		dx: number;
 		dy: number;
 	}): { normalAngle: number; brick: LogicBrick } | null => {
-		const ballRadius = 0.1;
-		const { x, y, dx, dy } = args;
-		const x0 = x - dx;
-		const y0 = y - dy;
-		const [col0, row0] = this.toColRow(x0, y0);
-		const brick0 = this.getBrick(col0, row0);
-		const [col1, row1] = this.toColRow(x, y);
-		if (col0 === col1 && row0 === row1) return null;
-
-		const posH = this.toX(col0) + (dx > 0 ? 1 : 0);
-		const disH = Math.abs(x0 - posH) - ballRadius;
-		const timH = disH / Math.abs(dx);
-		const posV = this.toY(row0) + (dy > 0 ? 0 : -1);
-		const disV = Math.abs(y0 - posV) - ballRadius;
-		const timV = disV / Math.abs(dy);
-		const tim = Math.min(timH, timV);
-		const candidates: Array<{
-			normalAngle: number;
-			col: number;
-			row: number;
-			tim: number;
-		}> = [];
-		if (tim === timH) {
-			candidates.push({
-				normalAngle: dx > 0 ? NORMAL_LEFT : NORMAL_RIGHT,
-				col: col0 + (dx > 0 ? +1 : -1),
-				row: row0,
-				tim: timH,
-			});
-			if (timV <= 1) {
-				candidates.push({
-					normalAngle: dy > 0 ? NORMAL_DOWN : NORMAL_UP,
-					col: col0,
-					row: row0 + (dy > 0 ? -1 : +1),
-					tim: timV,
-				});
-			}
-		} else {
-			candidates.push({
-				normalAngle: dy > 0 ? NORMAL_DOWN : NORMAL_UP,
-				col: col0,
-				row: row0 + (dy > 0 ? -1 : +1),
-				tim: timV,
-			});
-			if (timH <= 1) {
-				candidates.push({
-					normalAngle: dx > 0 ? NORMAL_LEFT : NORMAL_RIGHT,
-					col: col0 + (dx > 0 ? +1 : -1),
-					row: row0,
-					tim: timH,
-				});
-			}
+		let hit: InternalHit | null = null;
+		let hitVertical: InternalHit | null = null;
+		let hitHorizontal: InternalHit | null = null;
+		const ballRadius = 0.3;
+		const steps = Math.max(
+			Math.ceil(Math.abs(args.dx) / ballRadius),
+			Math.ceil(Math.abs(args.dy) / ballRadius),
+		);
+		if (steps === 0) return null;
+		const x = args.x - args.dx;
+		const y = args.y - args.dy;
+		const dx = args.dx / steps;
+		const dy = args.dy / steps;
+		if (dy > 0) {
+			// Going up
+			hitVertical = this.hitTestUp(x, y, dx, dy, ballRadius, steps);
+		} else if (dy < 0) {
+			// Going down
+			hitVertical = this.hitTestDown(x, y, dx, dy, ballRadius, steps);
 		}
-		for (const candidate of candidates) {
-			const brick = this.getBrick(candidate.col, candidate.row);
-			if (!brick || brick === brick0) continue;
+		if (dx > 0) {
+			// Going right
+			hitHorizontal = this.hitTestRight(x, y, dx, dy, ballRadius, steps);
+		} else if (dx < 0) {
+			// Going left
+			hitHorizontal = this.hitTestLeft(x, y, dx, dy, ballRadius, steps);
+		}
+		if (!hitVertical && !hitHorizontal) return null;
 
-			args.x = x0 + candidate.tim * dx;
-			args.y = y0 + candidate.tim * dy;
-			this.bumpBick(brick);
-			return {
-				brick,
-				normalAngle: candidate.normalAngle,
-			};
+		if (hitVertical && hitHorizontal) {
+			hit = hitVertical.t < hitHorizontal.t ? hitVertical : hitHorizontal;
+		} else if (hitHorizontal) hit = hitHorizontal;
+		else hit = hitVertical;
+		if (hit) {
+			args.x += (hit.t - 1) * args.dx;
+			args.y += (hit.t - 1) * args.dy;
+			this.bumpBick(hit.brick);
+			return hit;
 		}
 		return null;
 	};
+
+	private hitTestLeft(
+		x0: number,
+		y0: number,
+		dx: number,
+		dy: number,
+		ballRadius: number,
+		steps: number,
+	): InternalHit | null {
+		let x = x0 - ballRadius;
+		let y = y0;
+		for (let step = 0; step < steps; step++) {
+			const col0 = this.toCol(x);
+			x += dx;
+			y += dy;
+			const col1 = this.toCol(x);
+			if (col0 === col1) continue;
+
+			const row1 = this.toRow(y);
+			const brick = this.getBrick(col1, row1);
+			if (brick) {
+				return {
+					brick,
+					normalAngle: NORMAL_RIGHT,
+					t: (step + 1 - (x - this.toRightX(col1))) / steps,
+				};
+			}
+		}
+		return null;
+	}
+
+	private hitTestRight(
+		x0: number,
+		y0: number,
+		dx: number,
+		dy: number,
+		ballRadius: number,
+		steps: number,
+	): InternalHit | null {
+		let x = x0 + ballRadius;
+		let y = y0;
+		for (let step = 0; step < steps; step++) {
+			const col0 = this.toCol(x);
+			x += dx;
+			y += dy;
+			const col1 = this.toCol(x);
+			if (col0 === col1) continue;
+
+			const row1 = this.toRow(y);
+			const brick = this.getBrick(col1, row1);
+			if (brick) {
+				return {
+					brick,
+					normalAngle: NORMAL_LEFT,
+					t: (step + 1 - (x - this.toLeftX(col1))) / steps,
+				};
+			}
+		}
+		return null;
+	}
+
+	private hitTestUp(
+		x0: number,
+		y0: number,
+		dx: number,
+		dy: number,
+		ballRadius: number,
+		steps: number,
+	): InternalHit | null {
+		let x = x0;
+		let y = y0 + ballRadius;
+		for (let step = 0; step < steps; step++) {
+			const row0 = this.toRow(y);
+			x += dx;
+			y += dy;
+			const row1 = this.toRow(y);
+			if (row0 === row1) continue;
+
+			const col1 = this.toCol(x);
+			const brick = this.getBrick(col1, row1);
+			if (brick) {
+				return {
+					brick,
+					normalAngle: NORMAL_DOWN,
+					t: (step + 1 - (y - this.toBottomY(row1))) / steps,
+				};
+			}
+		}
+		return null;
+	}
+
+	private hitTestDown(
+		x0: number,
+		y0: number,
+		dx: number,
+		dy: number,
+		ballRadius: number,
+		steps: number,
+	): InternalHit | null {
+		let x = x0;
+		let y = y0 - ballRadius;
+		for (let step = 0; step < steps; step++) {
+			const row0 = this.toRow(y);
+			x += dx;
+			y += dy;
+			const row1 = this.toRow(y);
+			if (row0 === row1) continue;
+
+			const col1 = this.toCol(x);
+			const brick = this.getBrick(col1, row1);
+			if (brick) {
+				return {
+					brick,
+					normalAngle: NORMAL_UP,
+					t: (step + 1 - (y - this.toTopY(row1))) / steps,
+				};
+			}
+		}
+		return null;
+	}
 
 	private bumpBick(brick: LogicBrick) {
 		if (
@@ -155,27 +255,41 @@ export class LogicBricks {
 		}
 	}
 
-	private toX(col: number) {
+	public toLeftX(col: number) {
 		return col - 13;
 	}
 
-	private toY(row: number) {
+	public toRightX(col: number) {
+		return col - 12;
+	}
+
+	/**
+	 * @returns Y of the top edge of the brick at this `row`.
+	 */
+	public toTopY(row: number) {
 		return 13 - row;
 	}
 
-	private toCol(x: number) {
+	/**
+	 * @returns Y of the bottom edge of the brick at this `row`.
+	 */
+	public toBottomY(row: number) {
+		return 12 - row;
+	}
+
+	public toCol(x: number) {
 		return Math.floor(x + 13);
 	}
 
-	private toRow(y: number) {
+	public toRow(y: number) {
 		return Math.floor(13 - y);
 	}
 
-	private toColRow(x: number, y: number): [col: number, row: number] {
+	public toColRow(x: number, y: number): [col: number, row: number] {
 		return [this.toCol(x), this.toRow(y)];
 	}
 
-	private getBrick(col: number, row: number): LogicBrick | null {
+	public getBrick(col: number, row: number): LogicBrick | null {
 		const bricks = this.bricks[row];
 		if (!bricks) return null;
 

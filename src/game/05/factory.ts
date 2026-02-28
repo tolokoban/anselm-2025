@@ -17,6 +17,7 @@ import { PainterBonuses } from "./painters/bonuses";
 import { PainterBricks } from "./painters/bricks";
 import { PainterLaser } from "./painters/laser/laser";
 import { PainterPad } from "./painters/pad";
+import { PainterRay } from "./painters/ray";
 import type { Assets } from "./types";
 
 export function makeLevelPainterAndLogic(
@@ -44,6 +45,7 @@ export function makeLevelPainterAndLogic(
 	const laserPainter = new PainterLaser(context, {
 		atlasImage: assets.atlasLasers,
 	});
+	const rayPainter = new PainterRay(context);
 	const level = levels[levelIndex % levels.length];
 	const board = new TgdPainterMesh(context, {
 		transfo: {
@@ -75,6 +77,7 @@ export function makeLevelPainterAndLogic(
 		bricks: bricksPainter,
 		pad: padPainter,
 		laser: laserPainter,
+		ray: rayPainter,
 	});
 	return { painter, logic };
 }

@@ -11,6 +11,8 @@ export class Inputs {
 
 	private readonly pressedButtons = new Set<string>();
 
+	private _pointerisMoving = false;
+
 	constructor(private readonly context: TgdContext) {
 		const buttons = ["left", "right"];
 		buttons.forEach(this.registerButton);
@@ -18,20 +20,25 @@ export class Inputs {
 		context.inputs.pointer.eventTap.addListener(() => {
 			this.click = true;
 		});
+		context.inputs.pointer.eventMove.addListener(this.handlePointerMove);
+		context.inputs.pointer.eventHover.addListener(this.handlePointerMove);
 	}
 
 	update(time: number, delay: number) {
 		// this._isTouching = this.context.inputs.pointer.isTouching();
 	}
 
-	get isTouching() {
-		return true;
-		//this._isTouching;
+	get pointerIsMoving() {
+		return false;
+		return this._pointerisMoving;
 	}
 
 	get pointerX() {
 		return this.context.inputs.pointer.x;
-		// return this._pointerX;
+	}
+
+	get pointerY() {
+		return this.context.inputs.pointer.y;
 	}
 
 	get right() {
@@ -58,6 +65,11 @@ export class Inputs {
 			this.pressedButtons.has("fire")
 		);
 	}
+
+	private readonly handlePointerMove = (event: TgdInputPointerEventMove) => {
+		const deltaX = Math.abs(event.current.x - event.previous.x);
+		this._pointerisMoving = deltaX > 1e-4;
+	};
 
 	private readonly registerButton = (id: string) => {
 		const button = globalThis.document.getElementById(`btn-${id}`);
