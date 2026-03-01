@@ -15,12 +15,15 @@ export default function Button({
     onClick,
     children,
 }: ButtonProps) {
+    const handleClick = () => {
+        document.body.requestFullscreen().then(onClick).catch(onClick)
+    }
     return (
         <button
             type="button"
             autoFocus={autoFocus}
             className={classNames(className, styles.button)}
-            onClick={onClick}
+            onClick={handleClick}
         >
             {children}
         </button>

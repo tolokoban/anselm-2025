@@ -11,6 +11,33 @@
     height: 100%;
     font-size: 5vmin;
 
+    header {
+        height: 60vmin;
+        display: flex;
+        flex-wrap: nowrap;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: stretch;
+        gap: 0;
+
+        > h1 {
+            margin: 0;
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1em;
+            font-size: 150%;
+            flex: 0 0 auto;
+
+            small {
+                opacity: 0.5;
+                font-style: italic;
+            }
+        }
+    }
+
     > button {
         font: inherit;
         border: none;
@@ -62,38 +89,15 @@
         grid-template-rows: auto auto 1fr;
         padding: 1em;
 
-        > h1 {
-            margin: 0;
-            display: flex;
-            flex-wrap: wrap;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1em;
-            font-size: 150%;
-            flex: 0 0 auto;
-
-            small {
-                opacity: 0.5;
-                font-style: italic;
-            }
-        }
-
-        > p {
-            flex: 1 1 auto;
-        }
-
         > footer {
             flex: 0 0 auto;
             display: flex;
-            flex-wrap: nowrap;
+            flex-wrap: wrap;
             flex-direction: row;
-            justify-content: flex-start;
+            justify-content: center;
             align-items: center;
             gap: 3em;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            scroll-behavior: smooth;
+            padding-bottom: 3em;
 
             > button {
                 all: unset;

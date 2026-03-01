@@ -4,13 +4,14 @@
     font: inherit;
     font-variant: small-caps;
     background: linear-gradient(to top, #fc0, #f90 20%, #f90 40%, #530);
-    height: 3em;
-    padding: 0 1em;
+    height: 2em;
+    padding: 0 .5em;
     border-radius: 0.5em;
     overflow: hidden;
     border: 0.125em solid #000;
-    box-shadow: 0 0 0.5em #ff0;
+    box-shadow: 0 0.25em 0.5em #000;
     cursor: pointer;
+    font-weight: bold;
 }
 
 .button::after {
@@ -20,7 +21,7 @@
     width: 100%;
     height: 100%;
     content: "";
-    background: #fff8;
+    background: #fff4;
     pointer-events: none;
     border-radius: 0 0 50% 50%;
     transform: translateY(-40%);

@@ -1,0 +1,52 @@
+.episodeSpeech {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    padding: 1em;
+    overflow: auto;
+    background-size: cover;
+    box-sizing: border-box;
+    text-shadow: 0 0.1em .1em #000;
+
+    &.alien {
+        background-image: url("./alien.webp");
+        color: #fd0;
+    }
+
+    &.mib {
+        background-image: url("./mib.webp");
+        color: #3f7;
+    }
+
+    hr {
+        content: "";
+        height: 2px;
+        width: 100%;
+        border: none;
+        margin: 1em 0;
+        background-image: linear-gradient(to left, transparent, currentColor, #fff, currentColor, transparent);
+    }
+
+    header {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1em;
+        margin: 0;
+        margin-bottom: 2em;
+    }
+
+    footer {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        gap: 1em;
+        margin: 1em 0;
+    }
+}

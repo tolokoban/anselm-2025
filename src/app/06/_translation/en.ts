@@ -1,24 +1,24 @@
-import { Translation } from "@/lang";
-import type FR from "./fr";
+import type FR from "./fr"
 
 const EN: typeof FR = {
-	help1: "move the selection (white rectangle).",
-	help2: "enlarge/shrink the selection.",
-	help3: "enlarge the selection.",
-	help4: "shrink the selection.",
-	intro1: `You're the best, Anselm!
+    help1: "move the selection (white rectangle).",
+    help2: "enlarge/shrink the selection.",
+    help3: "enlarge the selection.",
+    help4: "shrink the selection.",
+    intro: `Poor Anselm...
 
-The saucer is now full of fuel, and we can go to the Moon to find a more powerful ship to leave the solar system.`,
-	intro2: `To remain discreet, we hid it in a crater.
+You've been tricked again, like a complete novice.
 
-It'll take some skill to navigate through there.`,
-	intro3: `Use the keyboad's arrow keys, or touch the screen on the left or on the right to try to avoid abstacles...`,
-	LevelSelector: `Click a room to edit it.
-Use the arrows to reorder the rooms.`,
-	start: `Let's start!`,
-	win: `Great! You found the under-moon-ground base.
-    
-Get some rest: tomorrow, we leave with the big ship!`,
-};
+You've cleaned up all the evidence we could have gathered at that lunar base.
 
-export default EN;
+There's still a chance for you to redeem yourself.
+Try recreating other rooms in this simulator.
+
+Perhaps your subconscious memory can help us.
+Let your imagination run wild!`,
+    LevelSelector: `Clique sur une salle pour la modifier.
+Utilise les flèches pour les réordonner.`,
+    start: `Let's start!`,
+}
+
+export default EN

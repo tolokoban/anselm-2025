@@ -19,6 +19,7 @@ import { PainterLaser } from "./painters/laser/laser";
 import { PainterPad } from "./painters/pad";
 import { PainterRay } from "./painters/ray";
 import type { Assets } from "./types";
+import { PainterMark } from "./painters/mark/mark"
 
 export function makeLevelPainterAndLogic(
 	context: TgdContext,

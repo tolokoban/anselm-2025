@@ -1,4 +1,4 @@
 {
-  name: "Local Translation",
-  open: "translation/en/index.tsx",
+    name: "Local Translation",
+    open: "translation/fr.ts",
 }

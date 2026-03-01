@@ -1,19 +1,18 @@
-import { goto } from "@/app/routes";
+import { goto } from "@/app/routes"
 
-import ViewBook from "@/components/ViewBook";
-import { useTranslator } from "./_translation";
+import { useTranslator } from "./_translation"
+import EpisodeSpeech from "@/components/EpisodeSpeech"
+import Button from "@/components/Button"
 
 export default function Page() {
-	const tr = useTranslator();
-	const handleClick = () => {
-		goto("/06/editor");
-		document.body.requestFullscreen();
-	};
+    const tr = useTranslator()
+    const handleClick = () => {
+        goto("/06/editor")
+    }
 
-	return (
-		<ViewBook
-			pages={[tr.intro1(), tr.intro2(), tr.intro3()]}
-			onDone={handleClick}
-		/>
-	);
+    return (
+        <EpisodeSpeech episode={5} mode="alien" text={tr.intro()}>
+            <Button onClick={handleClick}>{tr.start()}</Button>
+        </EpisodeSpeech>
+    )
 }
