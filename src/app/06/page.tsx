@@ -11,7 +11,7 @@ export default function Page() {
     }
 
     return (
-        <EpisodeSpeech episode={5} mode="alien" text={tr.intro()}>
+        <EpisodeSpeech episode={6} mode="mib" text={tr.intro()}>
             <Button onClick={handleClick}>{tr.start()}</Button>
         </EpisodeSpeech>
     )

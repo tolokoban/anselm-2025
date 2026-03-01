@@ -14,14 +14,14 @@ export const ArkanoidLevels: ArkanoidLevel[] = [
         pose: [
             "                          ",
             "        <><><><><>        ",
-            "       [][][][][][]       ",
-            "      (F(T(F()(F(T(F      ",
-            "     [][][][][][][][]     ",
-            "    (G(T(G(T(G(T(G(T(G    ",
-            "     [][][][][][][][]     ",
-            "      (G(T(G(T(G(T(G      ",
-            "       [][][][][][]       ",
-            "        (F(T(G(T(F        ",
+            "       [B[][][][][B       ",
+            "      (C(-(-(-(-(-(C      ",
+            "     [D[-[-[-[-[-[-[D     ",
+            "    (B(-(-(-{-(-(-(-(B    ",
+            "     [D[-[-[-[-[-[-[D     ",
+            "      (C(-(-(-(-(-(C      ",
+            "       [B[][][][][B       ",
+            "        <F<T<G<T<F        ",
         ],
         backgroundIndex: 0,
         options: {
@@ -93,6 +93,18 @@ export const ArkanoidLevels: ArkanoidLevel[] = [
             },
             o: {
                 hueShift: 5.8643062867009474,
+            },
+            A: {
+                bonus: 0,
+            },
+            B: {
+                bonus: 1,
+            },
+            C: {
+                bonus: 2,
+            },
+            D: {
+                bonus: 3,
             },
         },
     },
@@ -188,6 +200,7 @@ export const ArkanoidLevels: ArkanoidLevel[] = [
                 hueShift: 5.8643062867009474,
             },
         },
+        hueRandom: 0,
     },
     {
         pose: [
@@ -196,16 +209,16 @@ export const ArkanoidLevels: ArkanoidLevel[] = [
             "        (F      (F        ",
             "        (S      (S        ",
             "      {}[][][][][]{}      ",
-            "      [][][][Z[][][]      ",
+            "      [][A[][Z[][A[]      ",
             "    [][]<><>[]<><>[][]    ",
             "    [][]<><F[]<F<>[][]    ",
             "  [][][][][][][][][][][]  ",
-            "  [][S[][][][S[][][][S[]  ",
+            "  [][S[][][][H[][][][S[]  ",
             "  []  []{}[]{}[]{}[]  []  ",
             "  []  []          []  []  ",
             "  [U  []          []  [U  ",
             "        [][L  [L[]        ",
-            "        [][]  [][S        ",
+            "        [F[]  [][S        ",
         ],
         backgroundIndex: 1,
         backgroundRepeats: 5,
@@ -214,10 +227,10 @@ export const ArkanoidLevels: ArkanoidLevel[] = [
                 bonus: 1,
             },
             G: {
-                bonus: 2,
+                bonus: 6,
             },
             F: {
-                bonus: 3,
+                bonus: 5,
             },
             L: {
                 bonus: 4,
@@ -279,6 +292,24 @@ export const ArkanoidLevels: ArkanoidLevel[] = [
             o: {
                 hueShift: 5.8643062867009474,
             },
+            A: {
+                bonus: 0,
+            },
+            B: {
+                bonus: 1,
+            },
+            C: {
+                bonus: 2,
+            },
+            D: {
+                bonus: 3,
+            },
+            E: {
+                bonus: 4,
+            },
+            H: {
+                bonus: 7,
+            },
         },
         hueShift: 0,
         hueRandom: 0,
@@ -287,7 +318,7 @@ export const ArkanoidLevels: ArkanoidLevel[] = [
     {
         hueShift: 120,
         pose: [
-            "      (a         [][]     ",
+            "      (H         [][]     ",
             "     (b(b        [][]     ",
             "    (c(c(c       [][]     ",
             "   (d(d(d(d      [][]     ",
@@ -309,10 +340,10 @@ export const ArkanoidLevels: ArkanoidLevel[] = [
                 bonus: 1,
             },
             G: {
-                bonus: 2,
+                bonus: 6,
             },
             F: {
-                bonus: 3,
+                bonus: 5,
             },
             L: {
                 bonus: 4,
@@ -377,7 +408,14 @@ export const ArkanoidLevels: ArkanoidLevel[] = [
             "]": {
                 bonus: 6,
             },
+            E: {
+                bonus: 4,
+            },
+            H: {
+                bonus: 7,
+            },
         },
+        hueRandom: 0,
     },
     {
         hueShift: 40,
@@ -595,7 +633,7 @@ export const ArkanoidLevels: ArkanoidLevel[] = [
             },
         },
     },
-] // .slice(0, 1) as ArkanoidLevel[];
+]
 
 export const StateArkanoid = {
     levels: new AtomicState(ArkanoidLevels, {

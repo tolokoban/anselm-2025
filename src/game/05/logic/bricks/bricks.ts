@@ -249,7 +249,7 @@ export class LogicBricks {
         } else if (brick.index !== EnumBrickType.Unbreakable) {
             Sound.pop.play()
             brick.dead = true
-            if (brick.bonus) {
+            if (typeof brick.bonus === "number") {
                 this.eventBonus.dispatch({
                     type: brick.bonus,
                     x: brick.x,
